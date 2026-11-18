@@ -54,7 +54,7 @@ Schematic: **[`schematic.svg`](schematic.svg)**.
 
 ## Firmware control
 
-See **[`firmware/battery_control.ino`](firmware/battery_control.ino)** (drop into
+See **[`battery_control.ino`](../firmware/src/battery_control.ino)** (drop into
 LieBtrau's `pulse-dtmf-converter.ino`; recover the source from upstream — only the
 HEX is in this project). Summary:
 

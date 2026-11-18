@@ -23,6 +23,11 @@ around an **ATtiny85** on a small PCB (board **BRD170127**, rev R2).
 - `BOM_Pulse to DTMF Converter.xlsx` (and a later revision) — bill of materials.
 
 ### Firmware (ATtiny85)
+- **[`firmware/`](firmware)** — the **original source** by Christoph Tack
+  (LieBtrau), included verbatim from the [upstream GitHub repo](https://github.com/LieBtrau/pulse-dtmf-converter)
+  under **GPL v3**: the Arduino/PlatformIO sketch, rotary-dial decoder, and the
+  DTMF direct-digital-synthesis generator, plus our rev-V3 `battery_control.ino`
+  addition. See [`firmware/README.md`](firmware/README.md).
 - `pulse-dtmf-converter.ino_R0.hex` — compiled Arduino sketch (rev 0).
 - `ATTINY85V@SOIC8.hex` / `.BIN` — flashable firmware image for the SOIC-8 part.
 
@@ -58,8 +63,15 @@ bundled ATTinyCore and the Bounce2 library. Then populate the PCB per the BOM an
 
 ## License
 
-The design is derived from LieBtrau's
-[Hackaday.io project 28557](https://hackaday.io/project/28557-pulse-to-tone-converter);
-use is governed by that upstream project's license — check it before
-redistributing the hardware or firmware. The bundled libraries (ATTinyCore,
-Bounce2) keep their own original licenses.
+The design originates from Christoph Tack's (LieBtrau)
+[Hackaday.io project 28557](https://hackaday.io/project/28557-pulse-to-tone-converter)
+/ [GitHub repo](https://github.com/LieBtrau/pulse-dtmf-converter).
+
+- **Firmware** in [`firmware/`](firmware) — and any build combined with it,
+  including our `battery_control.ino` addition — is **GPL v3** (© 2018 Christoph
+  Tack); see [`firmware/LICENSE`](firmware/LICENSE).
+- **Bundled libraries** (ATTinyCore, Bounce2) keep their own original licenses.
+- The **hardware-design notes** here (`ANALYSIS.md`, `hardware_v2/`,
+  `hardware_v3/`) are this project's own documentation; the board itself derives
+  from the upstream design — check the upstream project before redistributing
+  hardware.
