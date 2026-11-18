@@ -142,7 +142,7 @@
     <text x="620" y="600">TP1 Vc  (loop clamp):   on-hook 0 V  ·  off-hook steady ~5.0 V  ·  gap: droops</text>
     <text x="620" y="618">TP2 VDD (MCU):          on-hook 0 V  ·  steady ~4.7 V  ·  in gap (armed) ~2.85 V  (&gt; 2.7 V BOD)</text>
     <text x="620" y="636">TP3 BATT+ (CR1632):     ~3.0 V always (replace when &lt; ~2.9 V OCV)</text>
-    <text x="620" y="654">TP4 BATT_EN (gate):     ~3 V off-hook idle (off)  ·  ~0 V while dialing (cell armed)</text>
+    <text x="620" y="654">TP4 BATT_EN (gate):     ~3 V on-hook (off, disarmed)  ·  ~0 V off-hook (armed)</text>
     <text x="620" y="672">TP5 cell branch:        0 V on-hook (isolated)  ·  ~3.0 V when armed</text>
   </g>
 </svg>

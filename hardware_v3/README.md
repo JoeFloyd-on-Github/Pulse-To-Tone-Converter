@@ -30,9 +30,10 @@ Schematic: **[`schematic.svg`](schematic.svg)**.
 ```
 
 - **Q_batt** — a **low-leakage P-MOS switch** between the cell and VDD, driven by
-  the MCU's `BATT_EN` pin (active-LOW via a pull-up to BATT+). On-hook the MCU is
-  unpowered, the pull-up holds Q_batt **OFF**, and the cell draws **~0** — so
-  cell life is **shelf-life-limited (~10 yr)**.
+  the MCU's `BATT_EN` pin (active-LOW via a pull-up to BATT+). The MCU **arms** it
+  off-hook and must **actively disarm** it on-hook (see below); once disarmed the
+  pull-up holds Q_batt **OFF** and the cell draws **~0**, so cell life is
+  **shelf-life-limited (~10 yr)**.
 - **D_rev** — a low-Vf Schottky (PMEG) in series with the cell, giving the
   **reverse-charge protection** you asked for: it blocks any current *into* the
   primary cell (the ~5 V loop rail can never charge it).
@@ -54,9 +55,10 @@ Schematic: **[`schematic.svg`](schematic.svg)**.
 
 ## Firmware control
 
-See **[`battery_control.ino`](../firmware/src/battery_control.ino)** (drop into
-LieBtrau's `pulse-dtmf-converter.ino`; recover the source from upstream — only the
-HEX is in this project). Summary:
+See **[`battery_control.ino`](../firmware/src/battery_control.ino)** — it drops
+into the original sketch, now included at [`../firmware/`](../firmware) (the only
+source change beyond it is a one-line `rd.lineIsOpen()` accessor in
+`rotarydialer.h`). Summary:
 
 - `setup()` → after the normal init, call `batterySetup()`: set `BATT_EN` output,
   default **HIGH (cell off)**, then **arm the cell** (`BATT_EN` LOW) now that we're
@@ -65,7 +67,15 @@ HEX is in this project). Summary:
   ~1 mA in the gaps.
 - When a digit/number completes, generate **DTMF on loop power** (loop closed,
   steady — the ~4 mA tone current does *not* come from the cell).
-- On-hook the MCU loses power and the gate pull-up turns Q_batt off automatically.
+- **On-hook detection (software-only, reuses the existing sense).** Once the cell
+  is armed it holds VDD up through every loop-open, so **hanging up does not
+  remove power** — the MCU must detect on-hook itself. It does so on the **same
+  loop/pulse-sense pin** the dial decoder already uses (`rd.lineIsOpen()`): a
+  rotary pulse holds the loop open only ~60–100 ms, but a hang-up holds it open
+  indefinitely, while between pulses/digits the loop is closed. So the firmware
+  times the **sustained** loop-open and, past **~250 ms** (well beyond the longest
+  break, and above a ~100 ms hook-flash), calls `cellRelease()` → Q_batt off → VDD
+  collapses → MCU powers down. No extra hardware — just this threshold.
 - Optional `coinCellLow()` ADC check flags a tired cell (replace below ~2.9 V OCV).
 
 ## Simulation & bench verification
@@ -96,13 +106,22 @@ is shelf-life-limited.
 | **TP1** | Vc (loop clamp) | 0 V | ~5.0 V | droops |
 | **TP2** | VDD (MCU) | 0 V | ~4.7 V | **~2.85 V** (must stay > 2.7 V) |
 | **TP3** | BATT+ (CR1632) | ~3.0 V | ~3.0 V | ~3.0 V (replace < ~2.9 V) |
-| **TP4** | BATT_EN (Q_batt gate) | ~3 V (off) | ~VDD (off) | **~0 V (armed)** |
-| **TP5** | cell branch (D_rev anode) | 0 V (isolated) | ~3.0 V armed | ~3.0 V |
+| **TP4** | BATT_EN (Q_batt gate) | **~3 V (off)** | **~0 V (armed)** | **~0 V (armed)** |
+| **TP5** | cell branch (D_rev anode) | 0 V (isolated) | ~3.0 V (armed) | ~3.0 V |
+
+(The MCU arms the cell for the whole off-hook period — TP4 ~0 V — and disarms it
+~250 ms after hang-up — TP4 back to ~3 V.)
 
 Bench check: off-hook, confirm **TP2 ≈ 4.7 V** and **TP4 ≈ 0 V** once dialing
 starts; scope **TP2** during a dialed "0" — it should **ride the gaps at ~2.85 V,
 never below 2.7 V**. Pull the cell and repeat on a weak line: TP2 should now sag
 toward BOD and digits drop — proving the cell is doing the work.
+
+**On-hook check (critical for cell life):** hang up and watch **TP4** — it must
+return to **~3 V (Q_batt off)** within ~250 ms, and **TP5 → 0 V** (cell isolated).
+If TP4 stays at ~0 V on-hook, the loop sense isn't reflecting the hook switch and
+the cell will drain in days — fix the sense/threshold before shipping. Verify the
+sense also goes open on the hook switch, not only the dial contacts.
 
 Behavioural models (no `ngspice`); treat the numbers as margins. Re-run:
 

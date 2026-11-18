@@ -1,59 +1,71 @@
 /*
-battery_control: rev-V3 coin-cell backup switch control for the pulse-to-tone
-converter. Additions to pulse-dtmf-converter.ino (Copyright (C) 2018 Christoph
-Tack). As these additions are combined with that GPL program, they are likewise:
+battery_control: rev-V3 coin-cell backup + on-hook detection for the pulse-to-
+tone converter. Additions to pulse-dtmf-converter.ino (Copyright (C) 2018
+Christoph Tack). Combined with that GPL program these additions are likewise:
 
     Copyright (C) 2025  (this project)
-    This program is free software: you can redistribute it and/or modify it
-    under the terms of the GNU General Public License as published by the Free
-    Software Foundation, either version 3 of the License, or (at your option)
-    any later version. See ../LICENSE.
+    GNU General Public License v3 or later. See ../LICENSE.
 
 ----------------------------------------------------------------------------
-Hardware (see ../../hardware_v3/schematic.svg):
-  A CR1632 coin cell feeds VDD through Q_batt (low-leakage P-MOS switch) and
-  D_rev (reverse-charge Schottky), OR'd with the loop supply. BATT_EN drives the
-  Q_batt gate through a pull-up to BATT+:
-      BATT_EN LOW  -> P-MOS ON  (cell armed)
-      BATT_EN HIGH -> P-MOS OFF (cell disconnected; on-hook default via pull-up)
+HARDWARE (minimal - see ../../hardware_v3/schematic.svg):
+  A CR1632 feeds VDD through Q_batt (low-leakage P-MOS switch) + D_rev
+  (reverse-charge Schottky), OR'd with the loop supply. BATT_EN drives the
+  Q_batt gate: LOW = cell armed, HIGH/float = cell off (on-hook default via the
+  gate pull-up). NO new sense hardware - we reuse the existing pulse/loop sense.
 
-Integration with the upstream sketch is tiny, because it already idle-sleeps:
-  - the main loop starts with sleepNow() (SLEEP_MODE_IDLE), so during the pulse
-    gaps the MCU is already at its low (~1 mA) current - exactly what keeps the
-    coin-cell droop small. Nothing to change there.
-  - all we add is: pick a FREE pin for BATT_EN, and arm the cell once we are up
-    and running on loop power (i.e. off-hook). The hardware OR then lets the cell
-    source current only during the ~70 ms loop-open gaps.
+WHY ON-HOOK MUST BE DETECTED IN SOFTWARE:
+  Once the cell is armed it holds VDD up through every loop-open, so hanging up
+  does NOT remove the MCU's power - the MCU keeps running on the cell. It must
+  therefore *detect* on-hook and disarm, or the cell drains.
 
-Pin choice: PIN_DTMF_OUT = PB0 and PIN_MODE_SELECT = PB2 are taken (see pins.h),
-and PB5 is RESET. Use a pin not used by the DTMF R-ladder/filter - verify against
-the board; PB1 (pin 6) is a typical free choice. Add to pins.h:
-      const int PIN_BATT_EN = 1;   // ATtiny85 PB1 / pin 6
+HOW (reuse the existing loop sense + tune a threshold):
+  The RotaryDialer already debounces the loop-sense pin; loop OPEN reads LOW
+  (rd.lineIsOpen()==true). A rotary *pulse* break is short (~60-100 ms); a
+  *hang-up* holds the loop open indefinitely; between pulses / digits / pauses
+  the loop is CLOSED. So: time how long the loop has been continuously open, and
+  if it exceeds a threshold well beyond the longest break, it's on-hook.
+
+  ON-HOOK threshold 250 ms  >> ~70-100 ms pulse break  (and > a ~100 ms
+  hook-flash, so a register-recall flash is NOT mistaken for on-hook). Tune up
+  for slow/worn dials; it only needs to sit between "longest break" and "hang-up".
 ----------------------------------------------------------------------------
 
-Add to pulse-dtmf-converter.ino:
+Pin: PIN_DTMF_OUT=PB0 and PIN_MODE_SELECT=PB2 are taken, PB5=RESET.
+Add to pins.h:   const int PIN_BATT_EN = 1;   // ATtiny85 PB1 / pin 6 (verify free)
+Add to rotarydialer.h: the one-line lineIsOpen() accessor (already added here).
+
+Add these globals + helpers to pulse-dtmf-converter.ino:
 
     #include "pins.h"
+    const unsigned long ONHOOK_MS = 250;        // sustained loop-open => on-hook
+    unsigned long lastLoopClosedMs = 0;
+
     static inline void cellArm()     { digitalWrite(PIN_BATT_EN, LOW);  }
     static inline void cellRelease() { digitalWrite(PIN_BATT_EN, HIGH); }
 
 in setup(), AFTER rd.init():
 
     pinMode(PIN_BATT_EN, OUTPUT);
-    cellRelease();      // default off
-    cellArm();          // off-hook on loop power now; back up VDD from here on
+    cellRelease();                 // default off
+    cellArm();                     // off-hook on loop power now; back up VDD
+    lastLoopClosedMs = millis();
 
-Nothing else is required: the existing sleepNow() at the top of loop() keeps the
-gap current low, DTMF is generated on loop power (loop closed, so the cell sources
-nothing then - D_rev is reverse-biased), and on-hook the MCU loses power and the
-gate pull-up turns Q_batt off (~0 cell drain -> shelf-life-limited life).
+at the END of loop(), AFTER rd.update():
 
-Optional - low-battery flag. NOTE: the upstream reducePower() calls
-power_adc_disable(), so re-enable the ADC before using analogRead():
+    if (!rd.lineIsOpen()) {
+        lastLoopClosedMs = millis();            // loop closed -> not on-hook
+    } else if (millis() - lastLoopClosedMs > ONHOOK_MS) {
+        cellRelease();                          // hung up: drop the cell...
+        // ...VDD now collapses (loop open + cell off) and the MCU powers down;
+        //    the next off-hook re-powers and reboots it.
+    }
 
-    // bool coinCellLow() {   // measure BATT+ via a divider on a spare ADC pin
-    //     power_adc_enable(); ADCSRA |= _BV(ADEN);
-    //     uint16_t mv = (uint32_t)analogRead(PIN_VBAT) * VREF_MV * DIV / 1023;
-    //     return mv < 2900;  // CR1632: replace below ~2.9 V OCV (see simulation)
-    // }
+BATTERY LIFE with this scheme:
+  The cell only SOURCES current when the loop is actually open (D_rev reverse-
+  biased otherwise): the pulse-break gaps of a dial (~0.7 s cumulative/number)
+  plus the one ~250 ms on-hook detection window per call. That's ~0.3 uAh/call,
+  so a CR1632 (~120 mAh) is shelf-life-limited (~10 yr). The ONLY way to kill it
+  fast is a detection failure that leaves the cell armed while on-hook (~1 mA
+  continuous -> flat in ~5 days) - so VERIFY ON HARDWARE that the loop sense goes
+  (and stays) open on the hook switch, not just on the dial contacts.
 */

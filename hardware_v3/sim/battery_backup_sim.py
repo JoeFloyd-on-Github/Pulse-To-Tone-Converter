@@ -97,7 +97,7 @@ tps = [
  ("TP1","Vc (loop clamp)","0.0 V","~5.0 V","droops"),
  ("TP2","VDD (MCU)","0.0 V","~4.7 V","~2.85 V"),
  ("TP3","BATT+ (CR1632)","~3.0 V","~3.0 V","~3.0 V"),
- ("TP4","BATT_EN (Q_batt gate)","~3.0 V (off)","~VDD (off)","~0 V (on)"),
+ ("TP4","BATT_EN (Q_batt gate)","~3 V (off)","~0 V (armed)","~0 V (armed)"),
  ("TP5","cell branch (D_rev anode)","0 V (isol.)","~3.0 V armed","~3.0 V"),
 ]
 tbl = ax[2].table(cellText=tps[1:], colLabels=tps[0], loc="center", cellLoc="center")

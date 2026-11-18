@@ -13,6 +13,9 @@ public:
     void update();
     bool available();
     byte readPulses();
+    // rev-V3 addition: current debounced loop state, reused for on-hook detect.
+    // Loop OPEN (break / on-hook) reads LOW; loop CLOSED (off-hook) reads HIGH.
+    bool lineIsOpen() { return _debouncer.read() == LOW; }
 private:
     byte _pulsePin;
     Bounce _debouncer;
