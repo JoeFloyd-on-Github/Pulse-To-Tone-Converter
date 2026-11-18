@@ -6,6 +6,10 @@ IP phone systems starve it, why some voltage-regulator parts fail while others
 from the same batch work, and how the ATtiny firmware behaves and could be
 improved** — plus a look at the feature set versus other converters.
 
+The design originates from LieBtrau's open-source
+[Pulse to Tone Converter](https://hackaday.io/project/28557-pulse-to-tone-converter)
+on Hackaday.io; this analysis reviews the board as built here.
+
 This is reconstructed from the schematic (`Schematic_pluse_to_tone.JPG`), the
 BOM, the measured-voltage photo (`20201219_140931-voltages.jpg`), the build
 docs, and the compiled firmware (`pulse-dtmf-converter.ino_R0.hex`). The Arduino

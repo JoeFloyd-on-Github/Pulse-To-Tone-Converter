@@ -5,6 +5,14 @@ telephone and converts the pulse (loop-disconnect) dialing of the rotary dial
 into **DTMF tones**, so the phone can be used on a modern tone-only line. Built
 around an **ATtiny85** on a small PCB (board **BRD170127**, rev R2).
 
+> **Origin / credit.** This design originates from the open-source
+> **[Pulse to Tone Converter](https://hackaday.io/project/28557-pulse-to-tone-converter)**
+> project by **LieBtrau** on Hackaday.io (the schematic is marked "Drawn By:
+> LieBtrau"). This repository is a build/working copy of that project, with an
+> added engineering analysis; the original hardware and firmware are the
+> original author's work and remain under their terms — see the upstream project
+> for its license.
+
 ## What's in this repo
 
 ### Hardware
@@ -50,5 +58,8 @@ bundled ATTinyCore and the Bounce2 library. Then populate the PCB per the BOM an
 
 ## License
 
-No project license is set yet — add one if you want to define how others may use
-the hardware/firmware. The bundled libraries keep their original licenses.
+The design is derived from LieBtrau's
+[Hackaday.io project 28557](https://hackaday.io/project/28557-pulse-to-tone-converter);
+use is governed by that upstream project's license — check it before
+redistributing the hardware or firmware. The bundled libraries (ATTinyCore,
+Bounce2) keep their own original licenses.
