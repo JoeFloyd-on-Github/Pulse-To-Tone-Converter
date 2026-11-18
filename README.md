@@ -33,6 +33,14 @@ around an **ATtiny85** on a small PCB (board **BRD170127**, rev R2).
 These are included so the build is self-contained; they are the property of their
 respective authors and carry their own licenses.
 
+## Engineering analysis
+
+See **[ANALYSIS.md](ANALYSIS.md)** for a full review of the design: how the board
+is powered and why low-loop-current IP/VoIP phone systems starve it, why some
+TLV431 regulators fail while others from the same batch work, the ATtiny firmware
+behaviour and improvement ideas, and a feature comparison (speed dial, special
+tones, redial) with other converters.
+
 ## Building
 
 Flash the ATtiny85 with one of the provided `.hex` images (e.g. with an Arduino
