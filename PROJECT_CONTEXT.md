@@ -28,14 +28,14 @@ and credit/license the upstream work correctly.
    - Firmware: small, ~70 % flash free; ideas for brown-out-aware dialing, noisy
      pulse decoding, speed dial, redial, configurable timing.
 3. **Credit** to LieBtrau / Hackaday 28557 added throughout.
-4. **Rev V2 (`hardware_v2/`)** — new supply + passive DTMF filter, with
-   `sim/supply_sim.py`.
-   - **Decision / correction:** the first V2 draft put a series LDO between the
-     reservoir cap and the MCU. That was **wrong**: during a pulse gap the only
-     requirement is VDD > BOD, and any series element costs headroom. Final V2:
-     shunt clamp (unavoidable — the converter is in series with the loop and must
-     absorb excess current) + **MCU driven directly from the reservoir**, 2.7 V
-     BOD, idle-sleep, passive filter replacing the MCP6022.
+4. **Rev V2 (`hardware_v2/`)** — new supply + passive DTMF filter. The first
+   draft's "direct drive" (no D5, reservoir on the loop rail) and its Python sim
+   were superseded on 2026-11-18. The page was rewritten from the SPICE results,
+   the firmware source and upstream's Hackaday log. The log shows upstream already
+   fixed the VoIP problems it hit: 2.7 V BOD for start-up, `sleepNow()` idle,
+   R5 39k for DTMF level, and mode 1 for DECT. V2 is now the V3 circuit without
+   the cell: PNP helpers, R17 22k, a passive filter into Q1. It is built on the
+   V3 PCB with BT1/Q3/R18/D6/TP3–5 unfitted, and runs the upstream firmware unchanged.
 5. **Rev V3 (`hardware_v3/`)** — V2 plus a **CR1632 coin-cell backup** ("option
    B"), with `schematic.svg` and `sim/battery_backup_sim.py`.
    - Cell → **P-MOS Q_batt** (driven by `BATT_EN`, PB1, active-low, pull-up to
@@ -104,7 +104,8 @@ and credit/license the upstream work correctly.
 
 ## Key decisions (summary)
 
-- No series regulator in the MCU path (direct drive from the reservoir).
+- No series regulator in the MCU path: VDD comes from VCC through D5 only, with C1 on
+  VDD. A reservoir on VCC ("direct drive") would blind the pulse sense.
 - Shunt clamp stays, now with a PNP helper on each shunt (TLV431 only biases it).
 - Coin cell kept and populated (owner's call, 2026-11-18), even though SPICE shows
   the reservoir alone rides through dialing down to ~1.5 mA.

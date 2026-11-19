@@ -7,8 +7,8 @@ refill the reservoir between the ~70 ms pulse gaps, so the MCU walks down throug
 its BOD and drops digits. With the cell as backup, VDD is **floored at the cell
 voltage** through the whole dial.
 
-Builds on [rev V2 (direct-drive supply)](../hardware_v2/README.md) — the shunt
-clamp, passive DTMF filter, 2.7 V BOD and idle-sleep all still apply; V3 adds the
+Builds on [rev V2 (low-loop-current supply)](../hardware_v2/README.md) — the PNP-assisted
+shunts, passive DTMF filter, 2.7 V BOD and idle-sleep all still apply; V3 adds the
 coin-cell backup on top.
 
 > **Update, 2026-11-18: this design now has a SPICE simulation and a routed PCB.**
