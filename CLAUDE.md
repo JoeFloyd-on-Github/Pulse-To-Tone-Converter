@@ -23,5 +23,5 @@ sessions — the things that are not obvious from the code or the git log.
   them as fabricated or bench-tested.
 - Sim scripts (`hardware_v*/sim/*.py`) regenerate the PNGs next to them; update
   both together.
-- Commit or push only when asked. As of 2026-11-18 the `origin` remote points at a
-  GitHub repo that does not exist yet — nothing has been pushed.
+- Commit or push only when asked. `main` tracks `origin/main` on GitHub
+  (`JoeFloyd-on-Github/Pulse-To-Tone-Converter`, first pushed 2026-11-18).

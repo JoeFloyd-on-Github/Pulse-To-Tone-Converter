@@ -52,6 +52,8 @@ and credit/license the upstream work correctly.
    `rd.lineIsOpen()` accessor: a sustained loop-open > ~250 ms (well above a
    ~70–100 ms pulse break and a ~100 ms hook-flash) → `cellRelease()`. No new
    sense hardware. Estimated ~0.3 µAh per call → cell life is shelf-life-limited.
+8. **Session notes** (`CLAUDE.md`, this file) added, and the repo pushed to GitHub
+   as `JoeFloyd-on-Github/Pulse-To-Tone-Converter` with full history.
 
 ## Key decisions (summary)
 
@@ -78,8 +80,6 @@ and credit/license the upstream work correctly.
 
 ## Open items / possible next steps
 
-- Create the GitHub repo (`origin` = `JoeFloyd-on-Github/Pulse-To-Tone-Converter`
-  is configured but the repo doesn't exist) and push; decide public vs private.
 - Build and bench-test V3 on a real low-current VoIP ATA: VDD through a full
   dial, the on-hook disarm, cell current when idle.
 - Route a V3 PCB in the original form factor.
