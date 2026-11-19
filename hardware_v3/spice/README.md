@@ -3,8 +3,8 @@
 This folder holds a SPICE comparison of the **original board** (BRD170127 R1/R2)
 and **rev V3**, the version laid out in [`../kicad`](../kicad). It uses ngspice 45
 with generic models, each fitted to a datasheet figure. These numbers replace
-the first-order Python estimates in `../sim` and the old `hardware_v2/sim`
-(since removed).
+the first-order Python estimates in the old `hardware_v2/sim` and
+`hardware_v3/sim` (both since removed).
 
 ```sh
 cd hardware_v3/spice

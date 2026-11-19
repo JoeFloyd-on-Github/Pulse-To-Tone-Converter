@@ -36,12 +36,12 @@ and credit/license the upstream work correctly.
    R5 39k for DTMF level, and mode 1 for DECT. V2 is now the V3 circuit without
    the cell: PNP helpers, R17 22k, a passive filter into Q1. It is built on the
    V3 PCB with BT1/Q3/R18/D6/TP3–5 unfitted, and runs the upstream firmware unchanged.
-5. **Rev V3 (`hardware_v3/`)** — V2 plus a **CR1632 coin-cell backup** ("option
-   B"), with `schematic.svg` and `sim/battery_backup_sim.py`.
-   - Cell → **P-MOS Q_batt** (driven by `BATT_EN`, PB1, active-low, pull-up to
-     BATT+ so default is off) → **D_rev** (PMEG Schottky, blocks charging the
-     primary cell) ORed with **D_loop** into VDD. The cell only sources during
-     loop-open gaps; between pulses the loop holds VDD above it.
+5. **Rev V3 (`hardware_v3/`)** — V2 plus a **CR1632 coin-cell backup**: BT1 →
+   Q3 DMG2301L (gate = BATT_EN on PB2, R18 1M pull-up to BATT+) → D6 BAT46WH into
+   VDD, ORed with D5. The first draft (`schematic.svg`, the Python
+   `sim/battery_backup_sim.py`, BATT_EN on PB1, a C_vc on the loop side) was
+   removed or corrected on 2026-11-18. `hardware_v3/README.md` was rewritten from
+   SPICE: the cell never sources current during dialing.
    - Holder: off-board CR1632 holder with flying leads; only BATT+/BATT− THT pads
      on the 49 × 34 mm board.
 6. **Upstream firmware included** (`firmware/`, verbatim, GPL v3) and our
@@ -121,9 +121,6 @@ and credit/license the upstream work correctly.
   on-hook disarm on the first board.
 - The SPICE models don't cover TLV431 capacitive-load stability, temperature or
   absolute-max ratings (those were checked separately).
-- `hardware_v3/README.md` body and `hardware_v3/schematic.svg` predate the SPICE
-  work (they show C_vc on the loop side and use Python-model numbers); its update
-  banner lists what changed. The KiCad schematic is the authoritative one.
 - Firmware for V3 is not written yet: `battery_control.ino` is integration notes,
   and the PB2 change (drop mode select) is not applied to the sketch.
 - **Cell-drain risk:** if on-hook detection fails, the armed cell drains fast.

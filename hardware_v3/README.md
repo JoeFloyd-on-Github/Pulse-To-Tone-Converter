@@ -1,164 +1,133 @@
-# Pulse-to-Tone Converter — rev V3 (CR1632 coin-cell backup)
+# Pulse-to-Tone Converter, rev V3: V2 plus a CR1632 coin-cell backup
 
-Adds a small **CR1632 coin cell that carries the ATtiny through pulse dialing**
-(option B), so ride-through no longer depends on the loop at all. This solves the
-weak-VoIP brown-out outright: on a low-current / low-voltage FXS the loop can't
-refill the reservoir between the ~70 ms pulse gaps, so the MCU walks down through
-its BOD and drops digits. With the cell as backup, VDD is **floored at the cell
-voltage** through the whole dial.
+Rev V3 is the [rev-V2 low-loop-current circuit](../hardware_v2/README.md) with
+an added **CR1632 coin cell** that can hold the ATtiny's supply (VDD) up while
+the loop is open. It is the version that has been laid out.
 
-Builds on [rev V2 (low-loop-current supply)](../hardware_v2/README.md) — the PNP-assisted
-shunts, passive DTMF filter, 2.7 V BOD and idle-sleep all still apply; V3 adds the
-coin-cell backup on top.
+| Folder | What it holds |
+|---|---|
+| [`kicad/`](kicad/README.md) | the KiCad 9 project: routed and DRC-clean, in the rev-R2 outline. Gerbers, BOM, pick-and-place and the **schematic PDF** are in `kicad/fab/`. |
+| [`spice/`](spice/README.md) | the ngspice comparison of the original board, V2 and V3. Every number on this page comes from it. |
 
-> **Update, 2026-11-18: this design now has a SPICE simulation and a routed PCB.**
-> - [`spice/`](spice/README.md) is an ngspice comparison of the original board
->   and V3. It replaces the Python estimates further down this page.
-> - [`kicad/`](kicad/README.md) holds the KiCad 9 project, routed and DRC-clean,
->   with Gerbers, BOM and pick-and-place in `kicad/fab/`.
->
-> The simulation changed several things on this page; where they disagree,
-> those two READMEs are correct:
-> - **The cell almost never supplies current.** With the V2 power fixes, the
->   470 µF reservoir rides through dialing down to about 1.5 mA of loop current.
->   The cell is kept at the owner's request.
-> - **No reservoir on the loop side.** The schematic below puts "C_vc 100 µF" on
->   Vc. That would hold VCC up through each pulse break and blind the pulse
->   sense. The built board keeps C1 470 µF on VDD, behind D5, as the original does.
-> - **BATT_EN is on PB2 (pin 7), not PB1.** PB1 is the DTMF PWM output.
-> - **Both shunts now have PNP helpers.** The original lower TLV431 carries
->   the full loop current, above its rating.
-> - **DTMF modulator values are R2 39k, R5 47k, R13 160k.**
-> - The numbers in "Simulation & bench verification" below come from the
->   older Python model.
+> **Rewritten 2026-11-18.** The earlier version of this page relied on a
+> first-order Python model (`sim/`) and a hand-drawn `schematic.svg`. Both are
+> removed: the SPICE simulation and the KiCad schematic replace them. The SPICE
+> work changed four things the old page claimed:
+> - the cell rarely carries anything;
+> - a reservoir belongs on VDD, not the loop rail;
+> - BATT_EN goes on PB2, not PB1;
+> - both shunts need PNP helpers.
 
-## How it works (option B)
+---
 
-Schematic: **[`schematic.svg`](schematic.svg)**.
+## 1. What the cell adds, and how much it is needed
+
+SPICE dialed a "0" on six line types: POTS, a 25 mA ATA, a 15 mA weak ATA, and
+10, 7 and 3 mA lines. In every case, V2's 470 µF reservoir keeps VDD at
+**4.4 V or more**, which is above the cell's voltage. So the **cell never
+supplies current during dialing**. It only takes over when VDD falls below
+about 3 V. That happens when:
+- the loop delivers less than about 1.5 mA, which is the V2 circuit's floor; or
+- the loop opens for much longer than a dial break, with the MCU still meant to
+  stay up.
+
+The owner chose to **keep and populate the cell** (2026-11-18). A V2 is the
+same board with the cell parts left off.
+
+## 2. The cell circuit
+
+The schematic is in `kicad/fab/BRD170127_V3_schematic.pdf`; the reference
+designators below are from it.
 
 ```
- loop ─► bridge ─► shunt clamp ─┬──[ D_loop ]──────────────┬─► VDD ─► ATtiny
-         (BAT46WH)   (~5.0V)     │                          │       + passive filter
-                                 │   CR1632(+) ─[Q_batt]─[D_rev]─┘
-                                 │               P-MOS   reverse-
-                                 │               switch  charge block
-                                 └─ C_vc 100µF              │
-                                                      BATT_EN (MCU GPIO)
+  VCC ─ D5 BAT46WH ──────────────┬──► VDD ─ C1 470 µF ─ ATtiny85 (+ C4/C7)
+                                 │
+  BT1 CR1632 (+) ─ Q3 DMG2301L ─ D6 BAT46WH
+         │           │ gate
+         └─ R18 1M ──┴─── BATT_EN = PB2 (ATtiny pin 7)
 ```
 
-- **Q_batt** — a **low-leakage P-MOS switch** between the cell and VDD, driven by
-  the MCU's `BATT_EN` pin (active-LOW via a pull-up to BATT+). The MCU **arms** it
-  off-hook and must **actively disarm** it on-hook (see below); once disarmed the
-  pull-up holds Q_batt **OFF** and the cell draws **~0**, so cell life is
-  **shelf-life-limited (~10 yr)**.
-- **D_rev** — a low-Vf Schottky (PMEG) in series with the cell, giving the
-  **reverse-charge protection** you asked for: it blocks any current *into* the
-  primary cell (the ~5 V loop rail can never charge it).
-- **D_loop** — isolates the loop rail from VDD during a gap, so the cell powers
-  only the MCU, not the loop front-end.
-- Because D_loop and D_rev **OR** into VDD, the cell automatically sources current
-  **only during the loop-open gaps** (between pulses the loop holds VDD above the
-  cell and D_rev is reverse-biased). Arming the cell for the whole off-hook period
-  therefore costs essentially nothing — the hardware does the gating.
+- **Q3 (P-MOS, DMG2301L)** is the cell switch.
+  - The MCU **arms** it by driving PB2 LOW.
+  - R18 (1 MΩ, gate to BATT+) holds it **off** whenever the MCU is not driving
+    the pin: at reset, at brown-out, and with no power.
+- **D6** blocks reverse current, so the loop supply can never charge the
+  primary cell. D5 and D6 form an OR: whichever source is higher feeds VDD.
+- **BATT_EN has to be PB2.**
+  - PB0 is the loop/pulse sense and PB1 is the DTMF PWM output (OC1A).
+  - PB3/PB4 are the crystal and PB5 is RESET.
+  - On the original board PB2 is the unconnected mode-select input, so V3
+    firmware must stop reading it (see "Firmware").
+- **Holder:** an off-board CR1632 holder with flying leads, soldered to BT1's
+  two through-hole pads (+ is the square pad). The board has no room for a
+  PCB-mount holder.
 
-### Battery & holder (through-hole, off-board)
+## 3. Firmware
 
-- **Cell:** CR1632 — 3 V lithium, ~120 mAh, 16 mm × 3.2 mm.
-- **Holder:** an **off-board CR1632 holder with flying wire leads** (search eBay
-  for *"CR1632 battery holder wire leads"* — the type with a red/black lead pair,
-  not a PCB-mount holder). This keeps the bulky holder out of the 49 × 34 mm
-  board; only **two THT pads** are needed: **BATT+ (red)** and **BATT− (black)**.
-- Mount the holder in the enclosure; route the two leads to the board pads.
+[`../firmware/src/battery_control.ino`](../firmware/src/battery_control.ino)
+holds the integration notes. **They have not been merged into the sketch yet.**
+The changes needed:
 
-## Firmware control
+- `pins.h`: add `PIN_BATT_EN = 2`. In `setup()`, remove the `PIN_MODE_SELECT`
+  read and fix `mode = 1`. That was the original board's mode anyway, because
+  PB2 was never connected.
+- **Arm** the cell (PB2 LOW) once the MCU is up after off-hook.
+- **Disarm on hang-up.** Once armed, the cell keeps the MCU alive through a
+  hang-up, so the firmware has to detect it. Use the existing debounced loop
+  sense (`rd.lineIsOpen()`, a one-line accessor added to `rotarydialer.h`):
+  if the loop stays open for more than about 250 ms, set PB2 HIGH. A dial
+  break is about 60 ms.
+- Pick the threshold with the original firmware's behaviour in mind
+  (`../ANALYSIS.md` §4). A hook-flash (about 100 ms) is already decoded as the
+  digit "1", and the 150 ms digit timeout splits slow dials.
 
-See **[`battery_control.ino`](../firmware/src/battery_control.ino)** — it drops
-into the original sketch, now included at [`../firmware/`](../firmware) (the only
-source change beyond it is a one-line `rd.lineIsOpen()` accessor in
-`rotarydialer.h`). Summary:
+## 4. Simulated behaviour (SPICE)
 
-- `setup()` → after the normal init, call `batterySetup()`: set `BATT_EN` output,
-  default **HIGH (cell off)**, then **arm the cell** (`BATT_EN` LOW) now that we're
-  up on loop power (off-hook).
-- During dialing, **idle-sleep** between the 1 ms timer wakes so the cell sees
-  ~1 mA in the gaps.
-- When a digit/number completes, generate **DTMF on loop power** (loop closed,
-  steady — the ~4 mA tone current does *not* come from the cell).
-- **On-hook detection (software-only, reuses the existing sense).** Once the cell
-  is armed it holds VDD up through every loop-open, so **hanging up does not
-  remove power** — the MCU must detect on-hook itself. It does so on the **same
-  loop/pulse-sense pin** the dial decoder already uses (`rd.lineIsOpen()`): a
-  rotary pulse holds the loop open only ~60–100 ms, but a hang-up holds it open
-  indefinitely, while between pulses/digits the loop is closed. So the firmware
-  times the **sustained** loop-open and, past **~250 ms** (well beyond the longest
-  break, and above a ~100 ms hook-flash), calls `cellRelease()` → Q_batt off → VDD
-  collapses → MCU powers down. No extra hardware — just this threshold.
-- Optional `coinCellLow()` ADC check flags a tired cell (replace below ~2.9 V OCV).
+Results from [`spice/`](spice/README.md):
 
-## Simulation & bench verification
+| Case | Result |
+|---|---|
+| Dialing "0" on every line, fresh / mid-life / end-of-life cell | lowest VDD 4.39–4.48 V. **The cell supplies no current.** |
+| Hang-up, firmware disarms 250 ms after the loop opens | VDD collapses; cell current 0.02 µA |
+| Hang-up, firmware **never** disarms (fault) | MCU keeps running from the cell at **0.93 mA**: a 125 mAh CR1632 is flat in about 5 days |
+| On-hook drain with Q3 off | 0.03 µA typical; about 1 µA if Q3 is at its worst-case leakage (about 11 years for 100 mAh) |
+| Incoming ring while on-hook | the ring current powers the MCU (VDD about 4.7 V), so the firmware arms the cell and disarms it once ringing stops. The cell stays idle, because VDD is above its voltage. |
 
-`sim/battery_backup_sim.py` models the dialing transient, the cell across its
-life, and prints the test-point voltages.
+**The disarm logic is the only real risk the cell adds.** If it fails, the cell
+goes flat in days.
 
-![battery-backup simulation](sim/battery_backup_sim.png)
+## 5. Test points and bench checks
 
-**Dialing "0" on a weak line (4.0 V available):**
-
-| | min VDD during dial | vs 2.7 V BOD |
-|---|---|---|
-| no cell | **0.26 V (collapses)** | ✗ drops digits |
-| CR1632 fresh | **3.04 V** | +0.34 V ✓ |
-| CR1632 mid-life | 2.81 V | +0.11 V ✓ |
-| CR1632 near EOL | 2.43 V | ✗ → **replace cell** |
-
-The cell floors VDD above BOD while healthy; the replace threshold is **~2.9 V
-open-circuit** (where rising internal resistance means it can no longer hold BOD
-under the gap load). **Drain ≈ 2 µAh per 10-digit number**, on-hook ≈ 0, so life
-is shelf-life-limited.
-
-**Test points** (measure with a meter; scope TP2 while dialing):
-
-| TP | node | on-hook | off-hook steady | during gap (dialing) |
+| TP | Net | On-hook | Off-hook, idle | While dialing |
 |---|---|---|---|---|
-| **TP1** | Vc (loop clamp) | 0 V | ~5.0 V | droops |
-| **TP2** | VDD (MCU) | 0 V | ~4.7 V | **~2.85 V** (must stay > 2.7 V) |
-| **TP3** | BATT+ (CR1632) | ~3.0 V | ~3.0 V | ~3.0 V (replace < ~2.9 V) |
-| **TP4** | BATT_EN (Q_batt gate) | **~3 V (off)** | **~0 V (armed)** | **~0 V (armed)** |
-| **TP5** | cell branch (D_rev anode) | 0 V (isolated) | ~3.0 V (armed) | ~3.0 V |
+| TP1 | VCC (upper shunt) | 0 V | about 5.0 V | collapses at each break |
+| TP2 | VDD (MCU) | 0 V | about 4.67 V | stays at 4.4 V or more on any line of 3 mA or more |
+| TP3 | BATT+ | cell voltage (about 3.0–3.2 V) | cell voltage | cell voltage |
+| TP4 | BATT_EN (Q3 gate) | about BATT+ (off) | about 0 V (armed) | about 0 V (armed) |
+| TP5 | CELL (Q3 drain / D6 anode) | about 0 V | about BATT+ | about BATT+ |
+| TP6 | GND (circuit common) | — | — | — |
 
-(The MCU arms the cell for the whole off-hook period — TP4 ~0 V — and disarms it
-~250 ms after hang-up — TP4 back to ~3 V.)
+On the first board:
+1. Scope **TP1** at 10, 25 and 40 mA. It should sit at about 5.0 V with no
+   oscillation.
+2. **Hang up and watch TP4.** It must return to BATT+ within about 250 ms,
+   with TP5 falling to about 0 V. If TP4 stays at 0 V on-hook, the cell will
+   drain in days: fix the firmware before fitting a cell.
+3. Pull the cell and redial on the weakest line available. Dialing should be
+   unaffected, which confirms what the simulation predicts.
+4. The V2 checks also apply: DTMF level and twist, pulse detection on slow
+   dials, Q2 temperature (`../hardware_v2/README.md` §6).
 
-Bench check: off-hook, confirm **TP2 ≈ 4.7 V** and **TP4 ≈ 0 V** once dialing
-starts; scope **TP2** during a dialed "0" — it should **ride the gaps at ~2.85 V,
-never below 2.7 V**. Pull the cell and repeat on a weak line: TP2 should now sag
-toward BOD and digits drop — proving the cell is doing the work.
+## 6. Bill of materials for the cell circuit
 
-**On-hook check (critical for cell life):** hang up and watch **TP4** — it must
-return to **~3 V (Q_batt off)** within ~250 ms, and **TP5 → 0 V** (cell isolated).
-If TP4 stays at ~0 V on-hook, the loop sense isn't reflecting the hook switch and
-the cell will drain in days — fix the sense/threshold before shipping. Verify the
-sense also goes open on the hook switch, not only the dial contacts.
-
-Behavioural models (no `ngspice`); treat the numbers as margins. Re-run:
-
-```sh
-cd hardware_v3/sim && python3 battery_backup_sim.py
-```
-
-## BOM — added parts (on top of rev V2)
+This is on top of V2. The full BOM is `kicad/fab/BRD170127_V3_bom.csv`.
 
 | Ref | Part | Note |
 |---|---|---|
-| BT1 | CR1632 + off-board holder with wire leads | 2 THT pads (BATT+/BATT−) |
-| Q_batt | P-channel MOSFET (e.g. DMG2301, logic-level, low R_DS) | low-leakage cell switch |
-| D_rev | PMEG2005 (or BAT46) low-Vf Schottky | reverse-charge protection |
-| D_loop | BAT46WH Schottky | loop-path OR / isolation |
-| R_pu | 1 M | Q_batt gate pull-up to BATT+ (default off) |
-| C_dec | 100 µF | VDD decoupling / switchover glitch |
-| (R-divider) | 2× R + ADC | optional low-battery sense |
+| BT1 | CR1632 + off-board holder with wire leads | two through-hole pads |
+| Q3 | DMG2301L-7 (P-MOS, SOT-23) | cell switch |
+| D6 | BAT46WH (SOD-123) | reverse-charge block; the same part as D1–D5 |
+| R18 | 1 MΩ, 0805 | Q3 gate pull-up to BATT+ |
+| TP3–TP5 | test pads | BATT+, BATT_EN, CELL |
 
-> If the mid-life margin (+0.11 V) is too thin for comfort, replace the series
-> `D_rev` with a **P-FET ideal-diode reverse block** (no diode drop) — that
-> recovers ~0.15 V and raises the whole curve, at the cost of one more active
-> part. The simulation uses the conservative series-Schottky case.
+To build a V2, leave all of these off.

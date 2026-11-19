@@ -25,7 +25,8 @@ sessions — the things that are not obvious from the code or the git log.
   the credit in README/ANALYSIS. ATTinyCore and Bounce2 keep their own licenses.
 - V2 is a design + simulation only; V3 is routed and DRC-clean but **not built or
   bench-tested**. Don't describe either as proven hardware.
-- `hardware_v3/spice` (ngspice) is the reference simulation. The older Python model
-  in `hardware_v3/sim/` predates it; `hardware_v2/sim/` was removed.
+- `hardware_v3/spice` (ngspice) is the only simulation. The older Python models
+  (`hardware_v2/sim`, `hardware_v3/sim`) and `hardware_v3/schematic.svg` were removed;
+  the KiCad schematic is authoritative.
 - Commit or push only when asked. `main` tracks `origin/main` on GitHub
   (`JoeFloyd-on-Github/Pulse-To-Tone-Converter`, first pushed 2026-11-18).

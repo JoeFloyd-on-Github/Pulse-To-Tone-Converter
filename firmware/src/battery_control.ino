@@ -7,11 +7,13 @@ Christoph Tack). Combined with that GPL program these additions are likewise:
     GNU General Public License v3 or later. See ../LICENSE.
 
 ----------------------------------------------------------------------------
-HARDWARE (minimal - see ../../hardware_v3/schematic.svg):
-  A CR1632 feeds VDD through Q_batt (low-leakage P-MOS switch) + D_rev
-  (reverse-charge Schottky), OR'd with the loop supply. BATT_EN drives the
-  Q_batt gate: LOW = cell armed, HIGH/float = cell off (on-hook default via the
-  gate pull-up). NO new sense hardware - we reuse the existing pulse/loop sense.
+HARDWARE (see ../../hardware_v3/README.md and the KiCad schematic,
+../../hardware_v3/kicad/fab/BRD170127_V3_schematic.pdf):
+  BT1 (CR1632) feeds VDD through Q3 (DMG2301L P-MOS switch) and D6 (BAT46WH
+  reverse-charge block), OR'd with the loop supply through D5. BATT_EN (PB2)
+  drives Q3's gate: LOW = cell armed, HIGH or not driven = cell off (R18 1M
+  pulls the gate to BATT+). NO new sense hardware: the existing pulse/loop sense
+  on PB0 is reused.
 
 WHY ON-HOOK MUST BE DETECTED IN SOFTWARE:
   Once the cell is armed it holds VDD up through every loop-open, so hanging up
@@ -68,11 +70,13 @@ at the END of loop(), AFTER rd.update():
     }
 
 BATTERY LIFE with this scheme:
-  The cell only SOURCES current when the loop is actually open (D_rev reverse-
-  biased otherwise): the pulse-break gaps of a dial (~0.7 s cumulative/number)
-  plus the one ~250 ms on-hook detection window per call. That's ~0.3 uAh/call,
-  so a CR1632 (~120 mAh) is shelf-life-limited (~10 yr). The ONLY way to kill it
-  fast is a detection failure that leaves the cell armed while on-hook (~1 mA
-  continuous -> flat in ~5 days) - so VERIFY ON HARDWARE that the loop sense goes
-  (and stays) open on the hook switch, not just on the dial contacts.
+  The cell only sources current when VDD falls below its own voltage. The
+  ngspice simulation (../../hardware_v3/spice) shows C1 (470 uF) keeps VDD at
+  4.4 V or more through dialing on every line down to 3 mA, so the cell does
+  not source current during dialing at all. Only the ~250 ms on-hook detection
+  window per call draws on it (~1 mA for 0.25 s). On-hook drain with Q3 off is
+  about 0.03 uA, so a CR1632 (~120 mAh) is shelf-life-limited. The ONLY way to
+  kill it fast is a detection failure that leaves the cell armed while on-hook
+  (0.93 mA in SPICE -> flat in ~5 days). So VERIFY ON HARDWARE that the loop
+  sense goes (and stays) open on the hook switch, not just on the dial contacts.
 */
