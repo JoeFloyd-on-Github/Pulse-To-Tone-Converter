@@ -23,7 +23,7 @@ included verbatim from the upstream project so this repository is self-contained
 | `src/battery_control.ino` | **our addition** — rev V3 coin-cell switch control (see below) |
 | `UPSTREAM-README.md` | the upstream project's own README |
 
-The compiled image `../pulse-dtmf-converter.ino_R0.hex` at the project root is a
+The compiled image `images/pulse-dtmf-converter.ino_R0.hex` is a
 build of this source.
 
 ## Our addition and what it means for the license
@@ -37,6 +37,6 @@ design notes elsewhere in this repo (`ANALYSIS.md`, `hardware_v2/`,
 ## Building
 
 Open `platformio.ini` with PlatformIO, or load `src/` in the Arduino IDE with the
-ATTinyCore board package (bundled at `../ATTinyCore-master`) and the Bounce2
+ATTinyCore board package (bundled at `../third_party/ATTinyCore-master`) and the Bounce2
 library, target ATtiny85 @ 8 MHz external crystal, 2.7 V BOD enabled (see the
 upstream README and `../hardware_v3/` for the rev-V3 wiring).

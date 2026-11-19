@@ -15,40 +15,15 @@ around an **ATtiny85** on a small PCB (board **BRD170127**, rev R2).
 
 ## What's in this repo
 
-### Hardware
-- `Gerber_BRD170127_R2.zip` — fabrication Gerbers for the PCB (rev R2).
-- `Schematic_pluse_to_tone.JPG` — schematic.
-- `PADS_ONLY.*` (`.svg`, `.png`, `.odg`, `.bmp`) — the solder/pad layout.
-- `PCB_pads.JPG`, `BOM.JPG` — board and bill-of-materials images.
-- `BOM_Pulse to DTMF Converter.xlsx` (and a later revision) — bill of materials.
-
-### Firmware (ATtiny85)
-- **[`firmware/`](firmware)** — the **original source** by Christoph Tack
-  (LieBtrau), included verbatim from the [upstream GitHub repo](https://github.com/LieBtrau/pulse-dtmf-converter)
-  under **GPL v3**: the Arduino/PlatformIO sketch, rotary-dial decoder, and the
-  DTMF direct-digital-synthesis generator, plus our rev-V3 `battery_control.ino`
-  addition. See [`firmware/README.md`](firmware/README.md).
-- `pulse-dtmf-converter.ino_R0.hex` — compiled Arduino sketch (rev 0).
-- `ATTINY85V@SOIC8.hex` / `.BIN` — flashable firmware image for the SOIC-8 part.
-
-### Build documentation & photos
-- `BRD170127_Pulse_To_Tone_Converter.doc` — **toolchain & programming guide**:
-  the BOM with LCSC/Digi-Key part numbers, then how to set up the Arduino IDE
-  (Arduino-as-ISP, ATTinyCore, Bounce2), set the ATtiny85 fuses by burning the
-  bootloader, and flash the firmware.
-- `KIT_build.doc` — **assembly guide for the kit** sold based on the original
-  (rev R2) board: the component build order, lowest-profile parts first.
-- `20201219_*.jpg`, `20201229_*.jpg` — assembly, voltage-check and annotated
-  build photos.
-
-### Bundled third-party libraries (open source)
-- `ATTinyCore-master/` (+ `.zip`) — the [ATTinyCore](https://github.com/SpenceKonde/ATTinyCore)
-  Arduino core for the ATtiny85, by Spence Konde. See its own `LICENSE.md`.
-- `Bounce2-master.zip` — the [Bounce2](https://github.com/thomasfredericks/Bounce2)
-  switch-debounce library, by Thomas Fredericks (MIT).
-
-These are included so the build is self-contained; they are the property of their
-respective authors and carry their own licenses.
+| Folder | Contents |
+|---|---|
+| [`hardware_r2/`](hardware_r2/README.md) | the **original kit board, rev R2** (silk-screened BRD170127/2): Gerbers, schematic, BOM, pad layout, the toolchain/programming guide, the kit assembly guide, and build photos |
+| [`hardware_v2/`](hardware_v2/README.md) | the low-loop-current redesign (write-up only; built on the V3 board without the coin cell) |
+| [`hardware_v3/`](hardware_v3/README.md) | V2 plus a CR1632 backup: the ngspice simulation (`spice/`) and the routed KiCad 9 board (`kicad/`) |
+| [`firmware/`](firmware/README.md) | the **original source** by Christoph Tack (LieBtrau), verbatim from the [upstream GitHub repo](https://github.com/LieBtrau/pulse-dtmf-converter) under **GPL v3**, plus our rev-V3 `battery_control.ino` notes. Compiled images are in `firmware/images/`. |
+| `third_party/` | **ATTinyCore** (the [Arduino core for the ATtiny85](https://github.com/SpenceKonde/ATTinyCore), by Spence Konde; see its `LICENSE.md`) and **Bounce2** (the [debounce library](https://github.com/thomasfredericks/Bounce2), by Thomas Fredericks, MIT). Bundled so the build is self-contained. |
+| `WEB_SAVES/` | local copies of the upstream web pages and the ETSI DTMF spec, in case the sites go offline |
+| [`ANALYSIS.md`](ANALYSIS.md) | the engineering analysis of the original board and firmware |
 
 ## Rev V3: simulation and PCB
 
@@ -69,10 +44,12 @@ tones, redial) with other converters.
 
 ## Building
 
-Flash the ATtiny85 with one of the provided `.hex` images (e.g. with an Arduino
-as ISP), or rebuild from source using the ATtiny85 board definition from the
-bundled ATTinyCore and the Bounce2 library. Then populate the PCB per the BOM and
-`KIT_build.doc`.
+Flash the ATtiny85 with one of the `.hex` images in `firmware/images/` (for
+example with an Arduino as ISP), or rebuild from source using the ATtiny85
+board definition from the bundled ATTinyCore (`third_party/`) and the Bounce2
+library. The steps, including the fuse setting, are in
+`hardware_r2/BRD170127_Pulse_To_Tone_Converter.doc`. Then populate the R2 PCB
+following its BOM and `hardware_r2/KIT_build.doc`.
 
 ## License
 
@@ -85,6 +62,6 @@ The design originates from Christoph Tack's (LieBtrau)
   Tack); see [`firmware/LICENSE`](firmware/LICENSE).
 - **Bundled libraries** (ATTinyCore, Bounce2) keep their own original licenses.
 - The **hardware-design notes** here (`ANALYSIS.md`, `hardware_v2/`,
-  `hardware_v3/`) are this project's own documentation; the board itself derives
+  `hardware_v3/`, and the R2 kit documentation in `hardware_r2/`) are this project's own documentation; the board itself derives
   from the upstream design — check the upstream project before redistributing
   hardware.

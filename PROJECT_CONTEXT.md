@@ -83,9 +83,18 @@ and credit/license the upstream work correctly.
     - Gerbers, drill, BOM and JLC-style CPL in `hardware_v3/kicad/fab/`.
     - The owner chose to **keep and populate** the coin cell despite the simulation result.
 
+12. **Repo reorganized (2026-11-18):**
+    - the original kit board's files moved from the top level to `hardware_r2/`
+      (photos in `hardware_r2/photos/`);
+    - the firmware images moved to `firmware/images/`;
+    - ATTinyCore and Bounce2 moved to `third_party/`;
+    - the byte-identical `Gerber_BRD170127_R2 (1).zip` was deleted.
+    `hardware_r2/` holds the original R2 board; `hardware_v2/` holds the
+    redesign. The two are different things despite the similar names.
+
 ## Reference material in the repo
 
-- `BRD170127_Pulse_To_Tone_Converter.doc` — the owner's toolchain/programming
+- `hardware_r2/BRD170127_Pulse_To_Tone_Converter.doc` — the owner's toolchain/programming
   guide. Key points: program the ATtiny85 with an Arduino UNO as ISP (capacitor
   from RESET to GND on the UNO so it doesn't reset; SOP8 socket/clip); install
   ATTinyCore and Bounce2; select ATtiny85, programmer "Arduino as ISP"; **"Burn
@@ -93,7 +102,7 @@ and credit/license the upstream work correctly.
   external 8 MHz crystal, so after that a crystal on pins 2–3 is required to
   program it**; then upload the firmware. Also holds the BOM with LCSC and
   Digi-Key numbers. Mostly screenshots; text is sparse.
-- `KIT_build.doc` — assembly guide for the **kit the owner sold**, based on the
+- `hardware_r2/KIT_build.doc` — assembly guide for the **kit the owner sold**, based on the
   original rev R2 board: an 18-step component build order (diodes, Q1, TLV431s,
   resistors/caps, ATtiny85, MCP6022, crystal, RJ11s, C1 last).
 - `WEB_SAVES/` (added 2026-11-18, ~32 MB, 241 files) — local copies of the web

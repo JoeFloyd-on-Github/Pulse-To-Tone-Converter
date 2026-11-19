@@ -17,8 +17,8 @@ on Hackaday.io.
    for everything the software does (§4).
 2. The **upstream PCB netlist**, extracted from LieBtrau's EasyEDA export
    (`BRD170127.pcbdoc` in the upstream repo's `Hardware/` folder).
-3. The schematic (`Schematic_pluse_to_tone.JPG`), the BOM, and the
-   measured-voltage photo (`20201219_140931-voltages.jpg`).
+3. The schematic (`hardware_r2/Schematic_pluse_to_tone.JPG`), the BOM, and the
+   measured-voltage photo (`hardware_r2/photos/20201219_140931-voltages.jpg`).
 4. The ngspice simulation in [`hardware_v3/spice`](hardware_v3/spice/README.md).
 5. ETSI ES 201 235-2, the DTMF transmitter specification (copy in `WEB_SAVES/`).
 
@@ -74,7 +74,7 @@ FXS port (ATA, PBX or exchange) and the rotary phone. From the netlist:
 - **The 8 MHz crystal (X1)** sets the tone frequencies (§4). ETSI requires
   ±1.5 %, which the internal RC oscillator does not guarantee. Burning the
   bootloader switches the fuses over to the crystal; see the toolchain guide
-  `BRD170127_Pulse_To_Tone_Converter.doc`.
+  `hardware_r2/BRD170127_Pulse_To_Tone_Converter.doc`.
 
 **Measured rails** (off-hook, from the voltage photo):
 
@@ -207,7 +207,7 @@ matters. It mainly sets the small base current the op-amp has to supply.
 The source is the upstream sketch by Christoph Tack, GPL v3, in
 [`firmware/src`](firmware/src). The last upstream change was on 2023-02-20: a
 `pulsesBuffer` overflow fix, a configurable send delay, and a move to
-PlatformIO. The repo's `pulse-dtmf-converter.ino_R0.hex` holds 2,482 bytes of
+PlatformIO. The repo's `firmware/images/pulse-dtmf-converter.ino_R0.hex` holds 2,482 bytes of
 code, so the build uses about 30 % of the ATtiny85's 8 KB of flash. That image
 is a build of an earlier revision, so it may not match the current source
 exactly.

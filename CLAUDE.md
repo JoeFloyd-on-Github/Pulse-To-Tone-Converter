@@ -10,13 +10,17 @@ sessions — the things that are not obvious from the code or the git log.
   pulse dialing into DTMF. Derived from LieBtrau's (Christoph Tack) Hackaday
   project 28557 / github.com/LieBtrau/pulse-dtmf-converter.
 - `ANALYSIS.md` — engineering review of the original (power, regulator, firmware).
+- `hardware_r2/` — the original kit board (rev R2): Gerbers, schematic, BOM, the
+  toolchain and kit-assembly guides, and build photos.
 - `hardware_v2/` — the low-loop-current supply/DTMF redesign (V3 without the coin
   cell). Documentation only; it is built on the V3 PCB with the cell parts unfitted.
 - `hardware_v3/` — V2 plus a CR1632 coin-cell backup (the current design).
   `hardware_v3/spice/` is the ngspice comparison; `hardware_v3/kicad/` is the routed
   KiCad 9 board, generated from `design.py`. Edit `design.py` and rerun the
   generators rather than editing `.kicad_pcb`/`.kicad_sch` by hand (see its README).
-- `firmware/` — upstream source verbatim (GPL v3) plus our `battery_control.ino`.
+- `firmware/` — upstream source verbatim (GPL v3) plus our `battery_control.ino`;
+  compiled images in `firmware/images/`.
+- `third_party/` — bundled ATTinyCore and Bounce2 (their own licenses).
 
 ## Working conventions
 

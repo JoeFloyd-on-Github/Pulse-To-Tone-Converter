@@ -117,7 +117,7 @@ files, mark Q3, R18 and D6 as do-not-place.
 V3 board, PB2 goes only to the (unfitted) cell parts, so it floats high with
 the internal pull-up and the sketch runs in mode 1, as on R2. Program the fuses
 for the external 8 MHz crystal and the **2.7 V BOD**, using "Burn Bootloader"
-as described in `../BRD170127_Pulse_To_Tone_Converter.doc`.
+as described in `../hardware_r2/BRD170127_Pulse_To_Tone_Converter.doc`.
 
 ## 6. What to check on the first board
 
