@@ -11,9 +11,26 @@ Builds on [rev V2 (direct-drive supply)](../hardware_v2/README.md) — the shunt
 clamp, passive DTMF filter, 2.7 V BOD and idle-sleep all still apply; V3 adds the
 coin-cell backup on top.
 
-> **Scope:** circuit, schematic, firmware control, BOM/holder spec, and a full
-> simulation with bench test points. **Not** a routed PCB (no KiCad/EasyEDA
-> here) — see [rev V2 §6](../hardware_v2/README.md).
+> **Update, 2026-11-18: this design now has a SPICE simulation and a routed PCB.**
+> - [`spice/`](spice/README.md) is an ngspice comparison of the original board
+>   and V3. It replaces the Python estimates further down this page.
+> - [`kicad/`](kicad/README.md) holds the KiCad 9 project, routed and DRC-clean,
+>   with Gerbers, BOM and pick-and-place in `kicad/fab/`.
+>
+> The simulation changed several things on this page; where they disagree,
+> those two READMEs are correct:
+> - **The cell almost never supplies current.** With the V2 power fixes, the
+>   470 µF reservoir rides through dialing down to about 1.5 mA of loop current.
+>   The cell is kept at the owner's request.
+> - **No reservoir on the loop side.** The schematic below puts "C_vc 100 µF" on
+>   Vc. That would hold VCC up through each pulse break and blind the pulse
+>   sense. The built board keeps C1 470 µF on VDD, behind D5, as the original does.
+> - **BATT_EN is on PB2 (pin 7), not PB1.** PB1 is the DTMF PWM output.
+> - **Both shunts now have PNP helpers.** The original lower TLV431 carries
+>   the full loop current, above its rating.
+> - **DTMF modulator values are R2 39k, R5 47k, R13 160k.**
+> - The numbers in "Simulation & bench verification" below come from the
+>   older Python model.
 
 ## How it works (option B)
 

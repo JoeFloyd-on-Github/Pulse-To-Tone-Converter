@@ -108,7 +108,7 @@ ax[2].set_ylim(2.3,4.6); ax[2].grid(alpha=.3); ax[2].legend(fontsize=8, loc="low
 
 fig.suptitle("A series regulator in the MCU power path subtracts from the droop budget — direct drive keeps BOD from tripping", fontsize=12)
 fig.tight_layout(rect=[0,0,1,0.94])
-fig.savefig("/home/jfloyd/GitHub/Pulse-To-Tone-Converter/hardware_v2/sim/supply_sim.png", dpi=110)
+fig.savefig(__import__("os").path.join(__import__("os").path.dirname(__import__("os").path.abspath(__file__)), "supply_sim.png"), dpi=110)
 
 print("=== BOD-trip cap voltage (lower is better; series/dropout raises it) ===")
 for name,d in designs.items():

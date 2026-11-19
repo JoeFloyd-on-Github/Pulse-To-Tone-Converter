@@ -30,8 +30,15 @@ HOW (reuse the existing loop sense + tune a threshold):
   for slow/worn dials; it only needs to sit between "longest break" and "hang-up".
 ----------------------------------------------------------------------------
 
-Pin: PIN_DTMF_OUT=PB0 and PIN_MODE_SELECT=PB2 are taken, PB5=RESET.
-Add to pins.h:   const int PIN_BATT_EN = 1;   // ATtiny85 PB1 / pin 6 (verify free)
+Pin: on the ATtiny85 every pin is already used - PB0 (pin 5) is the loop/pulse
+sense (passed to RotaryDialer as PIN_DTMF_OUT, despite the name), PB1 (pin 6) is
+the DTMF PWM output OC1A, PB3/PB4 are the 8 MHz crystal and PB5 is RESET. The
+only free pin is PB2 (pin 7), which the original sketch reads as the optional
+"mode select" jumper (never fitted on the board). The rev-V3 PCB therefore wires
+BATT_EN to PB2 (pin 7) - see ../../hardware_v3/kicad.
+In pins.h:       const int PIN_BATT_EN = 2;   // ATtiny85 PB2 / pin 7 (rev-V3 PCB)
+and in setup():  drop the PIN_MODE_SELECT read and fix the mode in code, e.g.
+                 mode = 1;   // 1 = gather all digits, then send (the old default)
 Add to rotarydialer.h: the one-line lineIsOpen() accessor (already added here).
 
 Add these globals + helpers to pulse-dtmf-converter.ino:

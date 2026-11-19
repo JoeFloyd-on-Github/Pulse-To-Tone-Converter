@@ -12,6 +12,9 @@ sessions — the things that are not obvious from the code or the git log.
 - `ANALYSIS.md` — engineering review of the original (power, regulator, firmware).
 - `hardware_v2/` — direct-drive supply redesign for low-current VoIP lines.
 - `hardware_v3/` — V2 plus a CR1632 coin-cell backup (the current design).
+  `hardware_v3/spice/` is the ngspice comparison; `hardware_v3/kicad/` is the routed
+  KiCad 9 board, generated from `design.py`. Edit `design.py` and rerun the
+  generators rather than editing `.kicad_pcb`/`.kicad_sch` by hand (see its README).
 - `firmware/` — upstream source verbatim (GPL v3) plus our `battery_control.ino`.
 
 ## Working conventions
@@ -19,8 +22,8 @@ sessions — the things that are not obvious from the code or the git log.
 - **Licensing matters here.** `firmware/` is GPL v3 (© 2018 Christoph Tack); keep
   upstream files verbatim apart from minimal, clearly described changes, and keep
   the credit in README/ANALYSIS. ATTinyCore and Bounce2 keep their own licenses.
-- The V2/V3 folders are **designs + simulations, not routed PCBs.** Don't describe
-  them as fabricated or bench-tested.
+- V2 is a design + simulation only; V3 is routed and DRC-clean but **not built or
+  bench-tested**. Don't describe either as proven hardware.
 - Sim scripts (`hardware_v*/sim/*.py`) regenerate the PNGs next to them; update
   both together.
 - Commit or push only when asked. `main` tracks `origin/main` on GitHub

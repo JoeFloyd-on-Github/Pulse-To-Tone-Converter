@@ -2,7 +2,7 @@
 
 Persistent notes for future sessions (human or Claude): **why** this repo exists,
 what has been done, the decisions made along the way, and what is still open.
-Last updated 2026-11-18. Update this file when a goal, decision or open item
+Last updated 2026-11-18 (after the SPICE simulation and the V3 layout). Update this file when a goal, decision or open item
 changes.
 
 ## Goal
@@ -54,6 +54,34 @@ and credit/license the upstream work correctly.
    sense hardware. Estimated ~0.3 µAh per call → cell life is shelf-life-limited.
 8. **Session notes** (`CLAUDE.md`, this file) added, and the repo pushed to GitHub
    as `JoeFloyd-on-Github/Pulse-To-Tone-Converter` with full history.
+9. **ngspice simulation** ([`hardware_v3/spice`](hardware_v3/spice/README.md)).
+   The original's netlist was pulled from the upstream EasyEDA PCB export
+   (`BRD170127.pcbdoc` in github.com/LieBtrau/pulse-dtmf-converter/Hardware).
+   Models are generic and fitted to datasheets. Six benches: DC drop/budget,
+   TLV431/TL431 spread, dialing on six line types, DTMF level/spectrum, hang-up
+   and cell drain, on-hook ringing. Key results:
+   - Original needs ≥ 6.5 mA of loop current; **V3 works from 1.5 mA**.
+   - Original **U3 carries the whole loop current** (25–40 mA, rated 15 mA).
+   - Original DTMF ≈ −6/−7 dBm but clips; V3 ≈ −8.6/−9.5 dBm, clean in-band,
+     −40 dBm PWM carrier at 31 kHz.
+   - The 470 µF reservoir rides through dialing on every line simulated, so
+     **the coin cell never sources current**.
+   The TLV431 batch-spread theory in `ANALYSIS.md` §3 is **not** supported (note added there).
+10. **V3 circuit finalized during simulation:**
+    - PNP helpers BCX53 (Q2, Q4) on both shunts, with 470 Ω bias resistors so a
+      TL431 also works (2.2 kΩ failed with a TL431).
+    - C12 1 nF compensation.
+    - R17 22k bleeder replaces R4 1k.
+    - Passive DTMF filter into Q1; values tuned on the DTMF bench: R2 39k, R5 47k, R13 160k.
+    - BATT_EN moved to **PB2**: PB1 is the OC1A DTMF output, so the old
+      `battery_control.ino` pin choice was wrong (fixed).
+11. **KiCad 9 layout** ([`hardware_v3/kicad`](hardware_v3/kicad/README.md)),
+    generated from `design.py` (one data file for schematic + PCB), auto-routed
+    with Freerouting 2.5.0 (analytics disabled, network blocked).
+    - Result: 0 DRC violations, 0 unconnected, 0 schematic-parity issues.
+    - RJ11 holes identical to R2; 0805 passives.
+    - Gerbers, drill, BOM and JLC-style CPL in `hardware_v3/kicad/fab/`.
+    - The owner chose to **keep and populate** the coin cell despite the simulation result.
 
 ## Reference material in the repo
 
@@ -77,16 +105,26 @@ and credit/license the upstream work correctly.
 ## Key decisions (summary)
 
 - No series regulator in the MCU path (direct drive from the reservoir).
-- Shunt clamp stays; coin cell bridges the pulse gaps rather than trying to make
-  the loop alone carry the MCU through them.
+- Shunt clamp stays, now with a PNP helper on each shunt (TLV431 only biases it).
+- Coin cell kept and populated (owner's call, 2026-11-18), even though SPICE shows
+  the reservoir alone rides through dialing down to ~1.5 mA.
+- BATT_EN on PB2; the mode-select jumper is dropped and the mode is fixed in firmware.
 - DTMF tones are generated on loop power (loop closed), never from the cell.
 - On-hook detection in firmware, reusing the existing sense — BOM stays
   P-FET + diode + battery.
 
 ## Concerns
 
-- **Nothing is bench-tested or routed.** V2/V3 are circuits + simulations; there
-  is no KiCad/EasyEDA layout yet.
+- **Nothing is bench-tested.** V3 is simulated (generic models) and routed, but
+  no board has been built. Check TP1 for shunt oscillation, the DTMF level, and the
+  on-hook disarm on the first board.
+- The SPICE models don't cover TLV431 capacitive-load stability, temperature or
+  absolute-max ratings (those were checked separately).
+- `hardware_v3/README.md` body and `hardware_v3/schematic.svg` predate the SPICE
+  work (they show C_vc on the loop side and use Python-model numbers); its update
+  banner lists what changed. The KiCad schematic is the authoritative one.
+- Firmware for V3 is not written yet: `battery_control.ino` is integration notes,
+  and the PB2 change (drop mode select) is not applied to the sketch.
 - **Cell-drain risk:** if on-hook detection fails, the armed cell drains fast.
   Bench-verify that the loop sense really tracks the hook switch.
 - **Two corrections already happened** (series-LDO idea; "MCU loses power
@@ -101,7 +139,9 @@ and credit/license the upstream work correctly.
 
 - Build and bench-test V3 on a real low-current VoIP ATA: VDD through a full
   dial, the on-hook disarm, cell current when idle.
-- Route a V3 PCB in the original form factor.
+- Fill in LCSC numbers for 0805 passives, BCX53-16 and DMG2301L; check part
+  rotations in the fab's assembly preview; order boards.
+- Write the V3 firmware changes (PIN_BATT_EN = 2, fixed mode, on-hook disarm).
 - Firmware features from `ANALYSIS.md` §4–5 (redial, speed dial, timing config).
 - Refresh `ANALYSIS.md`'s firmware section now that the source is in `firmware/`.
 - A reference clone of upstream sits at `/tmp/lb_pdtmf` (temporary — lost on

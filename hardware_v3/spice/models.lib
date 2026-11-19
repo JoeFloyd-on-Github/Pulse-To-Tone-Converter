@@ -1,0 +1,57 @@
+* models.lib - generic (non-vendor) models for the pulse-to-tone converter.
+* Every parameter is fitted to a datasheet figure; see README.md in this folder.
+
+* ---------------------------------------------------------------- diodes
+* BAT46W(H) Schottky, 100 V. Fit: Vf ~0.22 V @0.1 mA, ~0.40 V @10 mA,
+* ~0.25 uA reverse leakage at a few volts (25 C).
+.model BAT46W D(IS=3.6e-7 N=1.51 RS=2 CJO=10p M=0.5 VJ=0.35 BV=100 IBV=1e-6 ISR=0 TT=0)
+
+* ---------------------------------------------------------------- BJTs
+* BC856B small-signal PNP (hFE 220-475; use mid value)
+.model BC856B PNP(IS=2e-14 BF=300 VAF=60 BR=8 IKF=0.1 RB=10 RC=1 CJE=12p CJC=6p TF=0.6n)
+* BCX53-16 medium-power PNP (SOT-89), hFE 100-250
+.model BCX53 PNP(IS=1e-13 BF=160 VAF=80 BR=10 IKF=1 RB=5 RC=0.3 CJE=60p CJC=25p TF=1n)
+
+* ---------------------------------------------------------------- MOSFET
+* DMG2301L-style logic-level P-MOS: Vth ~ -0.7 V, Rds(on) ~ 0.15 ohm @ -2.5 V,
+* off-state leakage modelled separately (see Roff in the circuit files).
+.model PMOS_LL PMOS(LEVEL=1 VTO=-0.7 KP=4 LAMBDA=0.02 CGSO=1n CGDO=0.3n)
+
+* ---------------------------------------------------------------- TLV431
+* Behavioural shunt reference. Pins: K A R.
+*   vref  - reference voltage (TLV431A: 1.240 V, +/-1 %; TLV431: +/-1.5 %)
+*   imin  - minimum cathode current the device needs to regulate
+*           (TLV431: 55 uA typ / 100 uA max; a TL431 needs 0.4 mA typ / 1 mA max)
+* Below imin the device cannot hold its cathode: the internal bias current
+* is drawn first and only the remainder is available for regulation.
+.subckt TLV431G K A R params: vref=1.24 imin=80u
+* internal bias the device needs before it can regulate
+Bq  K A I = {imin}*(1-exp(-max(V(K,A),0)/0.25))
+* error amplifier: gain 2000 near the reference, bounded (+/-50 V -> 100 mA) for convergence.
+* NOTE: the real TLV431 is rated 15 mA (20 mA abs max); the model does not stop there,
+* so check cathode current separately (run_sims.py reports it).
+Be  e 0 V = 50*tanh(40*(V(R,A)-{vref}))
+Rp  e f 1k
+Cp  f 0 0.16u
+* shunt transconductance ~4 A/V at DC (|zKA| = 0.25 ohm), rolling off from ~1 kHz;
+* smooth max(V(f),0) and a smooth "needs Vka > ~1 V" gate
+Bsh K A I = 0.002*(V(f)+sqrt(V(f)*V(f)+1e-4))/2*0.5*(1+tanh((V(K,A)-0.95)/0.08))
+Rin R A 1e9
+.ends
+
+* ---------------------------------------------------------------- ATtiny85V load
+* Supply current of the ATtiny85V at 8 MHz (external crystal), averaged over the
+* firmware's idle-sleep loop: ~1.5 mA at 5 V, ~0.8 mA at 3 V (datasheet active/idle
+* curves). While generating DTMF the core is busy in the Timer1 ISR: ~4.5 mA at 5 V.
+* Pins: VDD GND MODE (MODE=1 V -> DTMF active, 0 V -> idle-sleep dialing)
+.subckt ATTINY VDD GND MODE
+Bmcu VDD GND I = (0.30m + 0.62m*min(max(V(MODE),0),1)) * min(max(V(VDD,GND),0),6) * min(max(V(VDD,GND),0),0.5)/0.5
+.ends
+
+* ---------------------------------------------------------------- CR1632
+* Primary lithium coin cell: open-circuit voltage + internal resistance.
+* Fresh ~3.2 V / 15 ohm; mid-life ~3.0 V / 40 ohm; near end of life ~2.7 V / 120 ohm.
+.subckt CR1632 P N params: voc=3.2 ri=15
+Vc  P1 N {voc}
+Rin P1 P {ri}
+.ends

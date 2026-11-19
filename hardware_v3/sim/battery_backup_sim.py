@@ -108,7 +108,7 @@ ax[2].set_title("3) Test-point voltages for bench verification", fontsize=11)
 
 fig.suptitle("rev V3: CR1632 backup carries the ATtiny through pulse dialing (option B)", fontsize=13)
 fig.tight_layout(rect=[0,0,1,0.94])
-fig.savefig("/home/jfloyd/GitHub/Pulse-To-Tone-Converter/hardware_v3/sim/battery_backup_sim.png", dpi=110)
+fig.savefig(__import__("os").path.join(__import__("os").path.dirname(__import__("os").path.abspath(__file__)), "battery_backup_sim.png"), dpi=110)
 
 print("=== cell VDD-during-gap (must stay > 2.70V BOD) ===")
 for name,(o,r) in CELL.items():

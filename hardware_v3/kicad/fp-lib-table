@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "BRD170127")(type "KiCad")(uri "${KIPRJMOD}/BRD170127.pretty")(options "")(descr "project footprints"))
+)

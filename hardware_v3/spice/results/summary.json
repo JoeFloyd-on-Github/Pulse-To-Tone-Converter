@@ -1,0 +1,380 @@
+{
+ "dc": {
+  "orig": {
+   "drop_at_20mA_V": 6.426919,
+   "drop_at_40mA_V": 6.61954,
+   "vdd_at_20mA_V": 4.231581,
+   "min_loop_mA_for_VDD_above_BOD": 6.5,
+   "lower_shunt_V_at_20mA": 0.894748,
+   "lower_shunt_power_mW_at_40mA": 37.35076,
+   "U3_TLV431_current_mA_at_25mA": 24.87,
+   "U3_TLV431_current_mA_at_40mA": 39.87
+  },
+  "v3": {
+   "drop_at_20mA_V": 8.095388,
+   "drop_at_40mA_V": 8.229795,
+   "vdd_at_20mA_V": 4.670441,
+   "min_loop_mA_for_VDD_above_BOD": 1.5,
+   "lower_shunt_V_at_20mA": 2.16285,
+   "lower_shunt_power_mW_at_40mA": 86.518,
+   "U3_TLV431_current_mA_at_25mA": 1.5883500000000006,
+   "U3_TLV431_current_mA_at_40mA": 1.7142045454545456
+  }
+ },
+ "spread": {
+  "orig": {
+   "4mA": {
+    "VDD_min": 1.05736,
+    "VDD_max": 1.424389,
+    "VCC_min": 1.388021,
+    "VCC_max": 1.767851
+   },
+   "6mA": {
+    "VDD_min": 1.868783,
+    "VDD_max": 2.535791,
+    "VCC_min": 2.222941,
+    "VCC_max": 2.893973
+   },
+   "8mA": {
+    "VDD_min": 3.280796,
+    "VDD_max": 3.948308,
+    "VCC_min": 3.643132,
+    "VCC_max": 4.314109
+   },
+   "10mA": {
+    "VDD_min": 4.155306,
+    "VDD_max": 4.288554,
+    "VCC_min": 4.522138,
+    "VCC_max": 4.656039
+   },
+   "15mA": {
+    "VDD_min": 4.159909,
+    "VDD_max": 4.293159,
+    "VCC_min": 4.526763,
+    "VCC_max": 4.660666
+   }
+  },
+  "v3": {
+   "4mA": {
+    "VDD_min": 4.597381,
+    "VDD_max": 4.74211,
+    "VCC_min": 4.925424,
+    "VCC_max": 5.071467
+   },
+   "6mA": {
+    "VDD_min": 4.597453,
+    "VDD_max": 4.742183,
+    "VCC_min": 4.925496,
+    "VCC_max": 5.071541
+   },
+   "8mA": {
+    "VDD_min": 4.597493,
+    "VDD_max": 4.742223,
+    "VCC_min": 4.925536,
+    "VCC_max": 5.071582
+   },
+   "10mA": {
+    "VDD_min": 4.597524,
+    "VDD_max": 4.742254,
+    "VCC_min": 4.925567,
+    "VCC_max": 5.071613
+   },
+   "15mA": {
+    "VDD_min": 4.597584,
+    "VDD_max": 4.742315,
+    "VCC_min": 4.925628,
+    "VCC_max": 5.071674
+   }
+  }
+ },
+ "dial": {
+  "POTS (48 V, 2x200 ohm + 1 km)": {
+   "orig/no cell": {
+    "VDD_before_dial": 4.26129105,
+    "VDD_min_during_dial": 3.80324491,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/no cell": {
+    "VDD_before_dial": 4.67043454,
+    "VDD_min_during_dial": 4.4800872,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/fresh 3.2V/15R": {
+    "VDD_before_dial": 4.67043454,
+    "VDD_min_during_dial": 4.48008719,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/mid 3.0V/40R": {
+    "VDD_before_dial": 4.67043454,
+    "VDD_min_during_dial": 4.48008719,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/EOL 2.7V/120R": {
+    "VDD_before_dial": 4.67043454,
+    "VDD_min_during_dial": 4.4800874,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   }
+  },
+  "ATA (25 mA, 40 V)": {
+   "orig/no cell": {
+    "VDD_before_dial": 4.23615624,
+    "VDD_min_during_dial": 3.78395529,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/no cell": {
+    "VDD_before_dial": 4.67024593,
+    "VDD_min_during_dial": 4.48009246,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/fresh 3.2V/15R": {
+    "VDD_before_dial": 4.67024593,
+    "VDD_min_during_dial": 4.48009633,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/mid 3.0V/40R": {
+    "VDD_before_dial": 4.67024593,
+    "VDD_min_during_dial": 4.4800959,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/EOL 2.7V/120R": {
+    "VDD_before_dial": 4.67024593,
+    "VDD_min_during_dial": 4.48009285,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   }
+  },
+  "weak ATA (15 mA, 18 V)": {
+   "orig/no cell": {
+    "VDD_before_dial": 4.22685522,
+    "VDD_min_during_dial": 3.77074652,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/no cell": {
+    "VDD_before_dial": 4.67015062,
+    "VDD_min_during_dial": 4.47985305,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/fresh 3.2V/15R": {
+    "VDD_before_dial": 4.67015062,
+    "VDD_min_during_dial": 4.47985306,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/mid 3.0V/40R": {
+    "VDD_before_dial": 4.67015062,
+    "VDD_min_during_dial": 4.47984818,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/EOL 2.7V/120R": {
+    "VDD_before_dial": 4.67015062,
+    "VDD_min_during_dial": 4.47984786,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   }
+  },
+  "very weak (10 mA, 15 V)": {
+   "orig/no cell": {
+    "VDD_before_dial": 4.22226166,
+    "VDD_min_during_dial": 3.42740876,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/no cell": {
+    "VDD_before_dial": 4.6700901,
+    "VDD_min_during_dial": 4.47944668,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/fresh 3.2V/15R": {
+    "VDD_before_dial": 4.6700901,
+    "VDD_min_during_dial": 4.47943326,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/mid 3.0V/40R": {
+    "VDD_before_dial": 4.6700901,
+    "VDD_min_during_dial": 4.47944172,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/EOL 2.7V/120R": {
+    "VDD_before_dial": 4.6700901,
+    "VDD_min_during_dial": 4.47944334,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   }
+  },
+  "starved (7 mA, 15 V)": {
+   "orig/no cell": {
+    "VDD_before_dial": 3.16853233,
+    "VDD_min_during_dial": 2.25456065,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": false
+   },
+   "v3/no cell": {
+    "VDD_before_dial": 4.67004043,
+    "VDD_min_during_dial": 4.47880035,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/fresh 3.2V/15R": {
+    "VDD_before_dial": 4.67004043,
+    "VDD_min_during_dial": 4.47879725,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/mid 3.0V/40R": {
+    "VDD_before_dial": 4.67004043,
+    "VDD_min_during_dial": 4.47878418,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/EOL 2.7V/120R": {
+    "VDD_before_dial": 4.67004043,
+    "VDD_min_during_dial": 4.47878776,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   }
+  },
+  "starved (3 mA, 15 V)": {
+   "orig/no cell": {
+    "VDD_before_dial": 0.99561949,
+    "VDD_min_during_dial": 0.673054585,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": false
+   },
+   "v3/no cell": {
+    "VDD_before_dial": 4.6697745,
+    "VDD_min_during_dial": 4.39335048,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/fresh 3.2V/15R": {
+    "VDD_before_dial": 4.6697745,
+    "VDD_min_during_dial": 4.39335134,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/mid 3.0V/40R": {
+    "VDD_before_dial": 4.6697745,
+    "VDD_min_during_dial": 4.3933447,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   },
+   "v3/EOL 2.7V/120R": {
+    "VDD_before_dial": 4.6697745,
+    "VDD_min_during_dial": 4.39334857,
+    "pulses_seen_of_10": 10,
+    "survives_BOD": true
+   }
+  }
+ },
+ "dtmf": {
+  "orig": {
+   "1": {
+    "low_dBm": -7.21,
+    "high_dBm": -5.58,
+    "twist_dB": 1.63,
+    "carrier_31k25_dBm": -59.3,
+    "VDD_min_during_tone": 4.206972744142
+   },
+   "5": {
+    "low_dBm": -7.04,
+    "high_dBm": -6.25,
+    "twist_dB": 0.79,
+    "carrier_31k25_dBm": -59.0,
+    "VDD_min_during_tone": 4.20697487
+   },
+   "9": {
+    "low_dBm": -7.78,
+    "high_dBm": -5.95,
+    "twist_dB": 1.82,
+    "carrier_31k25_dBm": -59.3,
+    "VDD_min_during_tone": 4.206974711786
+   },
+   "D": {
+    "low_dBm": -7.17,
+    "high_dBm": -5.9,
+    "twist_dB": 1.26,
+    "carrier_31k25_dBm": -60.5,
+    "VDD_min_during_tone": 4.206979204728
+   }
+  },
+  "v3": {
+   "1": {
+    "low_dBm": -8.6,
+    "high_dBm": -8.22,
+    "twist_dB": 0.38,
+    "carrier_31k25_dBm": -40.0,
+    "VDD_min_during_tone": 4.62372046
+   },
+   "5": {
+    "low_dBm": -8.61,
+    "high_dBm": -9.18,
+    "twist_dB": -0.57,
+    "carrier_31k25_dBm": -40.0,
+    "VDD_min_during_tone": 4.62372662
+   },
+   "9": {
+    "low_dBm": -9.53,
+    "high_dBm": -9.19,
+    "twist_dB": 0.34,
+    "carrier_31k25_dBm": -40.0,
+    "VDD_min_during_tone": 4.62373242
+   },
+   "D": {
+    "low_dBm": -9.16,
+    "high_dBm": -9.4,
+    "twist_dB": -0.24,
+    "carrier_31k25_dBm": -40.0,
+    "VDD_min_during_tone": 4.62373792
+   }
+  }
+ },
+ "onhook": {
+  "firmware disarms at +250 ms": {
+   "VDD_at_2.9s": 1.281799371536,
+   "cell_current_at_2.9s_uA": 0.019166896735349003
+  },
+  "firmware never disarms (fault)": {
+   "VDD_at_2.9s": 2.87758824,
+   "cell_current_at_2.9s_uA": 926.224762
+  },
+  "on-hook cell drain, typ": {
+   "uA": 0.0319428,
+   "years_for_100mAh": 357.1293566328069
+  },
+  "on-hook cell drain, worst (1 uA Idss)": {
+   "uA": 1.0367,
+   "years_for_100mAh": 11.003869598775367
+  }
+ },
+ "ring": {
+  "orig": {
+   "VCC_max": 4.59231095,
+   "VDD_max": 4.21648289,
+   "VDD_at_2s": 4.18333541,
+   "GND_VEE_max": 3.11404867,
+   "GND_VEE_max_incl_first_cycle": 7.89530582
+  },
+  "v3": {
+   "VCC_max": 5.06123854,
+   "VDD_max": 4.67365386,
+   "VDD_at_2s": 4.67314373,
+   "GND_VEE_max": 3.23683811,
+   "GND_VEE_max_incl_first_cycle": 8.86242703
+  }
+ }
+}

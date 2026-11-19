@@ -1,0 +1,60 @@
+* conv_orig.sub - the ORIGINAL board (BRD170127 rev R1/R2), netlist taken from
+* the upstream EasyEDA export (BRD170127.pcbdoc). Ports:
+*   A    - line, rotary-phone side (CN3.3)
+*   B    - line, FXS side (CN1.3 / CN2.3)
+*   GND  - circuit common (the mid rail)    -> tie to node 0 in the bench
+*   TONE - 0 V idle-sleep dialing, 1 V while a DTMF tone is generated
+*   ARM  - unused here (no coin cell on the original); keeps one bench for both
+* params: vref2/imin2 (U2), vref3/imin3 (U3), f1/f2 (DTMF pair)
+.subckt CONV_ORIG A B GND TONE ARM params: vref2=1.24 imin2=80u vref3=1.24 imin3=80u f1=770 f2=1336 tsaw=32u
+* --- bridge
+D1 A VCC BAT46W
+D2 B VCC BAT46W
+D3 VEE A BAT46W
+D4 VEE B BAT46W
+* --- upper shunt U2: VCC = 1.24*(1+27k/10k) = 4.59 V, R4 1k bleeder
+XU2 VCC GND U2R TLV431G vref={vref2} imin={imin2}
+R1 VCC U2R 27k
+R6 U2R GND 10k
+R4 VCC GND 1k
+* --- lower shunt / line modulator U3: GND-VEE = 1.24*(1+39k/10k) = 6.08 V max
+XU3 GND VEE U3R TLV431G vref={vref3} imin={imin3}
+R5 GND U3R 39k
+R7 U3R VEE 10k
+* --- pulse sense: VCC -> R3/C5 -> R14 -> PB0
+R3 VCC NS 56k
+C5 NS GND 100n
+R14 NS PB0 10k
+RPB0 PB0 GND 1e9
+* --- MCU supply via D5
+D5 VCC VDD BAT46W
+C1 VDD GND 470u
+C4 VDD GND 100n
+C7 VDD GND 100n
+XMCU VDD GND TONE ATTINY
+* --- MCP6022 dual op-amp (rail-to-rail, ~1 mA/amp quiescent)
+BIQ VDD GND I = 2m*(V(VDD,GND)>1.8 ? 1 : V(VDD,GND)/1.8)
+* U4.1 Sallen-Key low-pass: PB1 -> R12 -> N10 (R11 to VDD) -> R10 -> N9 -> R9 -> N5(+, C6)
+R12 PB1 N10 10k
+R11 VDD N10 10k
+R10 N10 N9 10k
+C2 N9 N7 6.8n
+R9 N9 N5 10k
+C6 N5 GND 3.3n
+BOA1 OA1I GND V = 1e5*(V(N5)-V(N7))
+ROA1 OA1I OA1F 1k
+COA1 OA1F GND 1.6u
+BOA1O N7 GND V = max(min(V(OA1F), V(VDD,GND)-0.02), 0.02)
+* U4.2 + Q1: V-to-I converter, Ie = (VDD - V(N3))/R2, collector into U3 ref
+R8 N7 N3 10k
+C3 N3 GND 3.3n
+BOA2 OA2I GND V = 1e5*(V(N3)-V(NE))
+ROA2 OA2I OA2F 1k
+COA2 OA2F GND 1.6u
+BOA2O NB GND V = max(min(V(OA2F), V(VDD,GND)-0.02), 0.02)
+R2 VDD NE 15k
+Q1 U3R NB NE BC856B
+* --- PB1: Timer1 fast-PWM (F_CPU/256 = 31.25 kHz), DDS duty = (HF + 3/4 LF)/256
+VSAW SAW GND PULSE(0 1 0 {tsaw*0.997} {tsaw*0.003} 0 {tsaw})
+BPB1 PB1 GND V = V(TONE)>0.5 ? V(VDD,GND)*0.5*(1+tanh(300*( (63.5+63.5*sin(6.2832*{f2}*time) + 0.75*(63.5+63.5*sin(6.2832*{f1}*time)))/256 - V(SAW) ))) : 0
+.ends

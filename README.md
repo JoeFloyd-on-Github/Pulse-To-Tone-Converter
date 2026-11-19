@@ -50,6 +50,15 @@ around an **ATtiny85** on a small PCB (board **BRD170127**, rev R2).
 These are included so the build is self-contained; they are the property of their
 respective authors and carry their own licenses.
 
+## Rev V3: simulation and PCB
+
+- **[hardware_v3/spice](hardware_v3/spice/README.md)** is an ngspice comparison of
+  the original board and rev V3: loop-current budget, part spread, pulse dialing
+  on six line types, DTMF level and spectrum, hang-up and ringing.
+- **[hardware_v3/kicad](hardware_v3/kicad/README.md)** is the KiCad 9 project for
+  rev V3, routed and DRC-clean, in the R2 outline. Gerbers, BOM and
+  pick-and-place files are in `hardware_v3/kicad/fab/`.
+
 ## Engineering analysis
 
 See **[ANALYSIS.md](ANALYSIS.md)** for a full review of the design: how the board

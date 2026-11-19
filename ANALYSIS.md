@@ -145,6 +145,20 @@ Three things go wrong on a low-current IP port, and they compound:
 
 ## 3. Voltage-regulator sensitivity — "same batch, some work, some fail"
 
+> **SPICE update, 2026-11-18** ([`hardware_v3/spice`](hardware_v3/spice/README.md)):
+> a simulation of the real netlist does **not** support the "biased near Imin"
+> explanation below. With 10 mA or more of loop current, sweeping Vref and Imin
+> moves VCC by only ±0.07 V. That holds even for a TL431 fitted by mistake, with
+> Imin up to 1 mA. Two other suspects stand out:
+> - **U3 is overstressed.** It is the only path between GND and VEE, so it
+>   carries the whole loop current: 25 mA on a typical ATA and 40 mA on a short
+>   POTS loop, against the TLV431's 15 mA recommended maximum and 20 mA absolute
+>   maximum.
+> - **TLV431 loop stability.** The model cannot assess it.
+>
+> Rev V3 adds a PNP helper to each shunt, so each TLV431 runs at about 1.6 mA.
+> The discussion below is kept for the record.
+
 The regulators are **two TLV431** adjustable shunt references (U2, U3). The
 symptom you describe — units from the same reel that should be identical, some
 regulating and some not — is the classic signature of **biasing a shunt
@@ -274,7 +288,13 @@ very IP lines that motivated this review.
 - **Regulator batch failures:** the **TLV431 shunt references are biased near
   their minimum operating current**, so normal part-to-part spread in
   I_KA(min)/V_ref decides which ones regulate. Guarantee the cathode bias current
-  (or go series-pass) and the sensitivity disappears.
+  (or go series-pass) and the sensitivity disappears. *(Superseded by the 2026-11-18
+  SPICE results: see the note in §3. The more likely culprit is U3 carrying the
+  full loop current, above its rating.)*
+- **SPICE (2026-11-18):** the original needs ≥ 6.5 mA of loop current to keep
+  VDD above the brown-out threshold, and drops VDD to 2.25 V while dialing on a
+  7 mA line. Rev V3 works from 1.5 mA. See
+  [`hardware_v3/spice`](hardware_v3/spice/README.md).
 - **Firmware:** small, clean, Arduino/ATTinyCore + Bounce2, full DTMF matrix and
   sine tables already present, ~70 % flash free. Add brown-out-aware dialing and
   noisy-line pulse decoding, then spend the free flash on **speed dial,
