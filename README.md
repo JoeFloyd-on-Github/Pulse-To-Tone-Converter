@@ -32,8 +32,12 @@ around an **ATtiny85** on a small PCB (board **BRD170127**, rev R2).
 - `ATTINY85V@SOIC8.hex` / `.BIN` — flashable firmware image for the SOIC-8 part.
 
 ### Build documentation & photos
-- `BRD170127_Pulse_To_Tone_Converter.doc` — build / design writeup.
-- `KIT_build.doc` — kit assembly instructions.
+- `BRD170127_Pulse_To_Tone_Converter.doc` — **toolchain & programming guide**:
+  the BOM with LCSC/Digi-Key part numbers, then how to set up the Arduino IDE
+  (Arduino-as-ISP, ATTinyCore, Bounce2), set the ATtiny85 fuses by burning the
+  bootloader, and flash the firmware.
+- `KIT_build.doc` — **assembly guide for the kit** sold based on the original
+  (rev R2) board: the component build order, lowest-profile parts first.
 - `20201219_*.jpg`, `20201229_*.jpg` — assembly, voltage-check and annotated
   build photos.
 

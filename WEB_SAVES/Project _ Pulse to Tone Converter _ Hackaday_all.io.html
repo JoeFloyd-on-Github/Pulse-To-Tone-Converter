@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<!-- saved from url=(0038)https://hackaday.io/project/28557/logs -->
+<html class="no-js wf-proximanova-n7-active wf-proximanova-i7-active wf-proximanova-n4-active wf-proximanova-i4-active wf-proximanova-n3-active wf-proximanova-i3-active wf-lettergothicstd-n7-active wf-active" lang="en"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+
+<title>Project | Pulse to Tone Converter | Hackaday.io</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#333333">
+<link rel="apple-touch-icon-precomposed" href="https://hackaday.io/apple-touch-icon.png">
+<link rel="stylesheet" href="./Project _ Pulse to Tone Converter _ Hackaday_all.io_files/style.css">
+<script async="" src="./Project _ Pulse to Tone Converter _ Hackaday_all.io_files/analytics.js.download"></script><script type="text/javascript" src="./Project _ Pulse to Tone Converter _ Hackaday_all.io_files/ymb0lgk.js.download"></script>
+<style type="text/css">.tk-proxima-nova{font-family:"proxima-nova",sans-serif;}.tk-letter-gothic-std{font-family:"letter-gothic-std",sans-serif;}</style><style type="text/css">@font-face{font-family:tk-proxima-nova-n7;src:url(https://use.typekit.net/af/399a91/0000000000000000000158cf/23/l?subset_id=2&fvd=n7&v=3) format("woff2"),url(https://use.typekit.net/af/399a91/0000000000000000000158cf/23/d?subset_id=2&fvd=n7&v=3) format("woff"),url(https://use.typekit.net/af/399a91/0000000000000000000158cf/23/a?subset_id=2&fvd=n7&v=3) format("opentype");font-weight:700;font-style:normal;font-display:auto;}@font-face{font-family:tk-proxima-nova-i7;src:url(https://use.typekit.net/af/f61233/0000000000000000000158d0/23/l?subset_id=2&fvd=i7&v=3) format("woff2"),url(https://use.typekit.net/af/f61233/0000000000000000000158d0/23/d?subset_id=2&fvd=i7&v=3) format("woff"),url(https://use.typekit.net/af/f61233/0000000000000000000158d0/23/a?subset_id=2&fvd=i7&v=3) format("opentype");font-weight:700;font-style:italic;font-display:auto;}@font-face{font-family:tk-proxima-nova-n4;src:url(https://use.typekit.net/af/477d8d/0000000000000000000158d7/23/l?subset_id=2&fvd=n4&v=3) format("woff2"),url(https://use.typekit.net/af/477d8d/0000000000000000000158d7/23/d?subset_id=2&fvd=n4&v=3) format("woff"),url(https://use.typekit.net/af/477d8d/0000000000000000000158d7/23/a?subset_id=2&fvd=n4&v=3) format("opentype");font-weight:400;font-style:normal;font-display:auto;}@font-face{font-family:tk-proxima-nova-i4;src:url(https://use.typekit.net/af/8adb93/0000000000000000000158d8/23/l?subset_id=2&fvd=i4&v=3) format("woff2"),url(https://use.typekit.net/af/8adb93/0000000000000000000158d8/23/d?subset_id=2&fvd=i4&v=3) format("woff"),url(https://use.typekit.net/af/8adb93/0000000000000000000158d8/23/a?subset_id=2&fvd=i4&v=3) format("opentype");font-weight:400;font-style:italic;font-display:auto;}@font-face{font-family:tk-proxima-nova-n3;src:url(https://use.typekit.net/af/3693ba/0000000000000000000158d9/23/l?subset_id=2&fvd=n3&v=3) format("woff2"),url(https://use.typekit.net/af/3693ba/0000000000000000000158d9/23/d?subset_id=2&fvd=n3&v=3) format("woff"),url(https://use.typekit.net/af/3693ba/0000000000000000000158d9/23/a?subset_id=2&fvd=n3&v=3) format("opentype");font-weight:300;font-style:normal;font-display:auto;}@font-face{font-family:tk-proxima-nova-i3;src:url(https://use.typekit.net/af/9c140d/0000000000000000000158da/23/l?subset_id=2&fvd=i3&v=3) format("woff2"),url(https://use.typekit.net/af/9c140d/0000000000000000000158da/23/d?subset_id=2&fvd=i3&v=3) format("woff"),url(https://use.typekit.net/af/9c140d/0000000000000000000158da/23/a?subset_id=2&fvd=i3&v=3) format("opentype");font-weight:300;font-style:italic;font-display:auto;}@font-face{font-family:tk-letter-gothic-std-n7;src:url(https://use.typekit.net/af/2cd276/000000000000000000012e1b/23/l?subset_id=2&fvd=n7&v=3) format("woff2"),url(https://use.typekit.net/af/2cd276/000000000000000000012e1b/23/d?subset_id=2&fvd=n7&v=3) format("woff"),url(https://use.typekit.net/af/2cd276/000000000000000000012e1b/23/a?subset_id=2&fvd=n7&v=3) format("opentype");font-weight:700;font-style:normal;font-display:auto;}</style><script type="text/javascript">try{Typekit.load({ async: true });}catch(e){}</script><style type="text/css">@font-face{font-family:proxima-nova;src:url(https://use.typekit.net/af/399a91/0000000000000000000158cf/23/l?subset_id=2&fvd=n7&v=3) format("woff2"),url(https://use.typekit.net/af/399a91/0000000000000000000158cf/23/d?subset_id=2&fvd=n7&v=3) format("woff"),url(https://use.typekit.net/af/399a91/0000000000000000000158cf/23/a?subset_id=2&fvd=n7&v=3) format("opentype");font-weight:700;font-style:normal;font-display:auto;}@font-face{font-family:proxima-nova;src:url(https://use.typekit.net/af/f61233/0000000000000000000158d0/23/l?subset_id=2&fvd=i7&v=3) format("woff2"),url(https://use.typekit.net/af/f61233/0000000000000000000158d0/23/d?subset_id=2&fvd=i7&v=3) format("woff"),url(https://use.typekit.net/af/f61233/0000000000000000000158d0/23/a?subset_id=2&fvd=i7&v=3) format("opentype");font-weight:700;font-style:italic;font-display:auto;}@font-face{font-family:proxima-nova;src:url(https://use.typekit.net/af/477d8d/0000000000000000000158d7/23/l?subset_id=2&fvd=n4&v=3) format("woff2"),url(https://use.typekit.net/af/477d8d/0000000000000000000158d7/23/d?subset_id=2&fvd=n4&v=3) format("woff"),url(https://use.typekit.net/af/477d8d/0000000000000000000158d7/23/a?subset_id=2&fvd=n4&v=3) format("opentype");font-weight:400;font-style:normal;font-display:auto;}@font-face{font-family:proxima-nova;src:url(https://use.typekit.net/af/8adb93/0000000000000000000158d8/23/l?subset_id=2&fvd=i4&v=3) format("woff2"),url(https://use.typekit.net/af/8adb93/0000000000000000000158d8/23/d?subset_id=2&fvd=i4&v=3) format("woff"),url(https://use.typekit.net/af/8adb93/0000000000000000000158d8/23/a?subset_id=2&fvd=i4&v=3) format("opentype");font-weight:400;font-style:italic;font-display:auto;}@font-face{font-family:proxima-nova;src:url(https://use.typekit.net/af/3693ba/0000000000000000000158d9/23/l?subset_id=2&fvd=n3&v=3) format("woff2"),url(https://use.typekit.net/af/3693ba/0000000000000000000158d9/23/d?subset_id=2&fvd=n3&v=3) format("woff"),url(https://use.typekit.net/af/3693ba/0000000000000000000158d9/23/a?subset_id=2&fvd=n3&v=3) format("opentype");font-weight:300;font-style:normal;font-display:auto;}@font-face{font-family:proxima-nova;src:url(https://use.typekit.net/af/9c140d/0000000000000000000158da/23/l?subset_id=2&fvd=i3&v=3) format("woff2"),url(https://use.typekit.net/af/9c140d/0000000000000000000158da/23/d?subset_id=2&fvd=i3&v=3) format("woff"),url(https://use.typekit.net/af/9c140d/0000000000000000000158da/23/a?subset_id=2&fvd=i3&v=3) format("opentype");font-weight:300;font-style:italic;font-display:auto;}@font-face{font-family:letter-gothic-std;src:url(https://use.typekit.net/af/2cd276/000000000000000000012e1b/23/l?subset_id=2&fvd=n7&v=3) format("woff2"),url(https://use.typekit.net/af/2cd276/000000000000000000012e1b/23/d?subset_id=2&fvd=n7&v=3) format("woff"),url(https://use.typekit.net/af/2cd276/000000000000000000012e1b/23/a?subset_id=2&fvd=n7&v=3) format("opentype");font-weight:700;font-style:normal;font-display:auto;}</style>
+
+</head>
+<body class="logs">
+    
+
+<div class="header hfr-has-background-black" id="header">
+
+    
+
+    <div class="hfr-container hfr-is-max-widescreen">
+
+        <nav class="hfr-navbar" role="navigation" aria-label="main navigation">
+
+            <div class="hfr-navbar-brand">
+                <a href="https://hackaday.io/" title="Hackaday.io Home" class="hfr-navbar-item logo">
+                    <img src="./Project _ Pulse to Tone Converter _ Hackaday_all.io_files/logo.png" width="33px" height="23px" alt="Hackaday.io" class="hfr-is-hidden-touch hfr-is-hidden-widescreen">
+                    <img src="./Project _ Pulse to Tone Converter _ Hackaday_all.io_files/hackaday-logo.svg" width="138px" height="17px" alt="Hackaday.io" class="hfr-is-hidden-desktop-only">
+                </a>
+
+                <a role="button" class="hfr-navbar-burger hfr-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div class="hfr-navbar-menu">
+                
+                <div class="hfr-navbar-start">
+                    <div class="hfr-navbar-item hfr-has-dropdown hfr-is-hoverable">
+                        <a href="https://hackaday.io/projects" class="hfr-navbar-link hfr-is-arrowless hfr-is-family-secondary">Projects 
+
+
+
+
+    <div class="icon hfr-icon hfr-ml-3 hfr-has-text-grey hfr-is-hidden-touch">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8 9.702l4.79-4.79a.707.707 0 111 .999l-5.14 5.14a.705.705 0 01-.652.197.712.712 0 01-.646-.196l-5.14-5.14a.703.703 0 01-.004-1.002.708.708 0 011.003.004L8 9.702z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+</a>
+                        <div class="hfr-navbar-dropdown hfr-is-hidden-touch">
+                            <a href="https://hackaday.io/projects?sort=updated" class="hfr-navbar-item">Recently Updated</a>
+                            <a href="https://hackaday.io/projects?sort=skulls" class="hfr-navbar-item">Most Likes</a>
+                            <a href="https://hackaday.io/projects?sort=date" class="hfr-navbar-item">Newest</a>
+                            <a href="https://hackaday.io/lists" class="hfr-navbar-item">Project Lists</a>
+                        </div>
+                    </div>
+                    <a href="https://hackaday.io/discover" class="hfr-navbar-item hfr-is-family-secondary ">Discover</a>
+                    <a href="https://hackaday.io/contests" class="hfr-navbar-item hfr-is-family-secondary ">Contests</a>
+                    <a href="https://hackaday.io/courses" class="hfr-navbar-item hfr-is-family-secondary hfr-is-hidden-desktop-only ">Courses</a>
+                    <a href="https://hackaday.io/stack" class="hfr-navbar-item hfr-is-family-secondary ">Stack</a>
+                    <div class="hfr-navbar-item hfr-has-dropdown hfr-is-hoverable">
+                        <a class="hfr-navbar-link hfr-is-arrowless hfr-is-family-secondary">More 
+
+
+
+
+    <div class="icon hfr-icon hfr-ml-3 hfr-has-text-grey hfr-is-hidden-touch">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8 9.702l4.79-4.79a.707.707 0 111 .999l-5.14 5.14a.705.705 0 01-.652.197.712.712 0 01-.646-.196l-5.14-5.14a.703.703 0 01-.004-1.002.708.708 0 011.003.004L8 9.702z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+</a>
+                        <div class="hfr-navbar-dropdown">
+                            <a href="https://hackaday.io/courses" class="hfr-navbar-item hfr-is-hidden-touch hfr-is-hidden-widescreen">Courses</a>
+                            <a href="https://hackaday.io/events" class="hfr-navbar-item">Events</a>
+                            <a href="https://hackaday.io/hackerspaces" class="hfr-navbar-item">Hackerspaces</a>
+                            <a href="https://hackaday.io/hackers" class="hfr-navbar-item">Profiles</a>
+                            <a href="https://hackaday.com/" target="_blank" rel="noopener noreferrer" class="hfr-navbar-item">Hackaday.com</a>
+                            <a href="https://www.tindie.com/" target="_blank" rel="noopener noreferrer" class="hfr-navbar-item j-store-tracking">Tindie Marketplace</a>
+                            <a href="https://hackaday.io/project/174089" class="hfr-navbar-item">Remoticon</a>
+                        </div>
+                    </div>
+                    <div class="hfr-navbar-item nav search-holder" style="border-left: 1px solid #272727;">
+                        
+<form id="search-form" class="hfr-field hfr-has-addons" action="https://hackaday.io/search" onsubmit="return submitSearch();" method="GET">
+    <div class="hfr-control">
+        <input type="text" placeholder="Find projects and more" name="term" class="hfr-input hfr-is-static j-add-search t-input-search" id="add-search" value="" autocomplete="off" pattern=".{2,}" required="" title="2 characters minimum">
+    </div>
+    <div class="control">
+        <button type="submit" class="hfr-button button-search" title="Search">
+            
+
+
+
+
+    <div class="icon hfr-icon hfr-is-medium">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M10.542 9.368a4.547 4.547 0 10-1.015 1.079c.04.086.094.166.165.237l2.727 2.727a.8.8 0 001.137.006.801.801 0 00-.006-1.136l-2.726-2.727a.812.812 0 00-.282-.185zm-1.72-.473a2.91 2.91 0 10-4.114-4.116 2.91 2.91 0 004.114 4.117z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+        </button>
+    </div>
+</form>
+
+                    </div>
+                </div>
+
+                
+
+                    <div class="hfr-navbar-end">
+                        <div class="hfr-navbar-item">
+                            <div class="hfr-buttons">
+                                <a href="https://hackaday.io/signup" class="hfr-button hfr-is-primary hfr-is-outlined">Sign up</a>
+                                <a href="https://hackaday.io/signin?returnUrl=%2Fproject%2F28557%2Flogs" class="hfr-button hfr-is-text">Log in</a>
+                            </div>
+                        </div>
+                    </div>
+
+                
+            </div>
+        </nav>
+
+    </div>
+</div>
+
+<div id="topMessage" class="alert small hide">
+    <span class="j-top-content"></span>
+    <a href="javascript:void(0);" class="alert-close j-top-message-close" title="Close">
+        
+
+
+
+
+    <div class="icon icon-close-circle">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M10.047 10.658a.562.562 0 01-.398-.165L7.984 8.828 6.32 10.493a.562.562 0 01-.961-.398.56.56 0 01.164-.398L7.19 8.033 5.523 6.368a.561.561 0 11.795-.796l1.665 1.665L9.65 5.572a.563.563 0 01.795.796L8.78 8.033l1.665 1.664a.562.562 0 01-.398.961zm-2.062-7.5a4.875 4.875 0 10.002 9.75 4.875 4.875 0 00-.004-9.75zm0 10.875a6 6 0 110-12 6 6 0 010 12z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+ Close
+    </a>
+</div>
+
+
+
+
+<script>
+    var HIO = HIO || {};
+</script>
+
+    
+<div class="project-header-menu">
+    <div class="container">
+
+        <div class="project-details">
+
+            <h1><a href="https://hackaday.io/project/28557-pulse-to-tone-converter">Pulse to Tone Converter</a></h1>
+            <p class="description-title"><a href="https://hackaday.io/project/28557">Back to overview</a></p>
+            <p class="description-summary">Converts pulse dialing of your POTS telephone to DTMF dialing allowing you to use it with your VOIP's FXS-port.</p>
+
+            <div class="description-metainfo">
+                <span class="identity-card" data-id="262523"><a href="https://hackaday.io/ctack"><img src="./Project _ Pulse to Tone Converter _ Hackaday_all.io_files/2901341510420377785.png" alt="Christoph Tack">Christoph Tack</a></span> <!--&bull;
+                <span class='time-card' style='margin: 0' title='3 years ago'>12/13/2017 at 15:13</span>-->
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="project-menu-holder">
+        <ul class="project-menu container">
+            <li>
+                <a href="https://hackaday.io/project/28557-pulse-to-tone-converter">Back to overview</a>
+            </li>
+            <li class="">
+                
+                    <a href="https://hackaday.io/project/28557/files">Files <span>4</span></a>
+                
+            </li>
+            <li class="">
+                
+                
+                    <a href="https://hackaday.io/project/28557/components">Components <span>1</span></a>
+                
+            </li>
+            <li class="active">
+                
+                    <a href="https://hackaday.io/project/28557/logs">Logs <span>10</span></a>
+                
+            </li>
+            <li class="">
+                
+                    Instructions <span>0</span>
+                
+            </li>
+            <li>
+                
+                    Discussion <span>0</span>
+                
+            </li>
+        </ul>
+    </div>
+</div>
+
+    <div class="container post-content ">
+        <div class="section-buildsort">
+    <span class="pull-left">
+        <a href="https://hackaday.io/project/28557">« Back to project details</a>
+    </span>
+    <span class="sort-holder pull-right">
+        <label for="sort-by">Sort by:</label>
+        <div class="j-select-holder select-holder" style="position: relative;"><div class="select-text" style="cursor: pointer; opacity: 1;">Newest</div><select class="sort" id="sort-by" data-inited="yes" style="cursor: pointer; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%;">
+            <option value="/project/28557/logs?sort=newest" selected="selected">Newest</option>
+            <option value="/project/28557/logs?sort=oldest">Oldest</option>
+            
+        </select><span class="arrow-icon"></span></div>
+    </span>
+</div>
+
+
+        <div class="section section-buildlogs last">
+            
+                <ul class="buildlogs-list">
+    
+        
+        <li>
+            <h3 class="element-title">
+                <a href="https://hackaday.io/project/28557/log/120918-validating-the-prototype">Validating the prototype</a>
+                
+            </h3>
+            <small class="authorship"><span class="time-card" style="margin: 0" title="3 years ago">03/17/2018 at 21:04</span>  •
+                <a class="gray-link" href="https://hackaday.io/project/28557/log/120918#discussion-list">
+                    0 comments
+                </a>
+                </small>
+            <div style="position:relative">
+                <div id="post-body-120918"><h1>Printed board assembly</h1>
+
+<p>Assembly is fairly easy.&nbsp; Be careful buying the BAT46W in the correct package.&nbsp; I've updated the PCB to revision /1, replacing the BAT46WJ (SOD-323) to BAT46WH (SOD-123).&nbsp; The -WH variant is bigger and easier to solder by hand.</p>
+
+
+<h1>Programming the board</h1>
+
+
+<p>I explained the procedure already in a previous log.&nbsp; To connect the programmer to your ATTINY85, you can use a <a href="https://www.digikey.be/product-detail/en/pomona-electronics/5250/501-1311-ND/745102" target="_blank">Pomona SOIC-clip</a> as shown on the image below.</p>
+
+
+<h1>Measuring interrupt frequency</h1>
+
+
+<p>To check if the crystal has the correct load capacitors attached.&nbsp; A special debug firmware is loaded into the device which generates a square wave with a frequency that should be 31.250KHz.</p>
+
+
+<figure><a href="./Project _ Pulse to Tone Converter _ Hackaday_all.io_files/4994651521316573327.jpg" target="_blank"><img class="lazy" src="./Project _ Pulse to Tone Converter _ Hackaday_all.io_files/4994651521316573327.jpg" style=""></a><figcaption>Interrupt frequency should be 31.250KHz<br></figcaption></figure>
+
+
+<h1>Adjusting DTMF-amplitude</h1><p>Someone reported that the DTMF-amplitude was too large for their application.&nbsp; Increasing R10 from 10K to 100K and R12 from 10K to 15K fixed that.<br></p><h1>Mounting in the housing</h1>
+
+<p>The housing originally contained an ADSL-splitter.&nbsp; It can be bought for a few cents from AliExpress.&nbsp; Its PCB has been removed.&nbsp; The modular jacks have been transferred to the pulse-dtmf-converter.</p>
+
+<figure><a href="./Project _ Pulse to Tone Converter _ Hackaday_all.io_files/464331521320062433.jpg" target="_blank"><img class="lazy" src="./Project _ Pulse to Tone Converter _ Hackaday_all.io_files/464331521320062433.jpg" style=""></a><figcaption>Pulse-dtmf-converter in its opened housing. <br>The PCB that was originally mounted is shown below it.</figcaption></figure>
+
+<h1>Finishing up</h1>
+
+<p>The Philps DECT-phone, which uses tone dialing is connected to the "PHONE"-port of the converter, as indicated on the bottom of the housing.</p>
+
+<p>The FXS-port of the internet gateway is connected to the "MODEM"-port.</p>
+
+<p>The pulse dialing phone is connected to the "LINE"-port.</p>
+
+<figure><a href="https://cdn.hackaday.io/images/1056411521320255224.jpg" target="_blank"><img class="lazy" data-src="https://cdn.hackaday.io/images/1056411521320255224.jpg" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a><figcaption>Pulse-dtmf-converter in use...<br></figcaption></figure>
+
+<p>Making a few test calls assured me that both phones are working well.</p>
+
+<hr>
+
+<p>That's all, folks.</p></div>
+            </div>
+        </li>
+    
+        
+        <li>
+            <h3 class="element-title">
+                <a href="https://hackaday.io/project/28557/log/90319-crystal-calculations">Crystal calculations</a>
+                
+            </h3>
+            <small class="authorship"><span class="time-card" style="margin: 0" title="3 years ago">02/11/2018 at 20:40</span>  •
+                <a class="gray-link" href="https://hackaday.io/project/28557/log/90319#discussion-list">
+                    0 comments
+                </a>
+                </small>
+            <div style="position:relative">
+                <div id="post-body-90319"><p>What crystal package to use : small 3.2x2.5mm or big HC49/US?&nbsp; One parameter determining the choice is the drive level of the crystal.&nbsp; If the drive level is too high, i.e. &gt;200µW typically, the small crystal can't be used.&nbsp;&nbsp;</p>
+
+<p>The drive level is calculated as follows:</p>
+
+<figure><a href="https://circuitcrush.com/wp-content/uploads/Equivalent-circuit-for-quartz-crystal.png" target="_blank"><img class="lazy" data-src="https://circuitcrush.com/wp-content/uploads/Equivalent-circuit-for-quartz-crystal.png" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a><figcaption>Quartz crystal equivalent circuit (reference: <a target="_blank" rel="noopener noreferrer" href="http://circuitcrush.com/">Circuitcrush.com</a>)<br><a href="https://hackaday.io/api/latex?tex=%5Ccolor%7BWhite%7D%20%5Clarge%20P%3D(V_%7Bpp%7D*%5CPi*f*C_%7BL%7D)%5E%7B2%7D*%20%5Cfrac%7BESR%7D%7B2%7D" target="_blank"><img style="font-size: 16px;" class="lazy" data-src="/api/latex?tex=%5Ccolor%7BWhite%7D%20%5Clarge%20P%3D(V_%7Bpp%7D*%5CPi*f*C_%7BL%7D)%5E%7B2%7D*%20%5Cfrac%7BESR%7D%7B2%7D" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a></figcaption></figure>
+
+
+
+
+
+
+
+<p>Where:</p>
+
+
+
+
+
+
+
+<ul><li>Vpp = peak-to-peak voltage, measured differentiallly over the crystal</li><li>f = crystal frequency</li><li>CL = load capacitance, see&nbsp;<a href="https://en.wikipedia.org/wiki/Pierce_oscillator" target="_blank">the Pierce oscillator on Wikipedia</a> how you calculate it.</li><li>ESR = equivalent series resistor, from the crystal's datasheet</li></ul>
+
+
+
+
+
+
+
+<h2>Example</h2>
+
+
+
+
+
+
+
+<p><strong></strong><strong>Calculation of CL</strong></p>
+
+
+
+
+
+
+
+<ul><li>C1 = C2 = 18pF</li><li>Cs = 9pF</li><li>Ci = 6pF, Co=16pF (datasheet Attiny85)</li></ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p><a href="https://hackaday.io/api/latex?tex=%5Ccolor%7BWhite%7D%20%5Clarge%20C_%7BL%7D%3D%20%5Cfrac%7B(6p%2B18p)*(16p%2B18p)%7D%7B6p%2B16p%2B18p%2B18p%7D%20%2B%209p%20%3D%2023pF" target="_blank"><img class="lazy" data-src="/api/latex?tex=%5Ccolor%7BWhite%7D%20%5Clarge%20C_%7BL%7D%3D%20%5Cfrac%7B(6p%2B18p)*(16p%2B18p)%7D%7B6p%2B16p%2B18p%2B18p%7D%20%2B%209p%20%3D%2023pF" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a></p>
+
+
+
+
+
+<p><strong>Calculation of drive level</strong></p>
+
+
+
+
+
+<ul><li>f = 8MHz</li><li>ESR=80ohm, from the crystal's datasheet</li><li>Vpp=1.7Vpp, measured with differential probe over the crystal</li></ul>
+
+
+
+
+
+<p><a href="https://hackaday.io/api/latex?tex=%5Ccolor%7BWhite%7D%20%5Clarge%20P%3D(1.7*%5CPi*8M*23p)%5E%7B2%7D*%20%5Cfrac%7B80%7D%7B2%7D%3D39%5Cmu%20W" target="_blank"><img class="lazy" data-src="/api/latex?tex=%5Ccolor%7BWhite%7D%20%5Clarge%20P%3D(1.7*%5CPi*8M*23p)%5E%7B2%7D*%20%5Cfrac%7B80%7D%7B2%7D%3D39%5Cmu%20W" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a></p>
+
+<p><strong>Conclusion</strong></p>
+
+<p>The smaller crystal package can be used safely.</p><p>Another parameter that determines the choice is availability of the crystals.&nbsp; For 8MHz, HC49US crystals have better specs, are more widely used and are cheaper than the 3.2x2.5mm package crystals.</p></div>
+            </div>
+        </li>
+    
+        
+        <li>
+            <h3 class="element-title">
+                <a href="https://hackaday.io/project/28557/log/87463-implementing-sleep-modes">Implementing sleep modes</a>
+                
+            </h3>
+            <small class="authorship"><span class="time-card" style="margin: 0" title="3 years ago">02/06/2018 at 19:50</span>  •
+                <a class="gray-link" href="https://hackaday.io/project/28557/log/87463#discussion-list">
+                    0 comments
+                </a>
+                </small>
+            <div style="position:relative">
+                <div id="post-body-87463"><p>The nature of pulse dialing is such, that every pulse interrupts the power supply for 70ms.&nbsp; The pulse rate is 10pps, which means that during dialing, the MCU only gets power 30ms every 100ms.&nbsp; During the 70ms power gaps, the MCU has to survive on a 470µF capacitor.</p>
+
+<p>Using sleep modes would allow us to choose a smaller supply voltage to reduce power consumption and to leave more headroom for the pulse dial telephone.&nbsp; Another option would be to decrease the elco and save cost.</p>
+
+
+
+<h2>Adding Sleep functionality in main loop</h2>
+
+
+
+<p>The rotary dial functionality is using <a href="https://github.com/thomasfredericks/Bounce2" target="_blank">Thomas Fredericks's Bounce2 library</a>.&nbsp; To function properly it requires an update() function to be called regularly.&nbsp; By adding the update() function in the loop() function of Arduino, it's called every few tens of microseconds.&nbsp; No mechanical switch is that fast, so a lot of MCU cycles are wasted there.&nbsp; The following oscilloscope screenshots show VCC (green) and the GPIO connected to the main power entry point before the rectifying diode (blue).</p>
+
+<figure><a href="https://cdn.hackaday.io/images/6851151518269870667.png" target="_blank"><img alt="MCU remains in ACTIVE mode, VCC drops down to 3.08V" title="MCU remains in ACTIVE mode, VCC drops down to 3.08V" class="lazy" data-src="https://cdn.hackaday.io/images/6851151518269870667.png" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a><figcaption>MCU remains in ACTIVE mode, VCC drops down to 3.08V</figcaption></figure>
+
+<p>The solution lies in adding a sleepNow() functionality in the main loop, which forces the MCU into idle mode when there's nothing to do.&nbsp; In idle mode, interrupts still wake the MCU.&nbsp;&nbsp;<br></p>
+
+
+
+<p>Timer0 interrupt is in Arduino standard set up to be called every ms.&nbsp; So each ms, timer0 fires, which wakes the MCU.&nbsp; The MCU calls the Bounce2.update() and goes to sleep again.&nbsp; Simple but effective.<br></p>
+
+<figure><a href="https://cdn.hackaday.io/images/380701518269927098.png" target="_blank"><img alt="MCU using IDLE mode, VCC drops only downto 3.57V" title="MCU using IDLE mode, VCC drops only downto 3.57V" class="lazy" data-src="https://cdn.hackaday.io/images/380701518269927098.png" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a><figcaption>MCU using IDLE mode, VCC drops only downto 3.57V</figcaption></figure></div>
+            </div>
+        </li>
+    
+        
+        <li>
+            <h3 class="element-title">
+                <a href="https://hackaday.io/project/28557/log/87226-connecting-to-the-fxs">Connecting to the FXS</a>
+                
+            </h3>
+            <small class="authorship"><span class="time-card" style="margin: 0" title="3 years ago">02/03/2018 at 20:40</span>  •
+                <a class="gray-link" href="https://hackaday.io/project/28557/log/87226#discussion-list">
+                    0 comments
+                </a>
+                </small>
+            <div style="position:relative">
+                <div id="post-body-87226"><h2>Fail...</h2>
+
+
+
+
+
+
+
+
+
+
+
+<ul><li>Connecting to the SLIC KS-0835F: everything works perfectly.&nbsp;&nbsp;</li><li>Connecting to the FXS port of the internet gateway: <strong>FAIL</strong><ul><li>The DTMF-converter doesn't start up reliably.&nbsp; It sometimes runs in bursts, as if the crystal doesn't start reliably.</li></ul><ul><li>The number doesn't get dialed.</li></ul></li></ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Issue 1: Startup problem</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>There's no reset circuitry present on the breadboard.&nbsp; The BOD is disabled as well.&nbsp;&nbsp;</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure><a href="https://cdn.hackaday.io/images/3238151517691698348.png" target="_blank"><img class="lazy" data-src="https://cdn.hackaday.io/images/3238151517691698348.png" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a><figcaption>No reset controller, problems guaranteed... (blue=VCC, green=RST)</figcaption></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>The reset level (in green) follows the power supply voltage (in blue).&nbsp; Due to the charging of a 470µF capacitor, voltage ramp up is very slow.&nbsp; Nearly 60ms before full voltage is reached.</p>
+
+
+
+
+
+
+
+
+
+
+
+<p>An option is to add a reset controller which has a timeout of 100ms.&nbsp; The reset trigger level should be 2.6V.&nbsp; This will avoid spurious resets during pulse dialing.&nbsp;&nbsp;</p>
+
+
+
+
+
+
+
+<figure><a href="https://cdn.hackaday.io/images/9794481517856248516.png" target="_blank"><img class="lazy" data-src="https://cdn.hackaday.io/images/9794481517856248516.png" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a><figcaption>With a reset controller, the CPU starts up reliably. (blue=VCC, green=RST)<br></figcaption></figure>
+
+
+
+
+
+
+
+
+
+<p>An alternative approach is to use the 2.7V BOD in the attiny85.&nbsp;&nbsp;<br></p>
+
+<figure><a href="https://cdn.hackaday.io/images/7286651518276906335.png" target="_blank"><img class="lazy" data-src="https://cdn.hackaday.io/images/7286651518276906335.png" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a><figcaption>BOD 2.7V enabled, BLUE=VCC, GREEN=DEBUG GPIO</figcaption></figure>
+
+<p>Using the BOD seems to work as reliably as the external reset controller.&nbsp; Using the BOD saves us four components in the BoM.</p>
+
+<h2>Remark:</h2>
+
+
+
+
+
+<p>The AVR-ISP MkII automatically generates a reset pulse at power up of the MCU.&nbsp; Be sure to disconnect the programmer during testing.</p>
+
+
+
+
+
+<h2>Issue 2: FXS doesn't recognize DTMF</h2>
+
+
+
+
+
+
+
+
+
+<p>This problem has two causes:</p>
+
+
+
+
+
+
+
+
+
+<p><strong>DTMF signal too weak</strong></p>
+
+
+
+
+
+
+
+
+
+<p>Connecting the Philips DECT to the SLIC again showed that the DTMF-signal that this design generates is too weak.&nbsp; Increasing the resistor between the reference and cathode of the bottom TLV431 to 39K solves this problem.</p>
+
+
+
+
+
+
+
+
+
+<p><strong>DTMF timing incorrect</strong><br></p>
+
+
+
+
+
+
+
+
+
+<p>The original idea was to generate a DTMF-digit immediately after a digit has been dialed.&nbsp; The DECT doesn't work that way.&nbsp; You form the number first.&nbsp; After that you "pick up" the horn, which initiates the DTMF-sequence of your formed number.</p>
+
+
+
+
+
+
+
+
+
+<p>The pulse-dtmf-converter successfully dialed my cellphone when it was configured in the same way.</p>
+
+
+
+
+
+
+
+
+
+<p>Finally...<strong>SUCCESS</strong></p></div>
+            </div>
+        </li>
+    
+        
+        <li>
+            <h3 class="element-title">
+                <a href="https://hackaday.io/project/28557/log/85877-programming-the-attiny85">Programming the Attiny85</a>
+                
+            </h3>
+            <small class="authorship"><span class="time-card" style="margin: 0" title="3 years ago">01/29/2018 at 19:59</span>  •
+                <a class="gray-link" href="https://hackaday.io/project/28557/log/85877#discussion-list">
+                    0 comments
+                </a>
+                </small>
+            <div style="position:relative">
+                <div id="post-body-85877"><h2>Arduino</h2>
+
+<p>The attiny85 is not supported on Arduino by default.&nbsp; Download the&nbsp;<a href="https://github.com/SpenceKonde/ATTinyCore" target="_blank">library from github</a> and install it.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Programming connections</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Signal</th><th>ATTINY85</th><th>AVRISP mkII</th></tr></thead><tbody><tr><td>MISO</td><td>6</td><td>1</td></tr><tr><td>VCC</td><td>8</td><td>2</td></tr><tr><td>SCK</td><td>7</td><td>3</td></tr><tr><td>MOSI</td><td>5</td><td>4</td></tr><tr><td>RST</td><td>1</td><td>5</td></tr><tr><td>GND</td><td>4</td><td>6</td></tr></tbody></table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Programming instructions</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul><li>In the Arduino IDE make sure the following is set:<ul><li>Tools -&gt; Board : "ATTiny25/45/85"</li><li>Timer 1 Clock : "CPU"</li><li>Chip : "ATtiny85"</li><li>Clock : "8MHz (external)"</li><li>B.O.D. : "B.O.D. Enabled (2.7V)"</li><li>LTO : "disabled"</li></ul></li><li>Set the type of your programmer : "AVRISP mkII"</li></ul><h2>Burn the bootloader</h2><p>Burn the bootloader (which is empty) to make sure fuse settings are correct.</p>
+
+
+
+
+
+
+
+<p>Luckily, the arduino toolchain sets the correct fuse values.&nbsp; Using the&nbsp;<a href="http://www.engbedded.com/fusecalc" target="_blank">Engbedded Atmel AVR® Fuse Calculator</a>, you can check the fuse settings:</p>
+
+
+
+
+
+
+
+<pre class="hljs css"><span class="hljs-tag">-U</span> <span class="hljs-tag">lfuse</span><span class="hljs-pseudo">:w</span><span class="hljs-pseudo">:0xff</span><span class="hljs-pseudo">:m</span> <span class="hljs-tag">-U</span> <span class="hljs-tag">hfuse</span><span class="hljs-pseudo">:w</span><span class="hljs-pseudo">:0xd5</span><span class="hljs-pseudo">:m</span> <span class="hljs-tag">-U</span> <span class="hljs-tag">efuse</span><span class="hljs-pseudo">:w</span><span class="hljs-pseudo">:0xff</span><span class="hljs-pseudo">:m</span></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Upload the application</h2><p>Be sure to write the bootloader first.&nbsp; Otherwise, the device will run at 1/8 of the desired CPU frequency.</p><h2>Verifying CPU clock frequency</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>The internal RC-oscillator is not accurate enough to generate DTMF correctly over large temperature and voltage specs.&nbsp; For development purposes, a 12MHz oscillator can be connected to pin&nbsp;2 of the Attiny85.&nbsp; Oscillators are quite power hungry.&nbsp; So, for rotary dial testing, in which the power supply is cut off during dialing, it should be powered from a separate 5V supply.<br></p>
+
+
+
+
+
+
+
+
+
+
+
+<p>An 8MHz external clock would is a better choice.&nbsp; The attiny85V is not specified to work at 12MHz.&nbsp; When the supply voltage drops below 4V the MCU behaves inpredictably.&nbsp; With an 8MHz clock, the attiny85V has a much wider supply voltage range.<br></p>
+
+
+
+
+
+
+
+<p>The MCU frequency can be checked with a timer/counter.&nbsp; A digital oscilloscope that only samples at 100Ms/s will not yield reliable results.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Verifying DTMF frequencies</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>The first step is to check the interrupt frequency, which is our PWM-frequency.&nbsp; This looked ok using the PM6665.&nbsp; It's more reliable to measure if OCR1A is forced to a fixed value so that a fixed duty cycle is being generated.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>Next step is to verify the DTMF frequency.&nbsp; This signal can be measured at the non-inverting input of the opamp in the current source configuration.&nbsp; By leaving out one of the two frequencies of the DTMF signal, allows for easier measurement of the frequency of the restored waveform.</p>
+
+
+
+
+
+<p>A final test was to generate the same DTMF-sequence as had been done before using the ProTrinket3V</p>
+
+
+
+
+
+<p>The result can be heard <a href="https://cdn.hackaday.io/files/285571221782688/DTMF_0123456789_attiny_8MHz.wav">here</a>.</p>
+
+
+
+
+
+<p>Decoding using multimon shows that the generated DTMF-tones are correct.</p>
+
+
+
+
+
+<pre class="hljs coffeescript">ctack<span class="hljs-property">@ctack</span>-<span class="hljs-attribute">X550LD</span>:~$ multimon -a DTMF -t wav DTMF_0123456789.wav 
+multimod  (C) <span class="hljs-number">1996</span>/<span class="hljs-number">1997</span> <span class="hljs-keyword">by</span> Tom Sailer HB9JNX/AE4WA
+available <span class="hljs-attribute">demodulators</span>: POCSAG512 POCSAG1200 POCSAG2400 EAS AFSK1200 AFSK2400 AFSK2400_2 HAPN4800 FSK9600 DTMF ZVEI CCIR SCOPE
+Enabled <span class="hljs-attribute">demodulators</span>: DTMF
+sox WARN <span class="hljs-attribute">sox</span>: Option `<span class="javascript">-s<span class="hljs-string">' is deprecated, use </span></span>`-e signed-integer<span class="hljs-string">' instead.
+sox WARN sox: Option `-2'</span> <span class="hljs-keyword">is</span> deprecated, use `<span class="javascript">-b <span class="hljs-number">16</span><span class="hljs-string">' instead.
+DTMF: 0
+DTMF: 1
+DTMF: 2
+DTMF: 3
+DTMF: 4
+DTMF: 5
+DTMF: 6
+DTMF: 7
+DTMF: 8
+DTMF: 9
+sox WARN rate: rate clipped 2830 samples; decrease volume?
+sox WARN dither: dither clipped 2441 samples; decrease volume?</span></span></pre></div>
+            </div>
+        </li>
+    
+        
+        <li>
+            <h3 class="element-title">
+                <a href="https://hackaday.io/project/28557/log/78799-verification-of-the-generated-dtmf">Verification of the generated DTMF</a>
+                
+            </h3>
+            <small class="authorship"><span class="time-card" style="margin: 0" title="3 years ago">01/20/2018 at 14:27</span>  •
+                <a class="gray-link" href="https://hackaday.io/project/28557/log/78799#discussion-list">
+                    0 comments
+                </a>
+                </small>
+            <div style="position:relative">
+                <div id="post-body-78799"><p>The SLIC has an audio output.&nbsp; Let's hook that up to the mic input of the laptop.&nbsp; As&nbsp;<a href="https://en.wikipedia.org/wiki/Phone_connector_(audio)" target="_blank">wikipedia</a> shows, there are different pinouts standards &nbsp;for a TRRS 3.5mm audio jack.&nbsp; In other words, there's no standard pinout.&nbsp; Use a DMM to find out what pinout your laptop is using.&nbsp; My Acer has the following pinout:</p>
+
+<ul><li>Tip = Left out</li><li>Ring1 = Right out</li><li>Ring2 = GND</li><li>Sleeve = Mic in</li></ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>In Ubuntu Linux, 5s of audio can easily be recorded by:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<pre>arecord -d 5 DTMF_0123456789.wav</pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>To play back the <a href="https://cdn.hackaday.io/files/285571221782688/DTMF_0123456789.wav">file</a>:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<pre>aplay DTMF_0123456789.wav</pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>The microphone level might need some tuning.</p>
+
+
+
+
+
+
+
+
+
+
+
+<p>Decode the DTMF-audio with:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<pre>multimon -a DTMF -t wav DTMF_0123456789.wav 
+multimod  (C) 1996/1997 by Tom Sailer HB9JNX/AE4WA
+available demodulators: POCSAG512 POCSAG1200 POCSAG2400 EAS AFSK1200 AFSK2400 AFSK2400_2 HAPN4800 FSK9600 DTMF ZVEI CCIR SCOPE
+Enabled demodulators: DTMF
+sox WARN sox: Option `-s' is deprecated, use `-e signed-integer' instead.
+sox WARN sox: Option `-2' is deprecated, use `-b 16' instead.
+DTMF: 0
+DTMF: 1
+DTMF: 2
+DTMF: 3
+DTMF: 4
+DTMF: 5
+DTMF: 6
+DTMF: 7
+DTMF: 8
+DTMF: 9
+</pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>Decoding works perfectly.</p>
+
+<h1>Alternative DTMF decoders</h1>
+
+<ul><li><a href="https://www.aliexpress.com/item/32607482597.html" target="_blank">MT8870 DTMF Audio Decoder LCD 1602 Display Module for Fixed telephone mobile phone keypad Key value shows smart home</a></li><li><a href="https://www.aliexpress.com/item/32464835998.html" target="_blank">wholesale 1pcs MT8870 DTMF Voice decoding module phone module</a></li><li>You could also download a DTMF decoder for your smartphone from Google Play.</li></ul></div>
+            </div>
+        </li>
+    
+        
+        <li>
+            <h3 class="element-title">
+                <a href="https://hackaday.io/project/28557/log/77767-realization-of-coupling-dtmf-to-telephone-line">Realization of coupling DTMF to telephone line</a>
+                
+            </h3>
+            <small class="authorship"><span class="time-card" style="margin: 0" title="3 years ago">01/18/2018 at 20:41</span>  •
+                <a class="gray-link" href="https://hackaday.io/project/28557/log/77767#discussion-list">
+                    2 comments
+                </a>
+                </small>
+            <div style="position:relative">
+                <div id="post-body-77767"><h1>Schematic explanation</h1>
+
+<p><em>Warning: This schematic is not a definitive version.&nbsp; Only the DTMF-generator has been implemented.&nbsp; There are no provisions yet for detection of pulses during dialing.</em></p>
+
+<figure><a href="https://cdn.hackaday.io/files/285571221782688/dtmfgen7.png" target="_blank"><img class="lazy" data-src="https://cdn.hackaday.io/files/285571221782688/dtmfgen7.png" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a></figure>
+
+<p>The schematic above couples DTMF to the telephone line.&nbsp;&nbsp;</p>
+
+
+
+<ul><li>The current source on the left is the SLIC that sources 15mA to 30mA current.</li><li>The R_POTS_telephone is the internal resistance of the off-hook telephone.&nbsp; You can see that the DTMF-generator is in series with the telephone line.&nbsp; When the telephone is on-hook, the telephone resistance is very high, so there's no loop current.&nbsp; <strong>This circuit doesn't consume power when the telephone is on-hook.</strong></li><li>The diode bridge rectifies the loop current, <strong>making this circuit insensitive to line polarity or line reversal</strong>.</li><li>R5 not needed for generating DTMF, only during pulse dialing.</li><li>U4, R3, R4 function as an adjustable zener.&nbsp; The "zener voltage" is set to 4.6V.&nbsp; This is the source of the supply voltage of the DTMF generator.&nbsp; So no matter what the loop current is, the zener behavior will limit the supply voltage to about 4.6V.</li><li>D2 &amp; C1 are not needed for generating DTMF.&nbsp; They keep the MCU going when the telephone is in pulse dialing mode.&nbsp; When these pulses are being generated, loop current is interrupted and the supply voltage of the DTMF-generator would collapse.</li><li>Rcpu1 simulates the behavior of the MCU, drawing 10mA at 3V.</li><li>You probably recognize U2, R7, R8 as an adjustable zener again.&nbsp; These three components couple the DTMF to the telephone line.&nbsp; We can modulate the U2-zener voltage, and hence modulate the total voltage over our DTMF-generator.&nbsp; This voltage is one-on-one transferred to the audio output of the SLIC.&nbsp; The drawback of this solution is that it adds about 2V to total voltage over the DTMF-generator.</li><li>U1, R1, Q1 is a current source.&nbsp; By varying the current into U2, it's "zener" voltage will vary linearly.&nbsp;&nbsp;</li><li>U3 with surrounding caps and resistors:&nbsp; An active low pass filter, desiged with <a href="http://www.nuhertz.com/register/reg_free.html" target="_blank">Nuhertz Filterfree</a>.&nbsp; For audio frequencies as used in this design, active filters are the way to go.&nbsp; Passive filters are either ineffective with RC or require very large inductors with LC realizations.</li><li>R6, R2: Voltage shift and divider for the input signal to avoid exceeding the CM-range of the opamp.</li></ul>
+
+<h1>Measurements</h1>
+
+<p>The measurements show the voltage at the audio output of the SLIC.&nbsp; As you can see, most of the HF-noise has been removed and there's no noticeable deformation of the DTMF-waveform.</p>
+
+<figure><a href="https://cdn.hackaday.io/images/9438751516388970974.png" target="_blank"><img class="lazy" data-src="https://cdn.hackaday.io/images/9438751516388970974.png" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a><figcaption>DTMF-pulse on SLIC's audio output</figcaption></figure>
+
+<figure><a href="https://cdn.hackaday.io/images/2364011516388989314.png" target="_blank"><img class="lazy" data-src="https://cdn.hackaday.io/images/2364011516388989314.png" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a><figcaption>Zooming in on DTMF-signal on the SLIC's audio output<br>Picture of the current setup</figcaption></figure><p>There's not so much to see really.&nbsp; The breadboard contains the Adafruit Protrinket 3V and the SLIC.&nbsp; The 1.27mm-protoboard on the left has the opamp circuit on it.&nbsp; The 2.54mm-protoboard on the bottom right contains the TLV431 circuits.&nbsp; On the right, you can see the RJ11-connection to the telephone.</p><figure><a href="https://cdn.hackaday.io/images/4143391516389680721.jpg" target="_blank"><img data-src="https://cdn.hackaday.io/images/4143391516389680721.jpg" class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a></figure></div>
+            </div>
+        </li>
+    
+        
+        <li>
+            <h3 class="element-title">
+                <a href="https://hackaday.io/project/28557/log/72470-direct-digital-synthesis">Direct Digital Synthesis</a>
+                
+            </h3>
+            <small class="authorship"><span class="time-card" style="margin: 0" title="3 years ago">01/05/2018 at 21:07</span>  •
+                <a class="gray-link" href="https://hackaday.io/project/28557/log/72470#discussion-list">
+                    0 comments
+                </a>
+                </small>
+            <div style="position:relative">
+                <div id="post-body-72470"><p>DTMF will be generated using Direct Digital Synthesis (DDS)</p>
+
+<p>The first implementation will be done with Adafruit ProTrinket 3V, which runs at 12MHz.&nbsp; The final implementation will use some ATTiny at 8MHz.</p>
+
+
+
+
+
+
+
+
+
+
+
+<figure><a href="https://hackaday.io/api/latex?tex=%5Ccolor%7BWhite%7D%20%5Clarge%20f_%7Bo%7D%20%3D%20M%20*%20%20%5Cfrac%7Bf_%7Bc%7D%20%7D%7B2%5E%7Bn%7D%7D%20" target="_blank"><img style="display: block; max-width: 100%; cursor: pointer; height: auto; vertical-align: middle; background-color: rgb(39, 39, 39); margin: 1em auto;" alt="DDS tuning equation" title="DDS tuning equation" class="lazy" data-src="https://hackaday.io/api/latex?tex=%5Ccolor%7BWhite%7D%20%5Clarge%20f_%7Bo%7D%20%3D%20M%20*%20%20%5Cfrac%7Bf_%7Bc%7D%20%7D%7B2%5E%7Bn%7D%7D%20" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a><figcaption>DDS tuning equation</figcaption></figure>
+
+
+
+
+
+
+
+
+
+
+
+<p>where&nbsp;</p>
+
+
+
+
+
+
+
+
+
+
+
+<ul><li>fo = output frequency</li><li>M = phase accumulator</li><li>fc = clock frequency</li><li>n = bitwidth of phase accumulator</li></ul>
+
+
+
+
+
+
+
+
+
+<p><strong>Frequency resolution</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+<p>So the frequency resolution is :</p>
+
+
+
+
+
+
+
+
+
+
+
+<p><a href="https://hackaday.io/api/latex?tex=%5Ccolor%7BWhite%7D%20%5Clarge%20%20%5Cfrac%7Bf_%7Bc%7D%7D%7B2%5E%7Bn%7D%7D%20" target="_blank"><img style="display: block; margin: 1em auto; max-width: 100%; cursor: pointer; height: auto; vertical-align: middle; background-color: rgb(39, 39, 39);" class="lazy" data-src="https://hackaday.io/api/latex?tex=%5Ccolor%7BWhite%7D%20%5Clarge%20%20%5Cfrac%7Bf_%7Bc%7D%7D%7B2%5E%7Bn%7D%7D%20" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a>The allowable frequency tolerance for the DTMF frequencies is&nbsp;±1,5 %.&nbsp; This is maximum 10.4Hz for 697Hz, which is the lowest DTMF tone.</p>
+
+
+
+
+
+
+
+
+
+
+
+<p>For 12MHz, fast PWM, the interrupt frequency is 47KHz, phase accumulator is 16-bit.&nbsp; The frequency resolution is (12MHz / 256) / 65536 = 0.7Hz.&nbsp; This is more than enough.&nbsp; Also for 8MHz system, the frequency resolution of the DDS is sufficient for this application.</p>
+
+
+
+
+
+
+
+
+
+<p><strong>Minimum clock frequency</strong></p>
+
+
+
+
+
+
+
+
+
+<p>There is also an upper limit to the frequency that can be generated.&nbsp; Practically:&nbsp;</p>
+
+
+
+
+
+
+
+
+
+<p><a href="https://hackaday.io/api/latex?tex=%5Ccolor%7BWhite%7D%20%5Clarge%20f_%7Bo_%7Bmax%7D%7D%3D%20%5Cfrac%7Bf_c%7D%7B3%7D" target="_blank"><img style="display: block; max-width: 100%; cursor: pointer; height: auto; vertical-align: middle; background-color: rgb(39, 39, 39); margin: 1em auto;" class="lazy" data-src="https://hackaday.io/api/latex?tex=%5Ccolor%7BWhite%7D%20%5Clarge%20f_%7Bo_%7Bmax%7D%7D%3D%20%5Cfrac%7Bf_c%7D%7B3%7D" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a>For DTMF, the maximum frequency is 1633Hz, so fc, which is the frequency of the timer interrupt, should be at least 4.9KHz.</p>
+
+
+
+
+
+
+
+<p><strong>Comparison of PWM-modes for generating DDS</strong></p>
+
+
+
+
+
+
+
+<p>Below you can find two screenshots that show the difference between fast-PWM and phase-correct-PWM on the Adafruit ProTrinket 3V.&nbsp; Clearly, the phase correct PWM will need much more filtering to get a clean output signal.&nbsp; That's because the interrupt frequency in fast-PWM-mode is twice the interrupt frequency of the phase-correct-PWM mode.</p>
+
+<p>The low pass filter used in all the screenshots is just a simple first order RC-filter: 330ohm with 100nF.&nbsp; These were just some parts lying around on my desk.&nbsp; The cutoff frequency is 4.8KHz.</p>
+
+
+
+
+
+
+
+<figure><a href="https://cdn.hackaday.io/images/5260901515252789251.png" target="_blank"><img alt="697Hz DDS, 16bit tuning word, phase-correct PWM, 8bit sine table" title="697Hz DDS, 16bit tuning word, phase-correct PWM, 8bit sine table" class="lazy" data-src="https://cdn.hackaday.io/images/5260901515252789251.png" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a><figcaption>697Hz DDS, 16bit tuning word, phase-correct PWM, 8bit sine table</figcaption></figure>
+
+
+
+
+
+
+
+<figure><a href="https://cdn.hackaday.io/images/3182611515252464050.png" target="_blank"><img alt="697Hz DDS,  16bit tuning word, fast-PWM, 8bit sine table" title="697Hz DDS,  16bit tuning word, fast-PWM, 8bit sine table" class="lazy" data-src="https://cdn.hackaday.io/images/3182611515252464050.png" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a><figcaption>697Hz DDS,  16bit tuning word, fast-PWM, 8bit sine table<br></figcaption></figure>
+
+
+
+
+
+<p><strong>Sine table</strong></p>
+
+<p>To avoid the time consuming operation of calculating a sine wave in real time, the values are precalculated and stored in flash.</p>
+
+<p>The original implementation of which you can see screenshots above had a sine table with 256 values.&nbsp; To save space in flash, this has been reduced to 128 values.&nbsp; There's no noticeable difference in the output.</p>
+
+<p>The pwm resolution of timer2 in the AVRMEGA is 8bit.&nbsp; The original sine table was normalized to 8bit, i.e.&nbsp; the sine values were in the range [0..255].&nbsp; For application in DTMF, two sine waves must be added.&nbsp; The 8bit sine wave values will overflow.&nbsp; To prevent this, the sine table has been normalized to 7bit, i.e. [0..127].</p>
+
+<p><strong>Final output</strong></p>
+
+<figure><a href="https://cdn.hackaday.io/images/5697431515273442404.png" target="_blank"><img class="lazy" data-src="https://cdn.hackaday.io/images/5697431515273442404.png" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a><figcaption>Waveform of DDS output while generating '0' (941 + 1336 Hz)</figcaption></figure></div>
+            </div>
+        </li>
+    
+        
+        <li>
+            <h3 class="element-title">
+                <a href="https://hackaday.io/project/28557/log/71929-measurements-on-commercial-hardware">Measurements on commercial hardware</a>
+                
+            </h3>
+            <small class="authorship"><span class="time-card" style="margin: 0" title="3 years ago">12/24/2017 at 19:31</span>  •
+                <a class="gray-link" href="https://hackaday.io/project/28557/log/71929#discussion-list">
+                    0 comments
+                </a>
+                </small>
+            <div style="position:relative">
+                <div id="post-body-71929"><h1>Test environment</h1>
+
+<p>As the design process will require measurements and manipulations on a potential high voltage telephone line, we can make it easy for ourselves by making a complete test setup on our test table.&nbsp; You probably don't want to destroy the SLIC in your VOIP Box, so we'll be using a separate SLIC-module.</p>
+
+
+
+
+
+
+
+<p>The&nbsp;<a href="http://www.silvertel.com/products/telecom/19-telecom/271-ag1171.html" target="_blank">Silvertel AG1171</a>&nbsp;is a very simple to use SLIC-module.&nbsp; It might be hard to get as a hobbyist.&nbsp; The&nbsp;<a href="http://www.r-tone.com/en/DownView.asp?ID=8" target="_blank">R-Tone KS0835F</a>&nbsp;is fully compatible and available from the usual Chinese channels.</p>
+
+
+
+
+
+
+
+<h2>Modular jack RJ11</h2>
+
+
+
+
+
+
+
+<p>Info can be found on&nbsp;<a href="https://en.wikipedia.org/wiki/Registered_jack#RJ11" target="_blank">Wikipedia</a>:&nbsp;</p>
+
+
+
+
+
+
+
+<ul><li>pin 3 : RED : RING : -</li><li>pin 4 : GREEN : TIP : +</li></ul>
+
+
+
+
+
+
+
+<p>So much for the standard, the Bbox2 VOIP-gateway uses reverse polarity.</p>
+
+
+
+
+
+
+
+<h2>Connecting the SLIC</h2>
+
+
+
+
+
+
+
+<p>For the KS0835F this becomes:</p>
+
+
+
+
+
+
+
+<ul><li>pin 1 : RING = RJ11, pin 3</li><li>pin 2 : TIP = RJ11, pin 4</li><li>pin 3 : F/R = +5V ( reverse mode : ring positive with respect to tip).&nbsp; The drawing on the KS0835F datasheet is correct, the describing text is wrong.</li><li>pin 4 : RM = GND (no ringing needed)</li><li>pin 7 : VX = Audio out, decoupled with 220nF to oscilloscope to get rid of the 5VDC-offset</li><li>pin 9 : GND</li><li>pin 10 : +5VDC (100nF +&nbsp;470µF close to pin 9&amp;10 to get rid of the noise on pin 7).&nbsp; If you only supply with 3V3, the loop current will be considerably smaller, even to that agree that the ProTrinket3V refuses to boot.</li></ul>
+
+
+
+
+
+
+
+<p>Let's do some basic measurements first on this slic.</p>
+
+
+
+
+
+
+
+<ul><li>On hook voltage : TIP=50V, RING=0V</li><li>Off hook voltage&nbsp;<ul><li>330ohm resistor : RING=16.7V, TIP=7.0V =&gt; 29mA loop current</li><li>220ohm resistor : RING=13.4V, TIP=7.0V =&gt; 29mA loop current</li></ul></li><li>Connecting resistor from RING to GND<ul><li>220ohm resistor : RING=6.93V, TIP=0.1V =&gt; 31mA</li><li>330ohm resistor : RING=10.11V, TIP=0.1V =&gt; 32.6mA</li></ul></li><li>The RING-pin internally has a current source connected to it.&nbsp; The TIP-pin seems to have a 7V-zener like functionality.</li><li>Ring-trip detection circuitry is built in on the RING-pin.&nbsp; Connecting a 3.8Kohm resistor causes the SHK-pin to come up (13mA?).&nbsp; There is some hysteresis to turn if off again.</li></ul>
+
+
+
+
+
+
+
+<h2>Injecting audio in the SLIC</h2>
+
+
+
+
+
+
+
+<p><strong>Differential mode input impedance</strong></p>
+
+
+
+
+
+
+
+<p>Our signal will be injected as a differential voltage to the SLIC.&nbsp; An audio transformer is used to converted the single ended test signal to a balanced signal.&nbsp; This signal is then AC-coupled to TIP-RING.&nbsp; By inserting an 22Kohm sense resistor, we can measure the input impedance of the SLIC.&nbsp; It appears to be close to 15Kohm.&nbsp; This impedance is constant to at least 22KHz.</p>
+
+
+
+
+
+
+
+<p><strong>Transresistance</strong></p>
+
+
+
+
+
+
+
+<p>The SLIC provides constant current to the load and measures the voltage over that load.&nbsp; The way to inject data is to modulate the load.&nbsp; The question is how much do we need to vary the load to get a certain output voltage?</p>
+
+
+
+
+
+
+
+<p>Measurements have shown that a 30mA current change in the loop leads to a 1V change in the audio output.</p>
+
+
+
+
+
+
+
+<p><strong>Audio output</strong></p>
+
+
+
+
+
+
+
+<p>The audio output voltage is the simply the difference of the TIP and RING voltage, transferred to a 5VDC-offset.</p>
+
+
+
+
+
+
+
+<h2>Measuring DTMF signals of a Philips D200 DECT-base station</h2>
+
+
+
+
+
+
+
+<p>Let's see what COTS-devices output when they're generating DTMF-signals.&nbsp; In order to do that, we connect the Philips D200 DECT-base station to the SLIC's tip&amp;ring.&nbsp; The oscilloscope is connected to the audio out of the SLIC.</p>
+
+
+
+
+
+
+
+<figure><a href="https://cdn.hackaday.io/images/3927631513369658141.png" target="_blank"><img class="lazy" style="display: block; margin: 1em auto; max-width: 100%; cursor: pointer; height: auto; vertical-align: middle;" data-src="https://cdn.hackaday.io/images/3927631513369658141.png" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a></figure>
+
+
+
+
+
+
+
+<p>The screenshot shows a screen capture of the SLIC's audio out, while the Philips D200 is dialing "1".&nbsp; The FFT-shows energy on 700Hz (actually 697Hz) and 1200Hz (actually 1209Hz).</p>
+
+
+
+
+
+
+
+<ul><li>Signal amplitude : 1.8Vpp</li><li>Tone duration : 80ms</li></ul>
+
+
+
+
+
+
+
+<figure><a href="https://cdn.hackaday.io/images/2196031513369902953.png" target="_blank"><img class="lazy" style="display: block; margin: 1em auto; max-width: 100%; cursor: pointer; height: auto; vertical-align: middle;" data-src="https://cdn.hackaday.io/images/2196031513369902953.png" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a></figure>
+
+
+
+
+
+
+
+<p>This screenshot is measured on the same signal.&nbsp; This time, the phone is dialing "12".</p>
+
+
+
+
+
+
+
+<ul><li>Pause duration : 80ms</li></ul>
+
+
+
+<p>The SLIC audio conversion relative gain is 0dB, so it doesn't change the amplitude of the audio on the telephone line.&nbsp;&nbsp;</p>
+
+
+
+
+
+<p>The Philips D200 generates it's DTMF which complies to the standard.</p>
+
+
+
+
+
+<h1>Bbox2 VOIP Box FXS-port measurements</h1>
+
+
+
+
+
+
+
+<p>Measurements done with POTS connected.</p>
+
+
+
+
+
+
+
+<ul><li>On-hook voltage: 47.2V</li><li>Off-hook voltage: 10.0V</li></ul></div>
+            </div>
+        </li>
+    
+        
+        <li>
+            <h3 class="element-title">
+                <a href="https://hackaday.io/project/28557/log/71898-coupling-audio-to-telephone-line">Coupling audio to telephone line</a>
+                
+            </h3>
+            <small class="authorship"><span class="time-card" style="margin: 0" title="3 years ago">12/23/2017 at 19:20</span>  •
+                <a class="gray-link" href="https://hackaday.io/project/28557/log/71898#discussion-list">
+                    0 comments
+                </a>
+                </small>
+            <div style="position:relative">
+                <div id="post-body-71898"><p>The trouble with telephone lines is they carry relatively small audio signals and high voltage ringing signals.&nbsp; If the circuitry is placed in parallel with the telephone line, it has to deal with the ringing voltage.&nbsp; At the same time, the circuit must be low-Z enough to inject audio signals.</p><p>The alternative option chosen here is to design circuitry that sits in series with the telephone line.&nbsp; The advantages are:</p><ul><li>No current consumption on hook.</li><li>Easy way to feed electronics using a zener diode (only off-hook and in between DTMF-bursts).</li><li>High ringing voltage is no longer an issue.&nbsp; The maximum voltage over the circuit is limited by the zener diode.</li></ul><figure><a href="https://cdn.hackaday.io/images/4035721514054700888.png" target="_blank"><img data-src="https://cdn.hackaday.io/images/4035721514054700888.png" class="lazy" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></a></figure><p>The SLIC provides a 30mA current loop, that's I1.</p><p>U1 is the variable load, modulated by the DTMF-source, U1.&nbsp; When the horn goes off-hook, the connected telephone closes the loop with a 300ohm resistor.&nbsp; The current through the loop will rise to 30mA.&nbsp; This causes the voltage over D1 to rise to 4.7V.&nbsp; The MCU will startup.&nbsp; U1 will start sinking considerable current.&nbsp; The rest of the current will be used to power the electronics.&nbsp; The DC-bias current through U1 can be set with R2 and R3.&nbsp; Check that during DTMF-transmitting, the output voltage (VOUT) doesn't exceed the zener voltage.&nbsp; The zener will limit the VOUT and distort the signal.</p><p>When transmitting DTMF, R4 and R5 set the amplitude of the DTMF-signal voltage on the current loop.</p><p>4.7nF caps will be added in parallel with R5 and to the base of U1 to filter the HF-noise of the PWM-output of the MCU.</p></div>
+            </div>
+        </li>
+    
+</ul>
+
+                
+
+
+
+            
+        </div>
+    </div>
+
+    <div id="footer" class="footer ">
+    
+        <a href="https://hackaday.io/project/28557/logs#header" class="back-to-top">
+            
+
+
+
+
+    <div class="icon icon-long-arrow-up">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8.023 2.03L4.78 5.26h2.688v1.11h1.11V5.26h2.688L8.023 2.03zm-.555 5.505V8.92h1.11V7.534H7.47zm0 2.56v1.383h1.11v-1.384H7.47zm0 2.55v1.384h1.11v-1.385H7.47z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+ Going up?
+        </a>
+    
+    <p>
+        <a href="https://hackaday.com/about/">About Us</a>
+        <a href="mailto:projects-contact@hackaday.com">Contact Hackaday.io</a>
+        <a href="https://hackaday.io/project/37">Give Feedback</a> <a href="https://hackaday.io/tos">Terms of Use</a>
+        <a href="https://supplyframe.com/company/privacy">Privacy Policy</a>
+        <a href="https://dev.hackaday.io/" target="_blank" rel="noopener noreferrer">Hackaday API</a>
+    </p>
+    <p><a id="footer--home" href="https://hackaday.io/">© 2020 Hackaday</a></p>
+
+    
+</div>
+
+
+<script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+</script>
+
+<script>
+    var csrftoken = 'CMa4Gwxz-z0b9tB2GpAPAo9t0zJUOosEk4AQ';
+</script>
+
+
+<img src="./Project _ Pulse to Tone Converter _ Hackaday_all.io_files/impression" alt="" class="sf-impression">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    <script src="./Project _ Pulse to Tone Converter _ Hackaday_all.io_files/OkhhCeSBz5ZL_BE4f7QZBTswUbzMyssop5H1caXZkXKImKPN7f_Cv0BjjjDWy+lHLlwzkG+AO+13Ufu_K5x47KlMR6xhx+AjXWd_fiD+qVRI00RZT+Q0p.download"></script>
+
+
+
+</body></html>

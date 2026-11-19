@@ -1,0 +1,3389 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)https://hackaday.io/project/28557-pulse-to-tone-converter -->
+<html class="no-js wf-proximanova-n7-active wf-proximanova-i7-active wf-proximanova-i4-active wf-lettergothicstd-n7-active wf-proximanova-i3-active wf-proximanova-n3-active wf-proximanova-n4-active wf-active" lang="en"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+
+<title>Pulse to Tone Converter | Hackaday.io</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#333333">
+<link rel="apple-touch-icon-precomposed" href="https://hackaday.io/apple-touch-icon.png">
+<link rel="stylesheet" href="./Pulse to Tone Converter _ Hackaday.io_files/style.css">
+<script async="" src="./Pulse to Tone Converter _ Hackaday.io_files/analytics.js.download"></script><script type="text/javascript" src="./Pulse to Tone Converter _ Hackaday.io_files/ymb0lgk.js.download"></script>
+<style type="text/css">.tk-proxima-nova{font-family:"proxima-nova",sans-serif;}.tk-letter-gothic-std{font-family:"letter-gothic-std",sans-serif;}</style><style type="text/css">@font-face{font-family:tk-proxima-nova-n7;src:url(https://use.typekit.net/af/399a91/0000000000000000000158cf/23/l?subset_id=2&fvd=n7&v=3) format("woff2"),url(https://use.typekit.net/af/399a91/0000000000000000000158cf/23/d?subset_id=2&fvd=n7&v=3) format("woff"),url(https://use.typekit.net/af/399a91/0000000000000000000158cf/23/a?subset_id=2&fvd=n7&v=3) format("opentype");font-weight:700;font-style:normal;font-display:auto;}@font-face{font-family:tk-proxima-nova-i7;src:url(https://use.typekit.net/af/f61233/0000000000000000000158d0/23/l?subset_id=2&fvd=i7&v=3) format("woff2"),url(https://use.typekit.net/af/f61233/0000000000000000000158d0/23/d?subset_id=2&fvd=i7&v=3) format("woff"),url(https://use.typekit.net/af/f61233/0000000000000000000158d0/23/a?subset_id=2&fvd=i7&v=3) format("opentype");font-weight:700;font-style:italic;font-display:auto;}@font-face{font-family:tk-proxima-nova-n4;src:url(https://use.typekit.net/af/477d8d/0000000000000000000158d7/23/l?subset_id=2&fvd=n4&v=3) format("woff2"),url(https://use.typekit.net/af/477d8d/0000000000000000000158d7/23/d?subset_id=2&fvd=n4&v=3) format("woff"),url(https://use.typekit.net/af/477d8d/0000000000000000000158d7/23/a?subset_id=2&fvd=n4&v=3) format("opentype");font-weight:400;font-style:normal;font-display:auto;}@font-face{font-family:tk-proxima-nova-i4;src:url(https://use.typekit.net/af/8adb93/0000000000000000000158d8/23/l?subset_id=2&fvd=i4&v=3) format("woff2"),url(https://use.typekit.net/af/8adb93/0000000000000000000158d8/23/d?subset_id=2&fvd=i4&v=3) format("woff"),url(https://use.typekit.net/af/8adb93/0000000000000000000158d8/23/a?subset_id=2&fvd=i4&v=3) format("opentype");font-weight:400;font-style:italic;font-display:auto;}@font-face{font-family:tk-proxima-nova-n3;src:url(https://use.typekit.net/af/3693ba/0000000000000000000158d9/23/l?subset_id=2&fvd=n3&v=3) format("woff2"),url(https://use.typekit.net/af/3693ba/0000000000000000000158d9/23/d?subset_id=2&fvd=n3&v=3) format("woff"),url(https://use.typekit.net/af/3693ba/0000000000000000000158d9/23/a?subset_id=2&fvd=n3&v=3) format("opentype");font-weight:300;font-style:normal;font-display:auto;}@font-face{font-family:tk-proxima-nova-i3;src:url(https://use.typekit.net/af/9c140d/0000000000000000000158da/23/l?subset_id=2&fvd=i3&v=3) format("woff2"),url(https://use.typekit.net/af/9c140d/0000000000000000000158da/23/d?subset_id=2&fvd=i3&v=3) format("woff"),url(https://use.typekit.net/af/9c140d/0000000000000000000158da/23/a?subset_id=2&fvd=i3&v=3) format("opentype");font-weight:300;font-style:italic;font-display:auto;}@font-face{font-family:tk-letter-gothic-std-n7;src:url(https://use.typekit.net/af/2cd276/000000000000000000012e1b/23/l?subset_id=2&fvd=n7&v=3) format("woff2"),url(https://use.typekit.net/af/2cd276/000000000000000000012e1b/23/d?subset_id=2&fvd=n7&v=3) format("woff"),url(https://use.typekit.net/af/2cd276/000000000000000000012e1b/23/a?subset_id=2&fvd=n7&v=3) format("opentype");font-weight:700;font-style:normal;font-display:auto;}</style><script type="text/javascript">try{Typekit.load({ async: true });}catch(e){}</script>
+
+    
+
+
+
+
+        <meta name="description" content="Converts pulse dialing of your POTS telephone to DTMF dialing allowing you to use it with your VOIP&#39;s FXS-port.">
+        <link rel="canonical" href="https://hackaday.io/project/28557-pulse-to-tone-converter">
+
+
+        <script type="text/javascript">
+        function getCommentIdFromUrl() {
+            if(window.location.hash) {
+                var hash = window.location.hash.substring(1);
+                var commentId = parseInt(hash.replace('j-discussion-', ''));
+                if (commentId) {
+                    return commentId;
+                }
+            }
+            return null;
+        }
+
+        var commentId = getCommentIdFromUrl();
+        if (commentId) {
+            var url = window.location.href;
+            if (url.indexOf('?') > -1) {
+                url = url.substring(0, url.indexOf('?'));
+            }
+            if (url.indexOf('#') > -1) {
+                url = url.substring(0, url.indexOf('#'));
+            }
+            url += '/discussion-' + commentId;
+            window.location.href = url;
+        }
+    </script>
+    
+
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@hackadayio">
+<meta name="twitter:title" content="Pulse to Tone Converter">
+<meta name="twitter:image" content="https://cdn.hackaday.io/images/resize/600x600/3974011583352787812.png">
+
+    <meta name="twitter:description" content="Old telephones use pulse dialing, which many SLICs no longer support.  Nowadays tone dialing, aka dtmf dialing is used.  The goal of the project is to build a converter from pulse dialing to tone dialing.
+
+This project has been replicated and tested independently by at least two other electronics enthusiasts.">
+
+
+    
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Pulse to Tone Converter">
+<meta property="og:url" content="https://hackaday.io/project/28557-pulse-to-tone-converter">
+<meta property="og:image" content="https://cdn.hackaday.io/images/resize/600x600/3974011583352787812.png">
+
+    <meta property="og:description" content="Old telephones use pulse dialing, which many SLICs no longer support. Nowadays tone dialing, aka dtmf dialing is used. The goal of the project is to build a converter from pulse dialing to tone dialing. This project has been replicated and tested independently by at least two other electronics enthusiasts.">
+
+
+
+    <script>
+        var HIO = {
+            data: {
+            role: '',
+            },
+            projectId: 28557,
+            hackadayPrize: {
+                id: 74,
+                key: 'prize2020'
+            },
+            
+            _csrf: '4e5hXMyx-1ymB2l_JiUjEZJkWRrtg7ZjR6Jk'
+        };
+    </script>
+<style type="text/css">@font-face{font-family:proxima-nova;src:url(https://use.typekit.net/af/399a91/0000000000000000000158cf/23/l?subset_id=2&fvd=n7&v=3) format("woff2"),url(https://use.typekit.net/af/399a91/0000000000000000000158cf/23/d?subset_id=2&fvd=n7&v=3) format("woff"),url(https://use.typekit.net/af/399a91/0000000000000000000158cf/23/a?subset_id=2&fvd=n7&v=3) format("opentype");font-weight:700;font-style:normal;font-display:auto;}@font-face{font-family:proxima-nova;src:url(https://use.typekit.net/af/f61233/0000000000000000000158d0/23/l?subset_id=2&fvd=i7&v=3) format("woff2"),url(https://use.typekit.net/af/f61233/0000000000000000000158d0/23/d?subset_id=2&fvd=i7&v=3) format("woff"),url(https://use.typekit.net/af/f61233/0000000000000000000158d0/23/a?subset_id=2&fvd=i7&v=3) format("opentype");font-weight:700;font-style:italic;font-display:auto;}@font-face{font-family:proxima-nova;src:url(https://use.typekit.net/af/477d8d/0000000000000000000158d7/23/l?subset_id=2&fvd=n4&v=3) format("woff2"),url(https://use.typekit.net/af/477d8d/0000000000000000000158d7/23/d?subset_id=2&fvd=n4&v=3) format("woff"),url(https://use.typekit.net/af/477d8d/0000000000000000000158d7/23/a?subset_id=2&fvd=n4&v=3) format("opentype");font-weight:400;font-style:normal;font-display:auto;}@font-face{font-family:proxima-nova;src:url(https://use.typekit.net/af/8adb93/0000000000000000000158d8/23/l?subset_id=2&fvd=i4&v=3) format("woff2"),url(https://use.typekit.net/af/8adb93/0000000000000000000158d8/23/d?subset_id=2&fvd=i4&v=3) format("woff"),url(https://use.typekit.net/af/8adb93/0000000000000000000158d8/23/a?subset_id=2&fvd=i4&v=3) format("opentype");font-weight:400;font-style:italic;font-display:auto;}@font-face{font-family:proxima-nova;src:url(https://use.typekit.net/af/3693ba/0000000000000000000158d9/23/l?subset_id=2&fvd=n3&v=3) format("woff2"),url(https://use.typekit.net/af/3693ba/0000000000000000000158d9/23/d?subset_id=2&fvd=n3&v=3) format("woff"),url(https://use.typekit.net/af/3693ba/0000000000000000000158d9/23/a?subset_id=2&fvd=n3&v=3) format("opentype");font-weight:300;font-style:normal;font-display:auto;}@font-face{font-family:proxima-nova;src:url(https://use.typekit.net/af/9c140d/0000000000000000000158da/23/l?subset_id=2&fvd=i3&v=3) format("woff2"),url(https://use.typekit.net/af/9c140d/0000000000000000000158da/23/d?subset_id=2&fvd=i3&v=3) format("woff"),url(https://use.typekit.net/af/9c140d/0000000000000000000158da/23/a?subset_id=2&fvd=i3&v=3) format("opentype");font-weight:300;font-style:italic;font-display:auto;}@font-face{font-family:letter-gothic-std;src:url(https://use.typekit.net/af/2cd276/000000000000000000012e1b/23/l?subset_id=2&fvd=n7&v=3) format("woff2"),url(https://use.typekit.net/af/2cd276/000000000000000000012e1b/23/d?subset_id=2&fvd=n7&v=3) format("woff"),url(https://use.typekit.net/af/2cd276/000000000000000000012e1b/23/a?subset_id=2&fvd=n7&v=3) format("opentype");font-weight:700;font-style:normal;font-display:auto;}</style><style class="redactor-placeholder-style-tag">#redactor-uuid-0.redactor-placeholder::after { top: 10px; left: 10px; }</style></head>
+<body class="project-detail page_v2 ">
+    
+
+<div class="header hfr-has-background-black" id="header">
+
+    
+
+    <div class="hfr-container hfr-is-max-widescreen">
+
+        <nav class="hfr-navbar" role="navigation" aria-label="main navigation">
+
+            <div class="hfr-navbar-brand">
+                <a href="https://hackaday.io/" title="Hackaday.io Home" class="hfr-navbar-item logo">
+                    <img src="./Pulse to Tone Converter _ Hackaday.io_files/logo.png" width="33px" height="23px" alt="Hackaday.io" class="hfr-is-hidden-touch hfr-is-hidden-widescreen">
+                    <img src="./Pulse to Tone Converter _ Hackaday.io_files/hackaday-logo.svg" width="138px" height="17px" alt="Hackaday.io" class="hfr-is-hidden-desktop-only">
+                </a>
+
+                <a role="button" class="hfr-navbar-burger hfr-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div class="hfr-navbar-menu">
+                
+                <div class="hfr-navbar-start">
+                    <div class="hfr-navbar-item hfr-has-dropdown hfr-is-hoverable">
+                        <a href="https://hackaday.io/projects" class="hfr-navbar-link hfr-is-arrowless hfr-is-family-secondary">Projects 
+
+
+
+
+    <div class="icon hfr-icon hfr-ml-3 hfr-has-text-grey hfr-is-hidden-touch">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8 9.702l4.79-4.79a.707.707 0 111 .999l-5.14 5.14a.705.705 0 01-.652.197.712.712 0 01-.646-.196l-5.14-5.14a.703.703 0 01-.004-1.002.708.708 0 011.003.004L8 9.702z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+</a>
+                        <div class="hfr-navbar-dropdown hfr-is-hidden-touch">
+                            <a href="https://hackaday.io/projects?sort=updated" class="hfr-navbar-item">Recently Updated</a>
+                            <a href="https://hackaday.io/projects?sort=skulls" class="hfr-navbar-item">Most Likes</a>
+                            <a href="https://hackaday.io/projects?sort=date" class="hfr-navbar-item">Newest</a>
+                            <a href="https://hackaday.io/lists" class="hfr-navbar-item">Project Lists</a>
+                        </div>
+                    </div>
+                    <a href="https://hackaday.io/discover" class="hfr-navbar-item hfr-is-family-secondary ">Discover</a>
+                    <a href="https://hackaday.io/contests" class="hfr-navbar-item hfr-is-family-secondary ">Contests</a>
+                    <a href="https://hackaday.io/courses" class="hfr-navbar-item hfr-is-family-secondary hfr-is-hidden-desktop-only ">Courses</a>
+                    <a href="https://hackaday.io/stack" class="hfr-navbar-item hfr-is-family-secondary ">Stack</a>
+                    <div class="hfr-navbar-item hfr-has-dropdown hfr-is-hoverable">
+                        <a class="hfr-navbar-link hfr-is-arrowless hfr-is-family-secondary">More 
+
+
+
+
+    <div class="icon hfr-icon hfr-ml-3 hfr-has-text-grey hfr-is-hidden-touch">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8 9.702l4.79-4.79a.707.707 0 111 .999l-5.14 5.14a.705.705 0 01-.652.197.712.712 0 01-.646-.196l-5.14-5.14a.703.703 0 01-.004-1.002.708.708 0 011.003.004L8 9.702z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+</a>
+                        <div class="hfr-navbar-dropdown">
+                            <a href="https://hackaday.io/courses" class="hfr-navbar-item hfr-is-hidden-touch hfr-is-hidden-widescreen">Courses</a>
+                            <a href="https://hackaday.io/events" class="hfr-navbar-item">Events</a>
+                            <a href="https://hackaday.io/hackerspaces" class="hfr-navbar-item">Hackerspaces</a>
+                            <a href="https://hackaday.io/hackers" class="hfr-navbar-item">Profiles</a>
+                            <a href="https://hackaday.com/" target="_blank" rel="noopener noreferrer" class="hfr-navbar-item">Hackaday.com</a>
+                            <a href="https://www.tindie.com/" target="_blank" rel="noopener noreferrer" class="hfr-navbar-item j-store-tracking">Tindie Marketplace</a>
+                            <a href="https://hackaday.io/project/174089" class="hfr-navbar-item">Remoticon</a>
+                        </div>
+                    </div>
+                    <div class="hfr-navbar-item nav search-holder" style="border-left: 1px solid #272727;">
+                        
+<form id="search-form" class="hfr-field hfr-has-addons" action="https://hackaday.io/search" onsubmit="return submitSearch();" method="GET">
+    <div class="hfr-control">
+        <input type="text" placeholder="Find projects and more" name="term" class="hfr-input hfr-is-static j-add-search t-input-search" id="add-search" value="" autocomplete="off" pattern=".{2,}" required="" title="2 characters minimum">
+    </div>
+    <div class="control">
+        <button type="submit" class="hfr-button button-search" title="Search">
+            
+
+
+
+
+    <div class="icon hfr-icon hfr-is-medium">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M10.542 9.368a4.547 4.547 0 10-1.015 1.079c.04.086.094.166.165.237l2.727 2.727a.8.8 0 001.137.006.801.801 0 00-.006-1.136l-2.726-2.727a.812.812 0 00-.282-.185zm-1.72-.473a2.91 2.91 0 10-4.114-4.116 2.91 2.91 0 004.114 4.117z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+        </button>
+    </div>
+</form>
+
+                    </div>
+                </div>
+
+                
+
+                    <div class="hfr-navbar-end">
+                        <div class="hfr-navbar-item">
+                            <div class="hfr-buttons">
+                                <a href="https://hackaday.io/signup" class="hfr-button hfr-is-primary hfr-is-outlined">Sign up</a>
+                                <a href="https://hackaday.io/signin?returnUrl=%2Fproject%2F28557-pulse-to-tone-converter" class="hfr-button hfr-is-text">Log in</a>
+                            </div>
+                        </div>
+                    </div>
+
+                
+            </div>
+        </nav>
+
+    </div>
+</div>
+
+<div id="topMessage" class="alert small hide">
+    <span class="j-top-content"></span>
+    <a href="javascript:void(0);" class="alert-close j-top-message-close" title="Close">
+        
+
+
+
+
+    <div class="icon icon-close-circle">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M10.047 10.658a.562.562 0 01-.398-.165L7.984 8.828 6.32 10.493a.562.562 0 01-.961-.398.56.56 0 01.164-.398L7.19 8.033 5.523 6.368a.561.561 0 11.795-.796l1.665 1.665L9.65 5.572a.563.563 0 01.795.796L8.78 8.033l1.665 1.664a.562.562 0 01-.398.961zm-2.062-7.5a4.875 4.875 0 10.002 9.75 4.875 4.875 0 00-.004-9.75zm0 10.875a6 6 0 110-12 6 6 0 010 12z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+ Close
+    </a>
+</div>
+
+
+
+
+<script>
+    var HIO = HIO || {};
+</script>
+
+    
+
+
+
+
+    
+
+
+
+    
+    <div class="header-photo">
+        <div class="overlay"></div>
+    </div>
+
+    <div class="headline" false="">
+    
+
+<div class="headline-image-overlay"></div>
+<div class="progress-holder">
+    <div class="progress">
+        <div class="progress-item">
+            <div class="progress-number foreground">0%</div>
+        </div>
+        <div class="progress-number">0%</div>
+    </div>
+</div>
+    <div class="container">
+        <h1>Pulse to Tone Converter</h1>
+        
+
+
+
+<p class="description">Converts pulse dialing of your POTS telephone to DTMF dialing allowing you to use it with your VOIP's FXS-port.</p>
+        <div class="author">
+            <span class="identity-card" data-id="262523"><a href="https://hackaday.io/ctack"><img src="./Pulse to Tone Converter _ Hackaday.io_files/2901341510420377785.png" alt="Christoph Tack">Christoph Tack</a></span>
+        </div>
+        
+
+
+
+    <div class="project-following-container ">
+        <a href="javascript:void(0)" data-href="/project/28557/event/unfollow" class="gold-gold-button unfollow text-changing-button" data-before="Following" data-after="Unfollow?">Following</a>
+        <a href="javascript:void(0)" data-href="/project/28557/event/follow" class="gold-gold-button follow">Follow project</a>
+    </div>
+
+        
+
+
+
+    <div class="project-skulling-container ">
+        <a href="javascript:void(0)" data-href="/project/28557/event/unskull" class="gold-gold-button unskulled text-changing-button" data-before="Liked" data-after="Unlike?">Liked</a>
+        <a href="javascript:void(0)" data-href="/project/28557/event/skull" class="gold-gold-button skulled">Like project</a>
+    </div>
+
+    </div>
+    <div id="modal-onboarding-back" class="modal-background"></div>
+
+<div class="onboarding-padding-remove onboarding-modal modal-content-holder" id="onboarding-modal">
+    <div class="onboarding-signup">
+        <div class="onboarding-top">
+            <div class="submissions-close modal-close">
+                
+
+
+
+
+    <div class="icon icon-close">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8 6.99L4.767 3.76a.714.714 0 10-1.01 1.01L6.992 8 3.76 11.233a.714.714 0 101.01 1.01L8 9.008l3.233 3.232a.714.714 0 101.01-1.01L9.008 8l3.232-3.233a.714.714 0 10-1.01-1.01L8 6.992z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+            </div>
+            <div class="onboarding-holder">
+
+                <div class="headline">
+                    <h1 class="title text-center">Become a Hackaday.io member</h1>
+                    <p class="onboarding-subtitle-signup text-center hidden">
+                        <span>Not a member? You should </span>
+                        <a href="https://hackaday.io/project/28557-pulse-to-tone-converter#" id="signup-switch">Sign Up.</a>
+                    </p>
+                    <p class="onboarding-subtitle-login text-center">
+                        <span>Already have an account? </span>
+                        <a href="https://hackaday.io/project/28557-pulse-to-tone-converter#" id="login-switch">Log In.</a>
+                    </p>
+                </div>
+
+                <div class="onboarding-content signin-holder">
+
+
+                    <div class="signin-left">
+                        <a href="https://hackaday.io/auth/github" class="sign-in-with-github-button button j-dialog-auth-window">
+                            
+
+
+
+
+    <div class="icon icon-github--signin">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M3.643 7.513c-.158-.45-.228-.967-.228-1.543 0-1.024.33-1.41.77-1.955-.337-1.167.122-1.965.122-1.965s.71-.142 2.05.79c.728-.303 2.666-.328 3.584-.068.563-.36 1.593-.873 2.008-.73.113.176.355.688.147 1.813.14.247.874.772.877 2.258-.012.548-.07 1.01-.18 1.402.02 0-.14.485-.177.484C12.13 9.034 11.13 9.42 9.52 9.58c.522.32.672.72.672 1.802 0 1.083-.015 1.23-.012 1.478.006.408.623.604.6.736-.023.13-.517.11-.747.032-.654-.22-.588-.75-.588-.75l-.022-1.447s.044-.78-.253-.78v2.37c0 .516.372.672.372.863 0 .327-.68-.03-.888-.235-.32-.31-.283-.97-.275-1.49.006-.502-.006-1.603-.006-1.603l-.216.005s.088 2.403-.114 2.84c-.263.563-1.054.757-1.054.5 0-.172.194-.117.302-.503.093-.33.06-2.78.06-2.78s-.253.146-.253.605c0 .21-.007 1.41-.007 1.767 0 .45-.657.705-.973.705-.16 0-.36-.008-.36-.09 0-.208.602-.33.602-.762 0-.375-.008-1.34-.008-1.34s-.304.052-.736.052c-1.09 0-1.435-.675-1.6-1.053a1.859 1.859 0 00-.784-.908c-.18-.113-.222-.247-.013-.285.966-.175 1.212 1.063 1.857 1.26.46.14 1.052.08 1.346-.105.04-.378.32-.705.554-.877-1.64-.153-2.612-.705-3.116-1.593-.005 0-.236-.482-.217-.482z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+                            <span class="onboardingCaption">Sign up</span> with Github
+                        </a>
+                        <a href="https://hackaday.io/auth/twitter" class="sign-in-with-twitter-button button j-dialog-auth-window">
+                            
+
+
+
+
+    <div class="icon icon-twitter--signin">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M10.725 2.04c1.2-.022 1.837.406 2.447.946.517-.044 1.19-.324 1.586-.52.128-.07.256-.138.385-.207-.226.595-.533 1.062-1.004 1.416-.106.08-.21.186-.34.237v.007c.67-.007 1.225-.304 1.75-.463v.007c-.276.428-.65.863-1.05 1.175l-.482.374c.008.692-.01 1.355-.144 1.94-.773 3.388-2.82 5.688-6.064 6.674-1.165.355-3.046.5-4.38.175-.662-.16-1.26-.34-1.82-.58a7.252 7.252 0 01-.877-.44l-.272-.162c.302.01.654.09.99.038.305-.048.604-.035.884-.094.7-.15 1.322-.35 1.858-.653.26-.15.654-.324.838-.537a2.706 2.706 0 01-.92-.16c-1.002-.346-1.585-.98-1.964-1.933.303.032 1.177.11 1.38-.058-.38-.02-.748-.236-1.01-.397C1.71 8.333 1.053 7.51 1.058 6.24c.106.048.21.1.317.147.202.083.408.127.65.177.102.02.305.078.423.037h-.015c-.156-.176-.41-.296-.567-.484-.517-.628-1-1.592-.695-2.74.08-.29.202-.55.334-.785l.015.007c.06.122.193.214.278.316.264.32.59.607.92.86 1.132.862 2.15 1.39 3.785 1.784.415.1.894.175 1.39.177-.14-.395-.095-1.035.015-1.42.275-.96.874-1.654 1.752-2.025a3.8 3.8 0 01.687-.208c.126-.013.252-.027.378-.043" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+                            <span class="onboardingCaption">Sign up</span> with Twitter
+                        </a>
+                        <span class="or-separator">OR</span>
+                    </div>
+
+
+                    <div class="signin-right">
+
+                        <form method="POST" action="https://hackaday.io/signupfast">
+                            <div class="signin-controls">
+                                <div class="signin-control">
+                                    <input id="onboarding-email" type="text" class="input-field" placeholder="Enter your email address" required="" name="email">
+                                </div>
+                                <div class="signin-control">
+                                    <input id="onboarding-pass" type="password" class="input-field" placeholder="Pick a secure password" required="" name="password">
+                                </div>
+                                <div class="bottom remember-me hidden">    
+                                    <input id="rememberMe" class="checkbox" type="checkbox" name="rememberMe" value="remember-me" checked="">
+                                    <label for="rememberMe">Remember me</label>
+                                </div>
+
+
+                                <input id="captchaInput" type="text" class="input-field onboarding-modal-captcha" placeholder="Enter captcha" name="captcha" autocomplete="new-password" style="width: -webkit-calc(100% - 115px);">
+                                <img src="./Pulse to Tone Converter _ Hackaday.io_files/captcha.jpg" id="captchaUrl" style="vertical-align: middle;" class="onboarding-modal-captcha">
+                                <div class="signin-control">
+                                    <button class="input-field gold-gold-button button-signin" type="submit">
+                                        <span class="onboardingCaption">Sign up</span>
+                                    </button>
+                                    <div class="bottom signin-empty-bottom hidden"></div>
+                                </div>
+
+                                <div class="bottom forgot-password hidden">
+                                    <a href="https://hackaday.io/forgotpass" id="forgot-pass-link" class="forgot-pass">Forgot your password?</a>
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="source" value="/project : like/follow modal">
+                            <input type="hidden" name="_csrf" value="4e5hXMyx-1ymB2l_JiUjEZJkWRrtg7ZjR6Jk">
+                            <input type="hidden" class="input-field" placeholder="Invitation Code" required="" name="invitation_code" value="5Ad0ix2-b96J">
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="j-modal-form-message-background">
+            <div class="j-modal-form-message"></div>
+        </div>
+
+    </div>
+
+    <div class="onboarding-top onboarding-interests">
+        <div class="submissions-close modal-close">
+            
+
+
+
+
+    <div class="icon icon-close">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8 6.99L4.767 3.76a.714.714 0 10-1.01 1.01L6.992 8 3.76 11.233a.714.714 0 101.01 1.01L8 9.008l3.233 3.232a.714.714 0 101.01-1.01L9.008 8l3.232-3.233a.714.714 0 10-1.01-1.01L8 6.992z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+        </div>
+
+        <div class="headline">
+            <h1 class="title text-center">Just one more thing</h1>
+            <p class="subtitle text-center">
+                To make the experience fit your profile, pick a username and tell us what interests you.
+            </p>
+        </div>
+
+        <div class="j-modal-form-message-background">
+            <div class="j-modal-form-message"></div>
+        </div>
+
+        <div class="container" id="username-interests-modal">
+            <div class="control-label">Pick an awesome username</div>
+            <div class="username">
+                <div class="prefixed-input-container">
+                    <img src="./Pulse to Tone Converter _ Hackaday.io_files/link.svg" alt="" class="icon-link">
+                    <div class="prefixed-input"><div class="prefixed-input-prefix">hackaday.io/</div><input type="text" class="input-field prefixed-input-field" placeholder="username" id="usernameModal" name="username" maxlength="25" value="" required="">
+                    </div>
+                    <img src="./Pulse to Tone Converter _ Hackaday.io_files/complete-circle.svg" alt="" class="icon-complete-circle" style="display: none">
+                </div>
+                <div class="placeholder">
+                    <div class="urlhint">Your profile's URL: hackaday.io/<strong>username</strong>. Max 25 alphanumeric characters.</div>
+                </div>
+            </div>
+            
+            <div id="interests-list">
+                <div class="control-label">Pick a few interests</div>
+                <ul class="interests-list force-scroll-y interests-list-modal list-terms-ul">
+                </ul>
+            </div>
+
+            
+            <div id="selected">
+                <div class="control-label"> Projects that share your interests </div>
+
+                <div id="interests-projects-frame" class="force-scroll-y">
+                    <ul class="interests-list-mini list-projects">
+                    </ul>
+                </div>
+
+                <div class="control-label"> People that share your interests </div>
+
+                <div id="interests-people-frame" class="force-scroll-y">
+                    <ul class="interests-list-mini list-people">
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-static">
+            <div class="stats container">
+                <div id="footer-found-text">
+                    <p style="margin-bottom: 0" class="stats-text hide">
+                        <span>We found </span>
+                        <span style="color: #AE8E4F; cursor:pointer;" class="refine-projects"></span>
+                        <span> and </span>
+                        <span style="color:#AE8E4F; cursor: pointer;" class="refine-people"></span>
+                        <span>based on your interests.</span>
+                    </p>
+                    <p style="margin-bottom: 0" class="more-interests hide">
+                        <a href="javascript:void(0)" id="back" style="cursor:pointer;">
+                            Choose more interests.
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="feed-button">
+                    <a href="javascript:void(0)" id="done" class="interests-button grey-grey-button">
+                        OK, I'm done!
+                    </a>
+                    <a href="javascript:void(0)" id="skipUsernameInterests" class="interests-button gold-gold-button">
+                        Skip
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="project-join-top ">
+        
+
+
+
+
+
+
+        
+
+
+
+
+    <a href="javascript:void(0)" class="login-button button-upload">
+        <span>Join this project</span>
+        
+
+
+
+
+    <div class="icon icon-join">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><g fill-rule="evenodd"><path d="M9.516 13.71H1.93v-1.34c0-.4 1.035-.984 2.63-1.558 1.587-.572 2.095-1.055 2.095-2.088 0-.62-.485-.418-.698-1.553-.09-.47-.518-.007-.6-1.082 0-.43.234-.536.234-.536s-.12-.634-.165-1.122c-.06-.608.354-2.18 2.56-2.18 2.204 0 2.617 1.572 2.56 2.18-.047.488-.166 1.122-.166 1.122s.234.107.234.536c-.082 1.075-.51.612-.6 1.083-.212 1.137-.697.934-.697 1.554 0 .53.135.917.48 1.243a2.999 2.999 0 00-.284 3.743z"></path><path d="M11.992 14.516a2.5 2.5 0 010-5 2.5 2.5 0 010 5zm1.482-2.17a.33.33 0 000-.66h-1.098V10.59a.33.33 0 10-.66 0v1.097H10.62a.329.329 0 00-.33.33c0 .18.147.33.33.33h1.097v1.097a.33.33 0 00.66 0v-1.098h1.097z"></path></g></svg>
+        
+    </div>
+
+
+    </a>
+
+
+
+
+    </div>
+</div>
+
+    
+
+<div id="similars">
+    <div class="similars-header">
+        Similar projects worth following
+        <a href="javascript:void(0)" class="submissions-close">
+            
+
+
+
+
+    <div class="icon icon-close">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8 6.99L4.767 3.76a.714.714 0 10-1.01 1.01L6.992 8 3.76 11.233a.714.714 0 101.01 1.01L8 9.008l3.233 3.232a.714.714 0 101.01-1.01L9.008 8l3.232-3.233a.714.714 0 10-1.01-1.01L8 6.992z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+        </a>
+    </div>
+    <div class="container"></div>
+</div>
+    <div class="project-menu-details-holder">
+    <div class="container" style="height: 68.7031px;">
+        <div class="content-left">
+            <div class="section-profile-stats">
+                
+
+
+
+
+    <div class="stat-one view-count">
+        <span title="View Count">11.1k</span>
+        <small>views</small>
+    </div>
+
+                
+
+
+
+
+<div class="stat-one comment_count">
+    <a href="javascript:void(0)">
+        <span title="Comments">0</span>
+        <small>comments</small>
+    </a>
+</div>
+
+                
+
+
+
+
+    <div class="stat-one follower_count">
+        
+            <a href="https://hackaday.io/hackers/all/project/28557/following">
+        
+            <span title="Followers">19</span>
+            <small>followers</small>
+        
+            </a>
+        
+    </div>
+
+                
+
+
+
+
+    <div class="stat-one like_count">
+        
+            <a href="https://hackaday.io/hackers/all/project/28557/likers">
+        
+            <span title="Likes">9</span>
+            <small>likes</small>
+        
+            </a>
+        
+    </div>
+
+            </div>
+        </div>
+
+        <div class="content-right">
+            <ul class="project-menu fixed">
+                
+
+
+
+<li>
+    
+        <a href="https://hackaday.io/project/28557-pulse-to-tone-converter#menu-description" class="menu-scroll">Description</a>
+    
+</li>
+                
+
+
+
+<li>
+    
+        <a href="https://hackaday.io/project/28557-pulse-to-tone-converter#menu-details" class="menu-add-content menu-scroll active">Details</a>
+        
+    
+</li>
+                
+
+
+
+<li>
+    
+        <a href="https://hackaday.io/project/28557-pulse-to-tone-converter#menu-files" class="menu-add-content menu-scroll">Files <span>4</span></a>
+        <ul class="menu-add-content-dropdown">
+            
+            <li><a href="https://hackaday.io/project/28557/files" class="grey-gold-button very-small-button">View all</a></li>
+        </ul>
+    
+</li>
+                
+
+
+
+
+    <li>
+        
+            <a href="https://hackaday.io/project/28557-pulse-to-tone-converter#menu-components" class="menu-add-content menu-scroll">Components <span>1</span></a>
+            <ul class="menu-add-content-dropdown">
+                
+                <li><a href="https://hackaday.io/project/28557/components" class="grey-gold-button very-small-button">View all</a></li>
+            </ul>
+        
+    </li>
+
+                
+
+
+
+<li>
+    
+        <a href="https://hackaday.io/project/28557-pulse-to-tone-converter#menu-logs" class="menu-add-content menu-scroll">Logs <span>10</span></a>
+        <ul class="menu-add-content-dropdown">
+            
+            <li><a href="https://hackaday.io/project/28557/logs" class="grey-gold-button very-small-button">View all</a></li>
+        </ul>
+    
+</li>
+                
+
+
+
+
+    <li>
+        
+            Instructions <span>0</span>
+        
+    </li>
+
+                
+
+
+
+<li>
+    
+        Discussion <span>0</span>
+    
+</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+    <div class="container">
+        <div class="content-left">
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <a href="https://hackaday.io/project/28557/gallery#79de63a9996eabfc998cc4f0331a10b7" id="project-image" class="image-holder image-holder-project lazy" data-image="https://cdn.hackaday.io/images/resize/600x600/3974011583352787812.png" style="background-image: url(&quot;https://cdn.hackaday.io/images/resize/600x600/3974011583352787812.png&quot;);"></a>
+
+
+
+    <div class="thumbs-holder">
+        
+            
+                <a href="https://hackaday.io/project/28557/gallery#79de63a9996eabfc998cc4f0331a10b7" class="image-holder thumb lazy" data-image="https://cdn.hackaday.io/images/resize/600x600/3974011583352787812.png" style="background-image: url(&quot;https://cdn.hackaday.io/images/resize/600x600/3974011583352787812.png&quot;);"></a>
+            
+                <a href="https://hackaday.io/project/28557/gallery#5ca57afe4459d1bee33d156da1ed0ba3" class="image-holder thumb lazy" data-image="https://cdn.hackaday.io/images/resize/600x600/3306051514748295828.jpg" style="background-image: url(&quot;https://cdn.hackaday.io/images/resize/600x600/3306051514748295828.jpg&quot;);"></a>
+            
+                <a href="https://hackaday.io/project/28557/gallery#f0834a3fba27f60ae58c2df71afa13b9" class="image-holder thumb thumb-last lazy" data-image="https://cdn.hackaday.io/images/resize/600x600/6195151513173509349.jpg" style="background-image: url(&quot;https://cdn.hackaday.io/images/resize/600x600/6195151513173509349.jpg&quot;);"></a>
+            
+        
+    </div>
+
+
+
+    
+        <div class="view-gallery-holder">
+            <a href="https://hackaday.io/project/28557/gallery">
+                <div class="view-gallery grey-gold-button very-small-button">View Gallery</div>
+            </a>
+        </div>
+    
+
+    
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+
+    
+
+
+
+<aside class="section section-project-stats">
+    
+        <div class="icon-view-count" title="View Count">
+            
+
+
+
+
+    <div class="icon icon-eye">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8.014 12.122c4.036 0 7.002-4.146 7.002-4.146S11.694 3.83 8.014 3.83c-3.68 0-7.002 4.146-7.002 4.146s2.965 4.146 7.002 4.146zm0-1.572a2.573 2.573 0 10-.002-5.146 2.573 2.573 0 00.002 5.146zm0-1a1.573 1.573 0 000-3.146 1.572 1.572 0 000 3.145z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+            <span class="view_count">11.1k</span>
+        </div>
+    
+    <div class="action-comment-with-hover" title="Comments">
+        <a href="https://hackaday.io/project/28557-pulse-to-tone-converter#j-discussions-title">
+            
+
+
+
+
+    <div class="icon icon-comment">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8.312 2.038c3.832 0 6.167 2.303 6.167 5.14 0 2.842-2.336 5.113-6.168 5.113-.467 0-.923-.14-1.364-.204-1.785 2.32-4.598 1.863-4.598 1.863 1.987-.968 1.947-2.57 1.594-2.783-1.56-.944-2.498-2.38-2.498-3.988 0-2.84 3.034-5.142 6.866-5.142" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+            <span class="comment_count">0</span>
+        </a>
+    </div>
+    
+        <div class="action-view" title="Followers">
+            
+                <a href="https://hackaday.io/hackers/all/project/28557/following">
+            
+                
+
+
+
+
+    <div class="icon icon-users">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M9.48 10.79c.347-.278.478-.604.478-1.068 0-.496-.396-.335-.57-1.243-.073-.378-.423-.007-.49-.868 0-.343.19-.428.19-.428s-.096-.507-.134-.898c-.047-.486.29-1.743 2.094-1.743 1.802 0 2.14 1.257 2.093 1.743-.037.39-.134.898-.134.898s.19.085.19.428c-.066.86-.416.49-.49.867-.173.908-.57.746-.57 1.242 0 .826.416 1.212 1.715 1.67 1.303.46 2.15.927 2.15 1.246v1.072H0v-1.34c0-.4 1.042-.984 2.645-1.558 1.6-.572 2.11-1.054 2.11-2.087 0-.62-.488-.418-.703-1.554-.09-.47-.52-.006-.602-1.082 0-.43.235-.535.235-.535s-.12-.634-.166-1.123c-.06-.608.357-2.18 2.575-2.18 2.22 0 2.635 1.572 2.577 2.18-.047.49-.167 1.123-.167 1.123s.235.106.235.535c-.082 1.076-.513.612-.602 1.083-.214 1.137-.702.934-.702 1.555 0 1.02.497 1.502 2.045 2.064z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+                <span class="follower_count">19</span>
+            
+                </a>
+            
+        </div>
+        
+            <div class="action-skull" title="Likes">
+                
+                    <a href="https://hackaday.io/hackers/all/project/28557/likers">
+                
+                    
+
+
+
+
+    <div class="icon icon-skull">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M5.508 5.892l.583-.582-.68-.627c-.522-.48-.703-.753-.77-1.166a1.694 1.694 0 00-1.41-1.395l-.544-.076.524.503.524.5-.51.577c-.28.317-.558.63-.618.7-.062.067-.3-.04-.542-.242-.238-.2-.48-.364-.54-.364-.234 0 .048.726.432 1.11.32.318.53.407.98.41.484 0 .686.1 1.264.613.38.336.697.614.707.617.01.003.28-.257.6-.578zm6.173.045c.635-.55.877-.676 1.292-.675a1.59 1.59 0 001.49-1.07c.09-.27.136-.514.106-.545-.03-.03-.286.134-.567.365l-.51.42-.606-.665-.607-.665.505-.535.506-.534-.544.083c-.71.108-1.296.69-1.41 1.402-.07.423-.25.688-.826 1.215l-.737.673.52.59c.286.325.54.597.565.604.025.007.396-.29.826-.663zm-2.137 3.52c-.06-.103-.29-.273-.51-.38-.603-.29-.745-.598-.434-.94.376-.418 1.082-.38 1.442.078.34.433.36.71.07 1.12-.244.352-.412.387-.57.12zm-3.82-.12c-.288-.41-.27-.69.07-1.122.36-.457 1.066-.496 1.444-.08.31.344.168.653-.433.943-.22.106-.45.276-.51.378-.158.266-.326.23-.57-.12zm1.85 1.21c0-.378.278-.927.44-.873.194.064.41.78.295.97-.045.072-.138.047-.21-.058-.103-.145-.148-.148-.202-.014-.096.235-.322.217-.322-.026zm-.275.997c0-.24.253-.306.23-.016-.012.18-.015.638.528.655.542.017.49-.384.493-.572.002-.36.246-.28.246.012 0 .296.22.545.6.547.38 0 .38-.323.38-.624 0-.252.146-.59.366-.85.535-.636.736-1.22.736-2.135 0-2.387-2.244-3.872-4.32-2.857-1.917.94-2.3 3.69-.72 5.168.198.184.36.466.36.627.01.535.12.67.554.676.435.007.445-.366.546-.63zm5.458 2.057l-.51-.447.567-.654c.31-.36.634-.655.72-.655.084 0 .326.166.538.37.463.442.627.344.39-.23-.277-.666-.894-1.104-1.556-1.104-.47 0-.662-.09-1.108-.515-.323-.31-.563-.45-.6-.353-.032.09-.236.408-.453.706l-.394.544.47.456c.26.25.47.56.47.684 0 .857.754 1.645 1.573 1.646h.402l-.51-.447zm-8.896.24c.443-.23.822-.842.822-1.327 0-.17.195-.51.432-.756l.432-.446-.328-.402c-.18-.222-.4-.52-.487-.662-.148-.246-.18-.237-.618.17-.346.324-.63.45-1.133.503-.77.08-1.256.47-1.456 1.17-.153.533-.03.563.404.1.178-.19.4-.345.494-.345.094 0 .43.294.747.654l.574.653-.518.448-.518.448h.375c.205 0 .555-.094.777-.21z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+                    <span class="like_count">9</span>
+                
+                    </a>
+                
+            </div>
+        
+    
+</aside>
+    
+
+
+
+
+
+    <aside class="section section-team">
+        <h2 class="section-title">
+            Team
+            (<span id="contributor-count">1</span>)
+        </h2>
+
+        <ul class="contributors-list">
+            
+                <li>
+                    <span class="gray-link"><span class="identity-card" data-id="262523"><a href="https://hackaday.io/hacker/262523-christoph-tack"><img src="./Pulse to Tone Converter _ Hackaday.io_files/2901341510420377785.png" alt="Christoph Tack">Christoph Tack</a></span></span>
+                </li>
+            
+
+            
+
+            
+
+            
+
+            
+        </ul>
+
+        <div class="error-message hide" id="team-error"><p></p></div>
+
+        
+            <input type="hidden" name="HADPrizeSubmission" value="false">
+            
+                <a href="javascript:void(0)" class="login-button">Join this project's team</a>
+            
+        
+    </aside>
+
+    
+
+
+
+
+    
+
+
+
+    
+
+
+    <aside class="section section-links">
+        <ul class="links-list">
+            
+                <li class="links-item">
+                    <a href="https://github.com/LieBtrau/pulse-dtmf-converter" target="_blank" rel="nofollow noopener">
+                        
+
+
+
+
+    <div class="icon icon-github">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M3.643 7.513c-.158-.45-.228-.967-.228-1.543 0-1.024.33-1.41.77-1.955-.337-1.167.122-1.965.122-1.965s.71-.142 2.05.79c.728-.303 2.666-.328 3.584-.068.563-.36 1.593-.873 2.008-.73.113.176.355.688.147 1.813.14.247.874.772.877 2.258-.012.548-.07 1.01-.18 1.402.02 0-.14.485-.177.484C12.13 9.034 11.13 9.42 9.52 9.58c.522.32.672.72.672 1.802 0 1.083-.015 1.23-.012 1.478.006.408.623.604.6.736-.023.13-.517.11-.747.032-.654-.22-.588-.75-.588-.75l-.022-1.447s.044-.78-.253-.78v2.37c0 .516.372.672.372.863 0 .327-.68-.03-.888-.235-.32-.31-.283-.97-.275-1.49.006-.502-.006-1.603-.006-1.603l-.216.005s.088 2.403-.114 2.84c-.263.563-1.054.757-1.054.5 0-.172.194-.117.302-.503.093-.33.06-2.78.06-2.78s-.253.146-.253.605c0 .21-.007 1.41-.007 1.767 0 .45-.657.705-.973.705-.16 0-.36-.008-.36-.09 0-.208.602-.33.602-.762 0-.375-.008-1.34-.008-1.34s-.304.052-.736.052c-1.09 0-1.435-.675-1.6-1.053a1.859 1.859 0 00-.784-.908c-.18-.113-.222-.247-.013-.285.966-.175 1.212 1.063 1.857 1.26.46.14 1.052.08 1.346-.105.04-.378.32-.705.554-.877-1.64-.153-2.612-.705-3.116-1.593-.005 0-.236-.482-.217-.482z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+                        <span>pulse-dtmf-converter</span>
+                    </a>
+                </li>
+            
+                <li class="links-item">
+                    <a href="https://easyeda.com/LieBtrau/New_Project-06f8d9abfb004e898edb54cca7790566" target="_blank" rel="nofollow noopener">
+                        
+
+
+
+
+    <div class="icon icon-other">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8 11.019L4.475 12.87 5.225 9 2.252 6.169l3.995-.607L8 2.007l1.73 3.555 4.04.607L10.835 9l.75 3.87z"></path></svg>
+        
+    </div>
+
+
+                        <span>EasyEDA</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </aside>
+
+    
+
+
+
+
+    <aside class="section section-tags">
+        
+                <div class="special-tags">
+                    <a href="https://hackaday.io/projects?tag=completed%20project" class="tag">
+                        <span class="complete-circle icon-button"></span>
+                        
+
+
+
+
+    <div class="icon icon-button icon-complete-circle">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8.023 14.03a6 6 0 110-12 6 6 0 010 12zm-.064-3.693a.496.496 0 01-.68.059L5.023 8.57a.468.468 0 01-.17-.317c-.022-.256.323-.658.588-.68a.489.489 0 01.352.105L7.505 9.06l2.913-3.344a.499.499 0 01.327-.166c.266-.023.674.312.697.57a.461.461 0 01-.112.34l-3.37 3.877z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+                        <span>completed project</span>
+                    </a>
+                </div>
+
+        
+                <div class="special-tags">
+                    <a href="https://hackaday.io/projects?tag=hardware" class="tag">
+                        <span class="hardware icon-button"></span>
+                        
+
+
+
+
+    <div class="icon icon-button icon-hardware">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M9.096 10.822a2.52 2.52 0 003.089 3.108l-1.428-1.428.374-1.4 1.4-.374 1.43 1.428a2.523 2.523 0 00-3.22-3.055L7.06 5.42l-.096-.096a2.526 2.526 0 00-.613-2.568 2.517 2.517 0 00-2.442-.65l1.428 1.428-.375 1.4-1.398.374-1.43-1.428a2.522 2.522 0 003.108 3.089l3.854 3.852zm-1.715-.528l-.416.418c.285.874.08 1.873-.613 2.568-.66.662-1.6.878-2.442.65l1.428-1.428-.375-1.4-1.398-.374-1.428 1.428a2.522 2.522 0 013.108-3.089l.456-.456 1.683 1.684zM8.48 5.83l.618-.617a2.518 2.518 0 013.089-3.107l-1.43 1.428.376 1.4 1.4.374 1.43-1.428a2.523 2.523 0 01-3.22 3.055l-.578.58L8.478 5.83z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+                        <span>hardware</span>
+                    </a>
+                </div>
+
+        
+        
+                <a href="https://hackaday.io/projects?tag=telephone" class="tag">telephone</a>
+        
+                <a href="https://hackaday.io/projects?tag=pulse%20dialing" class="tag">pulse dialing</a>
+        
+                <a href="https://hackaday.io/projects?tag=DTMF" class="tag">DTMF</a>
+        
+                <a href="https://hackaday.io/projects?tag=pots" class="tag">pots</a>
+        
+                <a href="https://hackaday.io/projects?tag=attiny85" class="tag">attiny85</a>
+        
+                <a href="https://hackaday.io/projects?tag=TONE%20DIALING" class="tag">TONE DIALING</a>
+        
+                <a href="https://hackaday.io/projects?tag=rotary%20phone" class="tag">rotary phone</a>
+        
+    </aside>
+
+    
+
+
+
+
+
+    
+
+
+
+
+    
+
+
+
+<aside class="section section-project-time">
+    <p class="project-time">
+        This project was
+            
+                created on 12/13/2017
+                
+                     and last updated 2 months ago.
+                
+            
+    </p>
+</aside>
+    
+
+
+
+
+
+</div>
+
+        <div class="content-right project-menu-content">
+
+    
+
+    
+
+
+
+
+    <section class="section section-description">
+        <h2 id="menu-description" class="section-title">Description</h2>
+        <div class="description">Old telephones use pulse dialing, which many SLICs no longer support.  Nowadays tone dialing, aka dtmf dialing is used.  The goal of the project is to build a converter from pulse dialing to tone dialing.
+<br>
+<br>This project has been replicated and tested independently by at least two other electronics enthusiasts.</div>
+    </section>
+
+    
+
+
+
+
+    <section class="section section-details">
+        <h2 id="menu-details" class="section-title">Details</h2>
+        
+
+        
+            <div class="post-content details-content">
+                <p></p><h1>Who needs this?</h1>
+
+<p>You want to use a pulse dialing telephone, but your SLIC (such as a VOIP-interface) doesn't support pulse dialing.&nbsp; Instead of building the project described here, you could make things easy for yourself by replacing your SLIC by one that supports pulse dialing, e.g. the <a href="http://www.grandstream.com/products/gateways-and-atas/analog-telephone-adaptors/product/ht801" target="_blank">Grandstream HT801</a> (untested) or others.<br></p>
+
+
+<h1>Description</h1>
+
+
+<p>Has this kind of thing been done already?&nbsp; Oh yes, many times.&nbsp; But this device will be cheaper to build and solve&nbsp;<a href="http://www.telephonecollectors.info/telephony-101/07b%20TCI%20Article%20on%20Pulse-toTone%20Converters.pdf" target="_blank">some shortcomings of the converters around today</a>&nbsp;by being:</p>
+
+
+<ul><li>insensitive to line polarity</li><li>open source</li><li>readily available &amp; cheap parts (no bulky audio transformer needed)</li><li>plug and play immediately, no 15mins pre-charging time needed</li><li>doesn't steal power from&nbsp;the telephone line when the telephone horn is on-hook</li><li>no modifications to rotary phone required</li></ul>
+
+
+<h1>Sources</h1>
+
+
+<p>There's little more annoying on <a target="_blank" rel="noopener noreferrer" href="http://hackaday.io/">Hackaday.io</a> than people "sharing" their project, but keeping the source files to themselves.&nbsp; So here you go:</p>
+
+
+<ul><li>Firmware source code can be found on :&nbsp;&nbsp;<a href="https://github.com/LieBtrau/pulse-dtmf-converter" target="_blank">GitHub</a>.&nbsp;&nbsp;</li><li>Production data (hex-files, gerber files, schematics, ...) can be found on :&nbsp;<a href="https://github.com/LieBtrau/pulse-dtmf-converter/releases" target="_blank">GitHub project's releases</a></li><li>PCB design files are online on&nbsp;<a href="https://easyeda.com/LieBtrau/New_Project-06f8d9abfb004e898edb54cca7790566" target="_blank">EasyEda</a>.&nbsp; The PCB design files have also been exported to Altium format and have been added to the repository on&nbsp;<a href="https://github.com/LieBtrau/pulse-dtmf-converter" target="_blank">GitHub</a>.&nbsp; The contents of these Altium files has not been checked.</li></ul>
+
+
+<h1>DTMF-generator standard</h1>
+
+
+<p><a href="http://www.etsi.org/deliver/etsi_es/201200_201299/20123502/01.01.01_60/es_20123502v010101p.pdf" target="_blank">ETSI ES 201 235-2 V1.1.1 (2000-09)</a> describes some rules DTMF-generators should comply to.</p>
+
+
+<ul><li>Maximum signal amplitude : HF + LF = (-9,0 dBV, +2,0 dB) +&nbsp;(-11,0 dBV, +2,5 dB) = -7dBV +&nbsp;-8dBV = 1.26Vpp +&nbsp;1.13Vpp = 2.39Vpp.&nbsp; Practical signal amplitudes will be much lower.</li><li>Tone duration : 65-90ms</li><li>Pause duration : &gt; 65ms</li><li>Frequency tolerance : +/-1.5%.&nbsp; This implies using an external oscillator or crystal because the internal RC-oscillator is too dependent on power supply voltage and temperature.</li></ul>
+
+
+<h1>References</h1>
+
+
+<p>Pulse to tone converters that require modifications inside the telephone:</p>
+
+
+<ul><li>Boris Cherkasskiy : <a href="https://boris0.blogspot.be/2013/09/rotary-dial-for-digital-age.html" target="_blank">Rotary Dial for digital age</a></li><li>Frits Kieftenbelt :&nbsp;<a href="http://www.picbasic.nl/frameload.htm?http://www.picbasic.nl/t65-telefoon.htm" target="_blank">T65, W65, Ericsson en Heemaf telefoon genereert DTMF tonen</a>&nbsp;(dutch language)</li><li>Anton Meyer :&nbsp;<a href="https://github.com/antonmeyer/ArduinoDTMF" target="_blank">ArduinoDTMF</a></li><li><figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/5390121514148558701.jpg" target="_blank"><img class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/5390121514148558701.jpg" style=""></a><figcaption>Anonymous circuit, showing how to feed your circuitry from a zener in series with the telephone line.</figcaption></figure></li></ul>
+                    
+                <p></p>
+            </div>
+        
+        <div class="detail-btns">
+            
+                
+            
+        </div>
+    </section>
+
+
+    
+
+
+
+
+    <section class="section section-files">
+        <h2 id="menu-files" class="section-title">Files</h2>
+
+        
+
+        
+            <table class="files-table">
+                <tbody>
+                    
+                        <tr class="component-">
+                            <td class="file-details">
+                                <div class="description">
+                                    <h3><a download="" target="_blank" href="https://cdn.hackaday.io/files/285571221782688/Gerber_BRD170127_R2.zip">Gerber_BRD170127_R2.zip</a></h3>
+                                    <span>PCB design Rev2</span>
+                                </div>
+                                <p>
+                                    Zip Archive -
+                                    26.88 kB -
+                                    07/29/2019 at 19:53
+                                    
+                                </p>
+                            </td>
+                            <td class="file-type file-preview">
+                                
+                                
+
+
+                            </td>
+                            <td class="file-type">
+                                <a download="" target="_blank" href="https://cdn.hackaday.io/files/285571221782688/Gerber_BRD170127_R2.zip">
+                                    
+
+
+
+
+    <div class="icon icon-download">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M7.57 8.782v-4.1a.494.494 0 01.987 0V8.78l.753-.753a.5.5 0 01.697 0c.192.193.198.5 0 .697l-1.58 1.58-.016.018a.487.487 0 01-.696 0L6.12 8.728a.5.5 0 01.002-.697.487.487 0 01.696 0l.753.752zm.456 5.236a6 6 0 100-12 6 6 0 000 12zm.043-3.156c.945 0 1.712-.055 1.712-.123s-.767-.123-1.713-.123c-.947 0-1.714.055-1.714.122s.767.122 1.713.122z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+                                    <span class="file-button-description">Download</span>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                    
+                        <tr class="component-">
+                            <td class="file-details">
+                                <div class="description">
+                                    <h3><a download="" target="_blank" href="https://cdn.hackaday.io/files/285571221782688/DTMF_0123456789_attiny_8MHz.wav">DTMF_0123456789_attiny_8MHz.wav</a></h3>
+                                    <span>Recording of the SLIC's audio output of the attiny85V DTMF-generator, running at 8MHz</span>
+                                </div>
+                                <p>
+                                    Waveform Audio File Format (WAV) -
+                                    39.11 kB -
+                                    02/03/2018 at 19:48
+                                    
+                                </p>
+                            </td>
+                            <td class="file-type file-preview">
+                                
+                                
+
+
+                            </td>
+                            <td class="file-type">
+                                <a download="" target="_blank" href="https://cdn.hackaday.io/files/285571221782688/DTMF_0123456789_attiny_8MHz.wav">
+                                    
+
+
+
+
+    <div class="icon icon-download">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M7.57 8.782v-4.1a.494.494 0 01.987 0V8.78l.753-.753a.5.5 0 01.697 0c.192.193.198.5 0 .697l-1.58 1.58-.016.018a.487.487 0 01-.696 0L6.12 8.728a.5.5 0 01.002-.697.487.487 0 01.696 0l.753.752zm.456 5.236a6 6 0 100-12 6 6 0 000 12zm.043-3.156c.945 0 1.712-.055 1.712-.123s-.767-.123-1.713-.123c-.947 0-1.714.055-1.714.122s.767.122 1.713.122z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+                                    <span class="file-button-description">Download</span>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                    
+                        <tr class="component-">
+                            <td class="file-details">
+                                <div class="description">
+                                    <h3><a download="" target="_blank" href="https://cdn.hackaday.io/files/285571221782688/DTMF_0123456789.wav">DTMF_0123456789.wav</a></h3>
+                                    <span>Recording of the SLIC's audio output of the ProTrinket3V DTMF-generator, running at 12MHz</span>
+                                </div>
+                                <p>
+                                    Waveform Audio File Format (WAV) -
+                                    39.11 kB -
+                                    01/20/2018 at 16:56
+                                    
+                                </p>
+                            </td>
+                            <td class="file-type file-preview">
+                                
+                                
+
+
+                            </td>
+                            <td class="file-type">
+                                <a download="" target="_blank" href="https://cdn.hackaday.io/files/285571221782688/DTMF_0123456789.wav">
+                                    
+
+
+
+
+    <div class="icon icon-download">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M7.57 8.782v-4.1a.494.494 0 01.987 0V8.78l.753-.753a.5.5 0 01.697 0c.192.193.198.5 0 .697l-1.58 1.58-.016.018a.487.487 0 01-.696 0L6.12 8.728a.5.5 0 01.002-.697.487.487 0 01.696 0l.753.752zm.456 5.236a6 6 0 100-12 6 6 0 000 12zm.043-3.156c.945 0 1.712-.055 1.712-.123s-.767-.123-1.713-.123c-.947 0-1.714.055-1.714.122s.767.122 1.713.122z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+                                    <span class="file-button-description">Download</span>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                    
+                        <tr class="component-">
+                            <td class="file-details">
+                                <div class="description">
+                                    <h3><a download="" target="_blank" href="./Pulse to Tone Converter _ Hackaday.io_files/dtmfgen7.png">dtmfgen7.png</a></h3>
+                                    <span>Work in progress: version 7 for inserting DTMF to phone line</span>
+                                </div>
+                                <p>
+                                    Portable Network Graphics (PNG) -
+                                    52.40 kB -
+                                    01/17/2018 at 21:00
+                                    
+                                </p>
+                            </td>
+                            <td class="file-type file-preview">
+                                
+                                    <a href="https://hackaday.io/project/28557-pulse-to-tone-converter#" class="file-preview-link" data-type="image">
+                                        
+
+
+
+
+    <div class="icon icon-preview">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8.014 12.122c4.036 0 7.002-4.146 7.002-4.146S11.694 3.83 8.014 3.83c-3.68 0-7.002 4.146-7.002 4.146s2.965 4.146 7.002 4.146zm0-1.572a2.573 2.573 0 10-.002-5.146 2.573 2.573 0 00.002 5.146zm0-1a1.573 1.573 0 000-3.146 1.572 1.572 0 000 3.145z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+                                        <span class="file-button-description">Preview</span>
+                                    </a>
+                                
+                                
+
+
+                            </td>
+                            <td class="file-type">
+                                <a download="" target="_blank" href="./Pulse to Tone Converter _ Hackaday.io_files/dtmfgen7.png">
+                                    
+
+
+
+
+    <div class="icon icon-download">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M7.57 8.782v-4.1a.494.494 0 01.987 0V8.78l.753-.753a.5.5 0 01.697 0c.192.193.198.5 0 .697l-1.58 1.58-.016.018a.487.487 0 01-.696 0L6.12 8.728a.5.5 0 01.002-.697.487.487 0 01.696 0l.753.752zm.456 5.236a6 6 0 100-12 6 6 0 000 12zm.043-3.156c.945 0 1.712-.055 1.712-.123s-.767-.123-1.713-.123c-.947 0-1.714.055-1.714.122s.767.122 1.713.122z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+                                    <span class="file-button-description">Download</span>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                            <tr class="hidden">
+                                <td class="file-preview-holder" colspan="3"></td>
+                            </tr>
+                        
+                    
+                </tbody>
+            </table>
+        
+        <p>
+            
+        </p>
+    </section>
+
+    
+
+
+
+
+    
+        <section class="section section-components">
+            <h2 id="menu-components" class="section-title">Components</h2>
+            
+            <ul class="section-component-list">
+                
+                    
+    <li class="component-156017">
+        <span class="component-number">1</span>
+        <span class="component-x">×</span>
+        <span class="component-content">
+            Telephone RJ11 Line ADSL Modem Broadband Phone
+            <span class="component-description">What's better than 3D-printing a rectangular box or buying a standard box and cutting holes in it?  Buying a splitter box on AliExpress, remove the internal circuitry and keep the box and the RJ11 connectors.  Use the component name as search term in AliExpress</span>
+       </span>
+    </li>
+
+                
+            </ul>
+            <p>
+                
+                
+            </p>
+        </section>
+    
+
+    
+
+
+
+
+    <section class="section section-buildlogs">
+        <h2 id="menu-logs" class="section-title">Project Logs
+            
+                <a href="https://hackaday.io/project/28557-pulse-to-tone-converter" class="section-collapse j-buildlogs-collapse">
+                    
+
+
+
+
+    <div class="icon icon-arrow-up">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8 6.26l4.79 4.79a.706.706 0 101-.997l-5.14-5.14a.705.705 0 00-.652-.197.712.712 0 00-.646.196l-5.14 5.14a.707.707 0 10.999.999L8 6.26z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+                    
+
+
+
+
+    <div class="icon icon icon-arrow-down hide" style="display: none;">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8 9.702l4.79-4.79a.707.707 0 111 .999l-5.14 5.14a.705.705 0 01-.652.197.712.712 0 01-.646-.196l-5.14-5.14a.703.703 0 01-.004-1.002.708.708 0 011.003.004L8 9.702z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+                    <span class="collapse-text">Collapse logs</span>
+                </a>
+            
+        </h2>
+        
+        <ul class="buildlogs-list j-buildlogs-list post-content details-content">
+        
+            <li data-order="0" data-id="120918">
+                <h3 class="element-title">
+                    <a href="https://hackaday.io/project/28557/log/120918-validating-the-prototype">Validating the prototype</a>
+                    
+                </h3>
+                <small class="authorship">
+                    <span class="gray-link"><span class="identity-card" data-id="262523"><a href="https://hackaday.io/hacker/262523-christoph-tack">Christoph Tack</a></span></span> •
+                    <span class="time-card" style="margin: 0" title="3 years ago">03/17/2018 at 21:04</span>  •
+                    <a class="gray-link" href="https://hackaday.io/project/28557/log/120918-validating-the-prototype#discussion-list">
+                        0 comments
+                    </a>
+                </small>
+                <div class="summary">
+                    <p></p><h1>Printed board assembly</h1>
+
+<p>Assembly is fairly easy.&nbsp; Be careful buying the BAT46W in the correct package.&nbsp; I've updated the PCB to revision /1, replacing the BAT46WJ (SOD-323) to BAT46WH (SOD-123).&nbsp; The -WH variant is bigger and easier to solder by hand.</p>
+
+
+<h1>Programming the board</h1>
+
+
+<p>I explained the procedure already in a previous log.&nbsp; To connect the programmer to your ATTINY85, you can use a <a href="https://www.digikey.be/product-detail/en/pomona-electronics/5250/501-1311-ND/745102" target="_blank">Pomona SOIC-clip</a> as shown on the image below.</p>
+
+
+<h1>Measuring interrupt frequency</h1>
+
+
+<p>To check if the crystal has the correct load capacitors attached.&nbsp; A special debug firmware is loaded into the device which generates a square wave with a frequency that should be 31.250KHz.</p>
+
+
+<figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/4994651521316573327.jpg" target="_blank"><img class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/4994651521316573327.jpg" style=""></a><figcaption>Interrupt frequency should be 31.250KHz<br></figcaption></figure>
+
+
+<h1>Adjusting DTMF-amplitude</h1><p>Someone reported that the DTMF-amplitude was too large for their application.&nbsp; Increasing R10 from 10K to 100K and R12 from 10K to 15K fixed that.<br></p><h1>Mounting in the housing</h1>
+
+<p>The housing originally contained an ADSL-splitter.&nbsp; It can be bought for a few cents from AliExpress.&nbsp; Its PCB has been removed.&nbsp; The modular jacks have been transferred to the pulse-dtmf-converter.</p>
+
+<figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/464331521320062433.jpg" target="_blank"><img class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/464331521320062433.jpg" style=""></a><figcaption>Pulse-dtmf-converter in its opened housing. <br>The PCB that was originally mounted is shown below it.</figcaption></figure>
+
+<h1>Finishing up</h1>
+
+<p>The Philps DECT-phone, which uses tone dialing is connected to the "PHONE"-port of the converter, as indicated on the bottom of the housing.</p>
+
+<p>The FXS-port of the internet gateway is connected to the "MODEM"-port.</p>
+
+<p>The pulse dialing phone is connected to the "LINE"-port.</p>
+
+<figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/1056411521320255224.jpg" target="_blank"><img class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/1056411521320255224.jpg" style=""></a><figcaption>Pulse-dtmf-converter in use...<br></figcaption></figure>
+
+<p>Making a few test calls assured me that both phones are working well.</p>
+
+<hr>
+
+<p>That's all, folks.</p>
+                        
+                    <p></p>
+                </div>
+            </li>
+        
+            <li data-order="1" data-id="90319">
+                <h3 class="element-title">
+                    <a href="https://hackaday.io/project/28557/log/90319-crystal-calculations">Crystal calculations</a>
+                    
+                </h3>
+                <small class="authorship">
+                    <span class="gray-link"><span class="identity-card" data-id="262523"><a href="https://hackaday.io/hacker/262523-christoph-tack">Christoph Tack</a></span></span> •
+                    <span class="time-card" style="margin: 0" title="3 years ago">02/11/2018 at 20:40</span>  •
+                    <a class="gray-link" href="https://hackaday.io/project/28557/log/90319-crystal-calculations#discussion-list">
+                        0 comments
+                    </a>
+                </small>
+                <div class="summary">
+                    <p></p><p>What crystal package to use : small 3.2x2.5mm or big HC49/US?&nbsp; One parameter determining the choice is the drive level of the crystal.&nbsp; If the drive level is too high, i.e. &gt;200µW typically, the small crystal can't be used.&nbsp;&nbsp;</p>
+
+<p>The drive level is calculated as follows:</p>
+
+<figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/Equivalent-circuit-for-quartz-crystal.png" target="_blank"><img class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/Equivalent-circuit-for-quartz-crystal.png" style=""></a><figcaption>Quartz crystal equivalent circuit (reference: <a target="_blank" rel="noopener noreferrer" href="http://circuitcrush.com/">Circuitcrush.com</a>)<br><a href="./Pulse to Tone Converter _ Hackaday.io_files/latex" target="_blank"><img style="font-size: 16px;" class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/latex"></a></figcaption></figure>
+
+
+
+
+
+
+
+<p>Where:</p>
+
+
+
+
+
+
+
+<ul><li>Vpp = peak-to-peak voltage, measured differentiallly over the crystal</li><li>f = crystal frequency</li><li>CL = load capacitance, see&nbsp;<a href="https://en.wikipedia.org/wiki/Pierce_oscillator" target="_blank">the Pierce oscillator on Wikipedia</a> how you calculate it.</li><li>ESR = equivalent series resistor, from the crystal's datasheet</li></ul>
+
+
+
+
+
+
+
+<h2>Example</h2>
+
+
+
+
+
+
+
+<p><strong></strong><strong>Calculation of CL</strong></p>
+
+
+
+
+
+
+
+<ul><li>C1 = C2 = 18pF</li><li>Cs = 9pF</li><li>Ci = 6pF, Co=16pF (datasheet Attiny85)</li></ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p><a href="./Pulse to Tone Converter _ Hackaday.io_files/latex(1)" target="_blank"><img class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/latex(1)" style=""></a></p>
+
+
+
+
+
+<p><strong>Calculation of drive level</strong></p>
+
+
+
+
+
+<ul><li>f = 8MHz</li><li>ESR=80ohm, from the crystal's datasheet</li><li>Vpp=1.7Vpp, measured with differential probe over the crystal</li></ul>
+
+
+
+
+
+<p><a href="./Pulse to Tone Converter _ Hackaday.io_files/latex(2)" target="_blank"><img class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/latex(2)" style=""></a></p>
+
+<p><strong>Conclusion</strong></p>
+
+<p>The smaller crystal package can be used safely.</p><p>Another parameter that determines the choice is availability of the crystals.&nbsp; For 8MHz, HC49US crystals have better specs, are more widely used and are cheaper than the 3.2x2.5mm package crystals.</p>
+                        
+                    <p></p>
+                </div>
+            </li>
+        
+            <li data-order="2" data-id="87463">
+                <h3 class="element-title">
+                    <a href="https://hackaday.io/project/28557/log/87463-implementing-sleep-modes">Implementing sleep modes</a>
+                    
+                </h3>
+                <small class="authorship">
+                    <span class="gray-link"><span class="identity-card" data-id="262523"><a href="https://hackaday.io/hacker/262523-christoph-tack">Christoph Tack</a></span></span> •
+                    <span class="time-card" style="margin: 0" title="3 years ago">02/06/2018 at 19:50</span>  •
+                    <a class="gray-link" href="https://hackaday.io/project/28557/log/87463-implementing-sleep-modes#discussion-list">
+                        0 comments
+                    </a>
+                </small>
+                <div class="summary">
+                    <p></p><p>The nature of pulse dialing is such, that every pulse interrupts the power supply for 70ms.&nbsp; The pulse rate is 10pps, which means that during dialing, the MCU only gets power 30ms every 100ms.&nbsp; During the 70ms power gaps, the MCU has to survive on a 470µF capacitor.</p>
+
+<p>Using sleep modes would allow us to choose a smaller supply voltage to reduce power consumption and to leave more headroom for the pulse dial telephone.&nbsp; Another option would be to decrease the elco and save cost.</p>
+
+
+
+<h2>Adding Sleep functionality in main loop</h2>
+
+
+
+<p>The rotary dial functionality is using <a href="https://github.com/thomasfredericks/Bounce2" target="_blank">Thomas Fredericks's Bounce2 library</a>.&nbsp; To function properly it requires an update() function to be called regularly.&nbsp; By adding the update() function in the loop() function of Arduino, it's called every few tens of microseconds.&nbsp; No mechanical switch is that fast, so a lot of MCU cycles are wasted there.&nbsp; The following oscilloscope screenshots show VCC (green) and the GPIO connected to the main power entry point before the rectifying diode (blue).</p>
+
+<figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/6851151518269870667.png" target="_blank"><img alt="MCU remains in ACTIVE mode, VCC drops down to 3.08V" title="MCU remains in ACTIVE mode, VCC drops down to 3.08V" class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/6851151518269870667.png" style=""></a><figcaption>MCU remains in ACTIVE mode, VCC drops down to 3.08V</figcaption></figure>
+
+<p>The solution lies in adding a sleepNow() functionality in the main loop, which forces the MCU into idle mode when there's nothing to do.&nbsp; In idle mode, interrupts still wake the MCU.&nbsp;&nbsp;<br></p>
+
+
+
+<p>Timer0 interrupt is in Arduino standard set up to be called every ms.&nbsp; So each ms, timer0 fires, which wakes the MCU.&nbsp; The MCU calls the Bounce2.update() and goes to sleep again.&nbsp; Simple but effective.<br></p>
+
+<figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/380701518269927098.png" target="_blank"><img alt="MCU using IDLE mode, VCC drops only downto 3.57V" title="MCU using IDLE mode, VCC drops only downto 3.57V" class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/380701518269927098.png" style=""></a><figcaption>MCU using IDLE mode, VCC drops only downto 3.57V</figcaption></figure>
+                        
+                    <p></p>
+                </div>
+            </li>
+        
+            <li data-order="3" data-id="87226">
+                <h3 class="element-title">
+                    <a href="https://hackaday.io/project/28557/log/87226-connecting-to-the-fxs">Connecting to the FXS</a>
+                    
+                </h3>
+                <small class="authorship">
+                    <span class="gray-link"><span class="identity-card" data-id="262523"><a href="https://hackaday.io/hacker/262523-christoph-tack">Christoph Tack</a></span></span> •
+                    <span class="time-card" style="margin: 0" title="3 years ago">02/03/2018 at 20:40</span>  •
+                    <a class="gray-link" href="https://hackaday.io/project/28557/log/87226-connecting-to-the-fxs#discussion-list">
+                        0 comments
+                    </a>
+                </small>
+                <div class="summary">
+                    <p></p><h2>Fail...</h2>
+
+
+
+
+
+
+
+
+
+
+
+<ul><li>Connecting to the SLIC KS-0835F: everything works perfectly.&nbsp;&nbsp;</li><li>Connecting to the FXS port of the internet gateway: <strong>FAIL</strong><ul><li>The DTMF-converter doesn't start up reliably.&nbsp; It sometimes runs in bursts, as if the crystal doesn't start reliably.</li></ul><ul><li>The number doesn't get dialed.</li></ul></li></ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Issue 1: Startup problem</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>There's no reset circuitry present on the breadboard.&nbsp; The BOD is disabled as well.&nbsp;&nbsp;</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/3238151517691698348.png" target="_blank"><img class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/3238151517691698348.png" style=""></a><figcaption>No reset controller, problems guaranteed... (blue=VCC, green=RST)</figcaption></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>The reset level (in green) follows the power supply voltage (in blue).&nbsp; Due to the charging of a 470µF capacitor, voltage ramp up is very slow.&nbsp; Nearly 60ms before full voltage is reached.</p>
+
+
+
+
+
+
+
+
+
+
+
+<p>An option is to add a reset controller which has a timeout of 100ms.&nbsp; The reset trigger level should be 2.6V.&nbsp; This will avoid spurious resets during pulse dialing.&nbsp;&nbsp;</p>
+
+
+
+
+
+
+
+<figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/9794481517856248516.png" target="_blank"><img class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/9794481517856248516.png" style=""></a><figcaption>With a reset controller, the CPU starts up reliably. (blue=VCC, green=RST)<br></figcaption></figure>
+
+
+
+
+
+
+
+
+
+<p>An alternative approach is to use the 2.7V BOD in the attiny85.&nbsp;&nbsp;<br></p>
+
+<figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/7286651518276906335.png" target="_blank"><img class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/7286651518276906335.png" style=""></a><figcaption>BOD 2.7V enabled, BLUE=VCC, GREEN=DEBUG GPIO</figcaption></figure>
+
+<p>Using the BOD seems to work as reliably as the external reset controller.&nbsp; Using the BOD saves us four components in the BoM.</p>
+
+<h2>Remark:</h2>
+
+
+
+
+
+<p>The AVR-ISP MkII automatically generates a reset pulse at power up of the MCU.&nbsp; Be sure to disconnect the programmer during testing.</p>
+
+
+
+
+
+<h2>Issue 2: FXS doesn't recognize DTMF</h2>
+
+
+
+
+
+
+
+
+
+<p>This problem has two causes:</p>
+
+
+
+
+
+
+
+
+
+<p><strong>DTMF signal too weak</strong></p>
+
+
+
+
+
+
+
+
+
+<p>Connecting the Philips DECT to the SLIC again showed that the DTMF-signal that this design generates is too weak.&nbsp; Increasing the resistor between the reference and cathode of the bottom TLV431 to 39K solves this problem.</p>
+
+
+
+
+
+
+
+
+
+<p><strong>DTMF timing incorrect</strong><br></p>
+
+
+
+
+
+
+
+
+
+<p>The original idea was to generate a DTMF-digit immediately after a digit has been dialed.&nbsp; The DECT doesn't work that way.&nbsp; You form the number first.&nbsp; After that you "pick up" the horn, which initiates the DTMF-sequence of your formed number.</p>
+
+
+
+
+
+
+
+
+
+<p>The pulse-dtmf-converter successfully dialed my cellphone when it was configured in the same way.</p>
+
+
+
+
+
+
+
+
+
+<p>Finally...<strong>SUCCESS</strong></p>
+                        
+                    <p></p>
+                </div>
+            </li>
+        
+            <li data-order="4" data-id="85877">
+                <h3 class="element-title">
+                    <a href="https://hackaday.io/project/28557/log/85877-programming-the-attiny85">Programming the Attiny85</a>
+                    
+                </h3>
+                <small class="authorship">
+                    <span class="gray-link"><span class="identity-card" data-id="262523"><a href="https://hackaday.io/hacker/262523-christoph-tack">Christoph Tack</a></span></span> •
+                    <span class="time-card" style="margin: 0" title="3 years ago">01/29/2018 at 19:59</span>  •
+                    <a class="gray-link" href="https://hackaday.io/project/28557/log/85877-programming-the-attiny85#discussion-list">
+                        0 comments
+                    </a>
+                </small>
+                <div class="summary">
+                    <p></p><h2>Arduino</h2>
+
+<p>The attiny85 is not supported on Arduino by default.&nbsp; Download the&nbsp;<a href="https://github.com/SpenceKonde/ATTinyCore" target="_blank">library from github</a> and install it.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Programming connections</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Signal</th><th>ATTINY85</th><th>AVRISP mkII</th></tr></thead><tbody><tr><td>MISO</td><td>6</td><td>1</td></tr><tr><td>VCC</td><td>8</td><td>2</td></tr><tr><td>SCK</td><td>7</td><td>3</td></tr><tr><td>MOSI</td><td>5</td><td>4</td></tr><tr><td>RST</td><td>1</td><td>5</td></tr><tr><td>GND</td><td>4</td><td>6</td></tr></tbody></table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Programming instructions</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul><li>In the Arduino IDE make sure the following is set:<ul><li>Tools -&gt; Board : "ATTiny25/45/85"</li><li>Timer 1 Clock : "CPU"</li><li>Chip : "ATtiny85"</li><li>Clock : "8MHz (external)"</li><li>B.O.D. : "B.O.D. Enabled (2.7V)"</li><li>LTO : "disabled"</li></ul></li><li>Set the type of your programmer : "AVRISP mkII"</li></ul><h2>Burn the bootloader</h2><p>Burn the bootloader (which is empty) to make sure fuse settings are correct.</p>
+
+
+
+
+
+
+
+<p>Luckily, the arduino toolchain sets the correct fuse values.&nbsp; Using the&nbsp;<a href="http://www.engbedded.com/fusecalc" target="_blank">Engbedded Atmel AVR® Fuse Calculator</a>, you can check the fuse settings:</p>
+
+
+
+
+
+
+
+<pre class="hljs css"><span class="hljs-tag">-U</span> <span class="hljs-tag">lfuse</span><span class="hljs-pseudo">:w</span><span class="hljs-pseudo">:0xff</span><span class="hljs-pseudo">:m</span> <span class="hljs-tag">-U</span> <span class="hljs-tag">hfuse</span><span class="hljs-pseudo">:w</span><span class="hljs-pseudo">:0xd5</span><span class="hljs-pseudo">:m</span> <span class="hljs-tag">-U</span> <span class="hljs-tag">efuse</span><span class="hljs-pseudo">:w</span><span class="hljs-pseudo">:0xff</span><span class="hljs-pseudo">:m</span></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Upload the application</h2><p>Be sure to write the bootloader first.&nbsp; Otherwise, the device will run at 1/8 of the desired CPU frequency.</p><h2>Verifying CPU clock frequency</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>The internal RC-oscillator is not accurate enough to generate DTMF correctly over large temperature and voltage specs.&nbsp; For development purposes, a 12MHz oscillator can be connected to pin&nbsp;2 of the Attiny85.&nbsp; Oscillators are quite power hungry.&nbsp; So, for rotary dial testing, in which the power supply is cut off during dialing, it should be powered from a separate 5V supply.<br></p>
+
+
+
+
+
+
+
+
+
+
+
+<p>An 8MHz external clock would is a better choice.&nbsp; The attiny85V is not specified to work at 12MHz.&nbsp; When the supply voltage drops below 4V the MCU behaves inpredictably.&nbsp; With an 8MHz clock, the attiny85V has a much wider supply voltage range.<br></p>
+
+
+
+
+
+
+
+<p>The MCU frequency can be checked with a timer/counter.&nbsp; A digital oscilloscope that only samples at 100Ms/s will not yield reliable results.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Verifying DTMF frequencies</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>The first step is to check the interrupt frequency, which is our PWM-frequency.&nbsp; This looked ok using the PM6665.&nbsp; It's more reliable to measure if OCR1A is forced to a fixed value so that a fixed duty cycle is being generated.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>Next step is to verify the DTMF frequency.&nbsp; This signal can be measured at the non-inverting input of the opamp in the current source configuration.&nbsp; By leaving out one of the two frequencies of the DTMF signal, allows for easier measurement of the frequency of the restored waveform.</p>
+
+
+
+
+
+<p>A final test was to generate the same DTMF-sequence as had been done before using the ProTrinket3V</p>
+
+
+
+
+
+<p>The result can be heard <a href="https://cdn.hackaday.io/files/285571221782688/DTMF_0123456789_attiny_8MHz.wav">here</a>.</p>
+
+
+
+
+
+<p>Decoding using multimon shows that the generated DTMF-tones are correct.</p>
+
+
+
+
+
+<pre class="hljs coffeescript">ctack<span class="hljs-property">@ctack</span>-<span class="hljs-attribute">X550LD</span>:~$ multimon -a DTMF -t wav DTMF_0123456789.wav 
+multimod  (C) <span class="hljs-number">1996</span>/<span class="hljs-number">1997</span> <span class="hljs-keyword">by</span> Tom Sailer HB9JNX/AE4WA
+available <span class="hljs-attribute">demodulators</span>: POCSAG512 POCSAG1200 POCSAG2400 EAS AFSK1200 AFSK2400 AFSK2400_2 HAPN4800 FSK9600 DTMF ZVEI CCIR SCOPE
+Enabled <span class="hljs-attribute">demodulators</span>: DTMF
+sox WARN <span class="hljs-attribute">sox</span>: Option `<span class="javascript">-s<span class="hljs-string">' is deprecated, use </span></span>`-e signed-integer<span class="hljs-string">' instead.
+sox WARN sox: Option `-2'</span> <span class="hljs-keyword">is</span> deprecated, use `<span class="javascript">-b <span class="hljs-number">16</span><span class="hljs-string">' instead.
+DTMF: 0
+DTMF: 1
+DTMF: 2
+DTMF: 3
+DTMF: 4
+DTMF: 5
+DTMF: 6
+DTMF: 7
+DTMF: 8
+DTMF: 9
+sox WARN rate: rate clipped 2830 samples; decrease volume?
+sox WARN dither: dither clipped 2441 samples; decrease volume?</span></span></pre>
+                        
+                    <p></p>
+                </div>
+            </li>
+        
+            <li data-order="5" data-id="78799">
+                <h3 class="element-title">
+                    <a href="https://hackaday.io/project/28557/log/78799-verification-of-the-generated-dtmf">Verification of the generated DTMF</a>
+                    
+                </h3>
+                <small class="authorship">
+                    <span class="gray-link"><span class="identity-card" data-id="262523"><a href="https://hackaday.io/hacker/262523-christoph-tack">Christoph Tack</a></span></span> •
+                    <span class="time-card" style="margin: 0" title="3 years ago">01/20/2018 at 14:27</span>  •
+                    <a class="gray-link" href="https://hackaday.io/project/28557/log/78799-verification-of-the-generated-dtmf#discussion-list">
+                        0 comments
+                    </a>
+                </small>
+                <div class="summary">
+                    <p></p><p>The SLIC has an audio output.&nbsp; Let's hook that up to the mic input of the laptop.&nbsp; As&nbsp;<a href="https://en.wikipedia.org/wiki/Phone_connector_(audio)" target="_blank">wikipedia</a> shows, there are different pinouts standards &nbsp;for a TRRS 3.5mm audio jack.&nbsp; In other words, there's no standard pinout.&nbsp; Use a DMM to find out what pinout your laptop is using.&nbsp; My Acer has the following pinout:</p>
+
+<ul><li>Tip = Left out</li><li>Ring1 = Right out</li><li>Ring2 = GND</li><li>Sleeve = Mic in</li></ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>In Ubuntu Linux, 5s of audio can easily be recorded by:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<pre>arecord -d 5 DTMF_0123456789.wav</pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>To play back the <a href="https://cdn.hackaday.io/files/285571221782688/DTMF_0123456789.wav">file</a>:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<pre>aplay DTMF_0123456789.wav</pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>The microphone level might need some tuning.</p>
+
+
+
+
+
+
+
+
+
+
+
+<p>Decode the DTMF-audio with:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<pre>multimon -a DTMF -t wav DTMF_0123456789.wav 
+multimod  (C) 1996/1997 by Tom Sailer HB9JNX/AE4WA
+available demodulators: POCSAG512 POCSAG1200 POCSAG2400 EAS AFSK1200 AFSK2400 AFSK2400_2 HAPN4800 FSK9600 DTMF ZVEI CCIR SCOPE
+Enabled demodulators: DTMF
+sox WARN sox: Option `-s' is deprecated, use `-e signed-integer' instead.
+sox WARN sox: Option `-2' is deprecated, use `-b 16' instead.
+DTMF: 0
+DTMF: 1
+DTMF: 2
+DTMF: 3
+DTMF: 4
+DTMF: 5
+DTMF: 6
+DTMF: 7
+DTMF: 8
+DTMF: 9
+</pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>Decoding works perfectly.</p>
+
+<h1>Alternative DTMF decoders</h1>
+
+<ul><li><a href="https://www.aliexpress.com/item/32607482597.html" target="_blank">MT8870 DTMF Audio Decoder LCD 1602 Display Module for Fixed telephone mobile phone keypad Key value shows smart home</a></li><li><a href="https://www.aliexpress.com/item/32464835998.html" target="_blank">wholesale 1pcs MT8870 DTMF Voice decoding module phone module</a></li><li>You could also download a DTMF decoder for your smartphone from Google Play.</li></ul>
+                        
+                    <p></p>
+                </div>
+            </li>
+        
+            <li data-order="6" data-id="77767">
+                <h3 class="element-title">
+                    <a href="https://hackaday.io/project/28557/log/77767-realization-of-coupling-dtmf-to-telephone-line">Realization of coupling DTMF to telephone line</a>
+                    
+                </h3>
+                <small class="authorship">
+                    <span class="gray-link"><span class="identity-card" data-id="262523"><a href="https://hackaday.io/hacker/262523-christoph-tack">Christoph Tack</a></span></span> •
+                    <span class="time-card" style="margin: 0" title="3 years ago">01/18/2018 at 20:41</span>  •
+                    <a class="gray-link" href="https://hackaday.io/project/28557/log/77767-realization-of-coupling-dtmf-to-telephone-line#discussion-list">
+                        2 comments
+                    </a>
+                </small>
+                <div class="summary">
+                    <p></p><h1>Schematic explanation</h1>
+
+<p><em>Warning: This schematic is not a definitive version.&nbsp; Only the DTMF-generator has been implemented.&nbsp; There are no provisions yet for detection of pulses during dialing.</em></p>
+
+<figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/dtmfgen7.png" target="_blank"><img class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/dtmfgen7.png" style=""></a></figure>
+
+<p>The schematic above couples DTMF to the telephone line.&nbsp;&nbsp;</p>
+
+
+
+<ul><li>The current source on the left is the SLIC that sources 15mA to 30mA current.</li><li>The R_POTS_telephone is the internal resistance of the off-hook telephone.&nbsp; You can see that the DTMF-generator is in series with the telephone line.&nbsp; When the telephone is on-hook, the telephone resistance is very high, so there's no loop current.&nbsp; <strong>This circuit doesn't consume power when the telephone is on-hook.</strong></li><li>The diode bridge rectifies the loop current, <strong>making this circuit insensitive to line polarity or line reversal</strong>.</li><li>R5 not needed for generating DTMF, only during pulse dialing.</li><li>U4, R3, R4 function as an adjustable zener.&nbsp; The "zener voltage" is set to 4.6V.&nbsp; This is the source of the supply voltage of the DTMF generator.&nbsp; So no matter what the loop current is, the zener behavior will limit the supply voltage to about 4.6V.</li><li>D2 &amp; C1 are not needed for generating DTMF.&nbsp; They keep the MCU going when the telephone is in pulse dialing mode.&nbsp; When these pulses are being generated, loop current is interrupted and the supply voltage of the DTMF-generator would collapse.</li><li>Rcpu1 simulates the behavior of the MCU, drawing 10mA at 3V.</li><li>You probably recognize U2, R7, R8 as an adjustable zener again.&nbsp; These three components couple the DTMF to the telephone line.&nbsp; We can modulate the U2-zener voltage, and hence modulate the total voltage over our DTMF-generator.&nbsp; This voltage is one-on-one transferred to the audio output of the SLIC.&nbsp; The drawback of this solution is that it adds about 2V to total voltage over the DTMF-generator.</li><li>U1, R1, Q1 is a current source.&nbsp; By varying the current into U2, it's "zener" voltage will vary linearly.&nbsp;&nbsp;</li><li>U3 with surrounding caps and resistors:&nbsp; An active low pass filter, desiged with <a href="http://www.nuhertz.com/register/reg_free.html" target="_blank">Nuhertz Filterfree</a>.&nbsp; For audio frequencies as used in this design, active filters are the way to go.&nbsp; Passive filters are either ineffective with RC or require very large inductors with LC realizations.</li><li>R6, R2: Voltage shift and divider for the input signal to avoid exceeding the CM-range of the opamp.</li></ul>
+
+<h1>Measurements</h1>
+
+<p>The measurements show the voltage at the audio output of the SLIC.&nbsp; As you can see, most of the HF-noise has been removed and there's no noticeable deformation of the DTMF-waveform.</p>
+
+<figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/9438751516388970974.png" target="_blank"><img class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/9438751516388970974.png" style=""></a><figcaption>DTMF-pulse on SLIC's audio output</figcaption></figure>
+
+<figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/2364011516388989314.png" target="_blank"><img class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/2364011516388989314.png" style=""></a><figcaption>Zooming in on DTMF-signal on the SLIC's audio output<br>Picture of the current setup</figcaption></figure><p>There's not so much to see really.&nbsp; The breadboard contains the Adafruit Protrinket 3V and the SLIC.&nbsp; The 1.27mm-protoboard on the left has the opamp circuit on it.&nbsp; The 2.54mm-protoboard on the bottom right contains the TLV431 circuits.&nbsp; On the right, you can see the RJ11-connection to the telephone.</p><figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/4143391516389680721.jpg" target="_blank"><img class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/4143391516389680721.jpg" style=""></a></figure>
+                        
+                    <p></p>
+                </div>
+            </li>
+        
+            <li data-order="7" data-id="72470">
+                <h3 class="element-title">
+                    <a href="https://hackaday.io/project/28557/log/72470-direct-digital-synthesis">Direct Digital Synthesis</a>
+                    
+                </h3>
+                <small class="authorship">
+                    <span class="gray-link"><span class="identity-card" data-id="262523"><a href="https://hackaday.io/hacker/262523-christoph-tack">Christoph Tack</a></span></span> •
+                    <span class="time-card" style="margin: 0" title="3 years ago">01/05/2018 at 21:07</span>  •
+                    <a class="gray-link" href="https://hackaday.io/project/28557/log/72470-direct-digital-synthesis#discussion-list">
+                        0 comments
+                    </a>
+                </small>
+                <div class="summary">
+                    <p></p><p>DTMF will be generated using Direct Digital Synthesis (DDS)</p>
+
+<p>The first implementation will be done with Adafruit ProTrinket 3V, which runs at 12MHz.&nbsp; The final implementation will use some ATTiny at 8MHz.</p>
+
+
+
+
+
+
+
+
+
+
+
+<figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/latex(3)" target="_blank"><img style="display: block; max-width: 100%; cursor: pointer; height: auto; vertical-align: middle; background-color: rgb(39, 39, 39); margin: 1em auto;" alt="DDS tuning equation" title="DDS tuning equation" class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/latex(3)"></a><figcaption>DDS tuning equation</figcaption></figure>
+
+
+
+
+
+
+
+
+
+
+
+<p>where&nbsp;</p>
+
+
+
+
+
+
+
+
+
+
+
+<ul><li>fo = output frequency</li><li>M = phase accumulator</li><li>fc = clock frequency</li><li>n = bitwidth of phase accumulator</li></ul>
+
+
+
+
+
+
+
+
+
+<p><strong>Frequency resolution</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+<p>So the frequency resolution is :</p>
+
+
+
+
+
+
+
+
+
+
+
+<p><a href="./Pulse to Tone Converter _ Hackaday.io_files/latex(4)" target="_blank"><img style="display: block; margin: 1em auto; max-width: 100%; cursor: pointer; height: auto; vertical-align: middle; background-color: rgb(39, 39, 39);" class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/latex(4)"></a>The allowable frequency tolerance for the DTMF frequencies is&nbsp;±1,5 %.&nbsp; This is maximum 10.4Hz for 697Hz, which is the lowest DTMF tone.</p>
+
+
+
+
+
+
+
+
+
+
+
+<p>For 12MHz, fast PWM, the interrupt frequency is 47KHz, phase accumulator is 16-bit.&nbsp; The frequency resolution is (12MHz / 256) / 65536 = 0.7Hz.&nbsp; This is more than enough.&nbsp; Also for 8MHz system, the frequency resolution of the DDS is sufficient for this application.</p>
+
+
+
+
+
+
+
+
+
+<p><strong>Minimum clock frequency</strong></p>
+
+
+
+
+
+
+
+
+
+<p>There is also an upper limit to the frequency that can be generated.&nbsp; Practically:&nbsp;</p>
+
+
+
+
+
+
+
+
+
+<p><a href="./Pulse to Tone Converter _ Hackaday.io_files/latex(5)" target="_blank"><img style="display: block; max-width: 100%; cursor: pointer; height: auto; vertical-align: middle; background-color: rgb(39, 39, 39); margin: 1em auto;" class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/latex(5)"></a>For DTMF, the maximum frequency is 1633Hz, so fc, which is the frequency of the timer interrupt, should be at least 4.9KHz.</p>
+
+
+
+
+
+
+
+<p><strong>Comparison of PWM-modes for generating DDS</strong></p>
+
+
+
+
+
+
+
+<p>Below you can find two screenshots that show the difference between fast-PWM and phase-correct-PWM on the Adafruit ProTrinket 3V.&nbsp; Clearly, the phase correct PWM will need much more filtering to get a clean output signal.&nbsp; That's because the interrupt frequency in fast-PWM-mode is twice the interrupt frequency of the phase-correct-PWM mode.</p>
+
+<p>The low pass filter used in all the screenshots is just a simple first order RC-filter: 330ohm with 100nF.&nbsp; These were just some parts lying around on my desk.&nbsp; The cutoff frequency is 4.8KHz.</p>
+
+
+
+
+
+
+
+<figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/5260901515252789251.png" target="_blank"><img alt="697Hz DDS, 16bit tuning word, phase-correct PWM, 8bit sine table" title="697Hz DDS, 16bit tuning word, phase-correct PWM, 8bit sine table" class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/5260901515252789251.png" style=""></a><figcaption>697Hz DDS, 16bit tuning word, phase-correct PWM, 8bit sine table</figcaption></figure>
+
+
+
+
+
+
+
+<figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/3182611515252464050.png" target="_blank"><img alt="697Hz DDS,  16bit tuning word, fast-PWM, 8bit sine table" title="697Hz DDS,  16bit tuning word, fast-PWM, 8bit sine table" class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/3182611515252464050.png" style=""></a><figcaption>697Hz DDS,  16bit tuning word, fast-PWM, 8bit sine table<br></figcaption></figure>
+
+
+
+
+
+<p><strong>Sine table</strong></p>
+
+<p>To avoid the time consuming operation of calculating a sine wave in real time, the values are precalculated and stored in flash.</p>
+
+<p>The original implementation of which you can see screenshots above had a sine table with 256 values.&nbsp; To save space in flash, this has been reduced to 128 values.&nbsp; There's no noticeable difference in the output.</p>
+
+<p>The pwm resolution of timer2 in the AVRMEGA is 8bit.&nbsp; The original sine table was normalized to 8bit, i.e.&nbsp; the sine values were in the range [0..255].&nbsp; For application in DTMF, two sine waves must be added.&nbsp; The 8bit sine wave values will overflow.&nbsp; To prevent this, the sine table has been normalized to 7bit, i.e. [0..127].</p>
+
+<p><strong>Final output</strong></p>
+
+<figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/5697431515273442404.png" target="_blank"><img class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/5697431515273442404.png" style=""></a><figcaption>Waveform of DDS output while generating '0' (941 + 1336 Hz)</figcaption></figure>
+                        
+                    <p></p>
+                </div>
+            </li>
+        
+            <li data-order="8" data-id="71929">
+                <h3 class="element-title">
+                    <a href="https://hackaday.io/project/28557/log/71929-measurements-on-commercial-hardware">Measurements on commercial hardware</a>
+                    
+                </h3>
+                <small class="authorship">
+                    <span class="gray-link"><span class="identity-card" data-id="262523"><a href="https://hackaday.io/hacker/262523-christoph-tack">Christoph Tack</a></span></span> •
+                    <span class="time-card" style="margin: 0" title="3 years ago">12/24/2017 at 19:31</span>  •
+                    <a class="gray-link" href="https://hackaday.io/project/28557/log/71929-measurements-on-commercial-hardware#discussion-list">
+                        0 comments
+                    </a>
+                </small>
+                <div class="summary">
+                    <p></p><h1>Test environment</h1>
+
+<p>As the design process will require measurements and manipulations on a potential high voltage telephone line, we can make it easy for ourselves by making a complete test setup on our test table.&nbsp; You probably don't want to destroy the SLIC in your VOIP Box, so we'll be using a separate SLIC-module.</p>
+
+
+
+
+
+
+
+<p>The&nbsp;<a href="http://www.silvertel.com/products/telecom/19-telecom/271-ag1171.html" target="_blank">Silvertel AG1171</a>&nbsp;is a very simple to use SLIC-module.&nbsp; It might be hard to get as a hobbyist.&nbsp; The&nbsp;<a href="http://www.r-tone.com/en/DownView.asp?ID=8" target="_blank">R-Tone KS0835F</a>&nbsp;is fully compatible and available from the usual Chinese channels.</p>
+
+
+
+
+
+
+
+<h2>Modular jack RJ11</h2>
+
+
+
+
+
+
+
+<p>Info can be found on&nbsp;<a href="https://en.wikipedia.org/wiki/Registered_jack#RJ11" target="_blank">Wikipedia</a>:&nbsp;</p>
+
+
+
+
+
+
+
+<ul><li>pin 3 : RED : RING : -</li><li>pin 4 : GREEN : TIP : +</li></ul>
+
+
+
+
+
+
+
+<p>So much for the standard, the Bbox2 VOIP-gateway uses reverse polarity.</p>
+
+
+
+
+
+
+
+<h2>Connecting the SLIC</h2>
+
+
+
+
+
+
+
+<p>For the KS0835F this becomes:</p>
+
+
+
+
+
+
+
+<ul><li>pin 1 : RING = RJ11, pin 3</li><li>pin 2 : TIP = RJ11, pin 4</li><li>pin 3 : F/R = +5V ( reverse mode : ring positive with respect to tip).&nbsp; The drawing on the KS0835F datasheet is correct, the describing text is wrong.</li><li>pin 4 : RM = GND (no ringing needed)</li><li>pin 7 : VX = Audio out, decoupled with 220nF to oscilloscope to get rid of the 5VDC-offset</li><li>pin 9 : GND</li><li>pin 10 : +5VDC (100nF +&nbsp;470µF close to pin 9&amp;10 to get rid of the noise on pin 7).&nbsp; If you only supply with 3V3, the loop current will be considerably smaller, even to that agree that the ProTrinket3V refuses to boot.</li></ul>
+
+
+
+
+
+
+
+<p>Let's do some basic measurements first on this slic.</p>
+
+
+
+
+
+
+
+<ul><li>On hook voltage : TIP=50V, RING=0V</li><li>Off hook voltage&nbsp;<ul><li>330ohm resistor : RING=16.7V, TIP=7.0V =&gt; 29mA loop current</li><li>220ohm resistor : RING=13.4V, TIP=7.0V =&gt; 29mA loop current</li></ul></li><li>Connecting resistor from RING to GND<ul><li>220ohm resistor : RING=6.93V, TIP=0.1V =&gt; 31mA</li><li>330ohm resistor : RING=10.11V, TIP=0.1V =&gt; 32.6mA</li></ul></li><li>The RING-pin internally has a current source connected to it.&nbsp; The TIP-pin seems to have a 7V-zener like functionality.</li><li>Ring-trip detection circuitry is built in on the RING-pin.&nbsp; Connecting a 3.8Kohm resistor causes the SHK-pin to come up (13mA?).&nbsp; There is some hysteresis to turn if off again.</li></ul>
+
+
+
+
+
+
+
+<h2>Injecting audio in the SLIC</h2>
+
+
+
+
+
+
+
+<p><strong>Differential mode input impedance</strong></p>
+
+
+
+
+
+
+
+<p>Our signal will be injected as a differential voltage to the SLIC.&nbsp; An audio transformer is used to converted the single ended test signal to a balanced signal.&nbsp; This signal is then AC-coupled to TIP-RING.&nbsp; By inserting an 22Kohm sense resistor, we can measure the input impedance of the SLIC.&nbsp; It appears to be close to 15Kohm.&nbsp; This impedance is constant to at least 22KHz.</p>
+
+
+
+
+
+
+
+<p><strong>Transresistance</strong></p>
+
+
+
+
+
+
+
+<p>The SLIC provides constant current to the load and measures the voltage over that load.&nbsp; The way to inject data is to modulate the load.&nbsp; The question is how much do we need to vary the load to get a certain output voltage?</p>
+
+
+
+
+
+
+
+<p>Measurements have shown that a 30mA current change in the loop leads to a 1V change in the audio output.</p>
+
+
+
+
+
+
+
+<p><strong>Audio output</strong></p>
+
+
+
+
+
+
+
+<p>The audio output voltage is the simply the difference of the TIP and RING voltage, transferred to a 5VDC-offset.</p>
+
+
+
+
+
+
+
+<h2>Measuring DTMF signals of a Philips D200 DECT-base station</h2>
+
+
+
+
+
+
+
+<p>Let's see what COTS-devices output when they're generating DTMF-signals.&nbsp; In order to do that, we connect the Philips D200 DECT-base station to the SLIC's tip&amp;ring.&nbsp; The oscilloscope is connected to the audio out of the SLIC.</p>
+
+
+
+
+
+
+
+<figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/3927631513369658141.png" target="_blank"><img class="lazy" style="display: block; margin: 1em auto; max-width: 100%; cursor: pointer; height: auto; vertical-align: middle;" src="./Pulse to Tone Converter _ Hackaday.io_files/3927631513369658141.png"></a></figure>
+
+
+
+
+
+
+
+<p>The screenshot shows a screen capture of the SLIC's audio out, while the Philips D200 is dialing "1".&nbsp; The FFT-shows energy on 700Hz (actually 697Hz) and 1200Hz (actually 1209Hz).</p>
+
+
+
+
+
+
+
+<ul><li>Signal amplitude : 1.8Vpp</li><li>Tone duration : 80ms</li></ul>
+
+
+
+
+
+
+
+<figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/2196031513369902953.png" target="_blank"><img class="lazy" style="display: block; margin: 1em auto; max-width: 100%; cursor: pointer; height: auto; vertical-align: middle;" src="./Pulse to Tone Converter _ Hackaday.io_files/2196031513369902953.png"></a></figure>
+
+
+
+
+
+
+
+<p>This screenshot is measured on the same signal.&nbsp; This time, the phone is dialing "12".</p>
+
+
+
+
+
+
+
+<ul><li>Pause duration : 80ms</li></ul>
+
+
+
+<p>The SLIC audio conversion relative gain is 0dB, so it doesn't change the amplitude of the audio on the telephone line.&nbsp;&nbsp;</p>
+
+
+
+
+
+<p>The Philips D200 generates it's DTMF which complies to the standard.</p>
+
+
+
+
+
+<h1>Bbox2 VOIP...</h1>
+                        
+                            <a class="readmore" href="https://hackaday.io/project/28557/log/71929-measurements-on-commercial-hardware">Read more »</a>
+                        
+                    <p></p>
+                </div>
+            </li>
+        
+            <li data-order="9" data-id="71898">
+                <h3 class="element-title">
+                    <a href="https://hackaday.io/project/28557/log/71898-coupling-audio-to-telephone-line">Coupling audio to telephone line</a>
+                    
+                </h3>
+                <small class="authorship">
+                    <span class="gray-link"><span class="identity-card" data-id="262523"><a href="https://hackaday.io/hacker/262523-christoph-tack">Christoph Tack</a></span></span> •
+                    <span class="time-card" style="margin: 0" title="3 years ago">12/23/2017 at 19:20</span>  •
+                    <a class="gray-link" href="https://hackaday.io/project/28557/log/71898-coupling-audio-to-telephone-line#discussion-list">
+                        0 comments
+                    </a>
+                </small>
+                <div class="summary">
+                    <p></p><p>The trouble with telephone lines is they carry relatively small audio signals and high voltage ringing signals.&nbsp; If the circuitry is placed in parallel with the telephone line, it has to deal with the ringing voltage.&nbsp; At the same time, the circuit must be low-Z enough to inject audio signals.</p><p>The alternative option chosen here is to design circuitry that sits in series with the telephone line.&nbsp; The advantages are:</p><ul><li>No current consumption on hook.</li><li>Easy way to feed electronics using a zener diode (only off-hook and in between DTMF-bursts).</li><li>High ringing voltage is no longer an issue.&nbsp; The maximum voltage over the circuit is limited by the zener diode.</li></ul><figure><a href="./Pulse to Tone Converter _ Hackaday.io_files/4035721514054700888.png" target="_blank"><img class="lazy" src="./Pulse to Tone Converter _ Hackaday.io_files/4035721514054700888.png" style=""></a></figure><p>The SLIC provides a 30mA current loop, that's I1.</p><p>U1 is the variable load, modulated by the DTMF-source, U1.&nbsp; When the horn goes off-hook, the connected telephone closes the loop with a 300ohm resistor.&nbsp; The current through the loop will rise to 30mA.&nbsp; This causes the voltage over D1 to rise to 4.7V.&nbsp; The MCU will startup.&nbsp; U1 will start sinking considerable current.&nbsp; The rest of the current will be used to power the electronics.&nbsp; The DC-bias current through U1 can be set with R2 and R3.&nbsp; Check that during DTMF-transmitting, the output voltage (VOUT) doesn't exceed the zener voltage.&nbsp; The zener will limit the VOUT and distort the signal.</p><p>When transmitting DTMF, R4 and R5 set the amplitude of the DTMF-signal voltage on the current loop.</p><p>4.7nF caps will be added in parallel with R5 and to the base of U1 to filter the HF-noise of the PWM-output of the MCU.</p>
+                        
+                    <p></p>
+                </div>
+            </li>
+        
+        </ul>
+        <p class="log-btns">
+            
+            
+                <a href="https://hackaday.io/project/28557/logs" class="grey-gold-button medium-button show">
+                
+                    View all 10 project logs
+                
+                </a>
+            
+        </p>
+    </section>
+
+    
+
+
+
+
+    
+
+    
+    
+
+
+
+
+    <section class="section section-share">
+        <h2 class="section-title">Enjoy this project?</h2>
+        Share 
+        <span class="gray-link">
+            
+
+
+
+
+    <div class="icon icon-link-circle--share">
+        <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M10.78 5.371a1.67 1.67 0 00-2.357 0L7.33 6.464a1.67 1.67 0 000 2.356c.076.076.155.14.241.196l.554-.554a.936.936 0 01-.26-.177.911.911 0 01-.003-1.29l1.093-1.092c.354-.355.935-.355 1.289 0s.354.934 0 1.289l-.818.818c.068.14.158.463.026.999a1.79 1.79 0 00.227-.185l1.093-1.093a1.66 1.66 0 00.007-2.36zM8.547 7.294l-.54.539c.012.007.027.01.038.018a.915.915 0 01.14 1.402l-1.093 1.094c-.355.354-.935.354-1.29 0s-.354-.935 0-1.29l.807-.806c-.075-.177-.14-.501-.022-1.006-.08.056-.159.116-.227.188L5.268 8.526a1.67 1.67 0 000 2.356c.324.324.75.486 1.18.486s.852-.162 1.18-.486L8.72 9.79a1.67 1.67 0 000-2.356c-.056-.053-.117-.094-.173-.14zm5.475.747a5.995 5.995 0 01-5.996 5.995 5.995 5.995 0 01-5.995-5.995 5.995 5.995 0 015.995-5.995 5.995 5.995 0 015.996 5.995z"></path></svg>
+        
+    </div>
+
+
+        </span>
+        <a href="https://twitter.com/intent/tweet?url=https://hackaday.io/project/28557-pulse-to-tone-converter&amp;text=Pulse%20to%20Tone%20Converter%20by%20christoph-tack&amp;related=hackadayio&amp;via=hackadayio" target="_blank" alt="Share on twitter" class="gray-link">
+            
+
+
+
+
+    <div class="icon icon-twitter-circle--share">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8.023 14.03a6 6 0 10-.002-12.002 6 6 0 00.002 12.002zm.834-8.345c-.524.19-.855.683-.818 1.22l.012.208-.21-.025a3.405 3.405 0 01-1.994-.983L5.57 5.83l-.07.203c-.15.453-.055.932.26 1.254.167.178.13.203-.16.097-.1-.034-.188-.06-.197-.046-.03.03.072.415.15.568.11.21.332.42.575.542l.206.097-.243.005c-.234 0-.242.004-.217.093.084.275.415.568.783.695l.26.09-.226.134c-.335.195-.73.305-1.123.314-.19.004-.344.02-.344.034 0 .042.51.28.81.373.892.275 1.952.156 2.748-.314.567-.336 1.133-1 1.397-1.645.142-.343.285-.97.285-1.27 0-.196.012-.22.247-.454.137-.135.267-.283.292-.326.042-.08.038-.08-.176-.008-.356.127-.406.11-.23-.08.13-.136.285-.382.285-.454 0-.013-.062.008-.133.047-.076.04-.243.104-.37.143l-.225.072-.206-.14a1.794 1.794 0 00-.356-.187 1.43 1.43 0 00-.733.017z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+        </a> 
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://hackaday.io/project/28557-pulse-to-tone-converter" target="_blank" alt="Share on Facebook" class="gray-link">
+            
+
+
+
+
+    <div class="icon icon-facebook-circle--share">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8.023 14.03a6 6 0 10-.002-12.002 6 6 0 00.002 12.002zm-.847-2.737V8.028h-.674V6.904h.674v-.676c0-.917.38-1.463 1.462-1.463h.9V5.89h-.563c-.42 0-.45.157-.45.45v.563h1.02l-.12 1.125h-.9v3.265h-1.35z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+        </a>
+    </section>
+
+
+    
+    <section class="section last">
+    <h2 id="j-discussions-title" class="section-title">Discussions</h2>
+
+    <form id="j-discussion-add-top" action="https://hackaday.io/discussions/add" name="add-comment" method="POST" class="skip-global-form discussion-form j-discussion-add hide">
+
+        <div class="redactor-box" role="application" dir="ltr"><span class="redactor-voice-label" id="redactor-voice-0" aria-hidden="false">Rich text editor</span><div class="redactor-layer redactor-styles redactor-layer-img-edit redactor-in redactor-relative redactor-placeholder" aria-labelledby="redactor-voice-0" role="presentation" id="redactor-uuid-0" contenteditable="true" spellcheck="true" dir="ltr" style="min-height: 78px;" placeholder="Add your comment"><p>​</p></div><textarea placeholder="Add your comment" name="comment" class="redactor-comment textarea-field" style="display: none;"></textarea></div>
+
+        <div class="error-message alert-danger hide" id="addCommentErrorMessageTop"></div>
+
+        <input type="hidden" name="categoryId" value="28557">
+        <input type="hidden" name="category" value="project">
+        <input type="hidden" name="_csrf" value="4e5hXMyx-1ymB2l_JiUjEZJkWRrtg7ZjR6Jk">
+        <input type="hidden" name="replyTo" value="0">
+
+        <input type="submit" class="button-grey-gold-medium" value="Post comment">
+    </form>
+
+    <div id="discussion-list" class="discussion-list">
+        
+<p>
+    </p><div class="signup-holder textarea-holder">
+        <textarea placeholder="Log In or become a member to leave your comment" name="comment" class="editable input-comment" style="height: 55.6px;"></textarea>
+    </div>
+    <a href="https://hackaday.io/project/28557-pulse-to-tone-converter#" class="button-grey-gold-small login-comment login-button">Log In/Sign up to comment</a>
+<p></p>
+<div class="modal-content-holder onboarding-modal login-modal" id="login-modal">
+        <div class="onboarding-signup">
+        <div class="onboarding-top">
+    <div class="submissions-close modal-close">
+        
+
+
+
+
+    <div class="icon icon-close">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8 6.99L4.767 3.76a.714.714 0 10-1.01 1.01L6.992 8 3.76 11.233a.714.714 0 101.01 1.01L8 9.008l3.233 3.232a.714.714 0 101.01-1.01L9.008 8l3.232-3.233a.714.714 0 10-1.01-1.01L8 6.992z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+    </div>
+
+    <div class="onboarding-holder">
+        <div class="headline">
+            <h1 class="title text-center">
+                Become a Hackaday.io Member
+            </h1>
+            <p class="text-center">
+                <span>Create an account to leave a comment.</span>
+                <span>Already have an account?</span>
+                <a href="https://hackaday.io/signin" class="should-link">Log In</a>.
+            </p>
+        </div>
+        <div class="onboarding-content signin-holder">
+            <div class="signin-left">
+                <a href="https://hackaday.io/auth/github" class="sign-in-with-github-button button j-dialog-auth-window">
+                    
+
+
+
+
+    <div class="icon icon-github--signin">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M3.643 7.513c-.158-.45-.228-.967-.228-1.543 0-1.024.33-1.41.77-1.955-.337-1.167.122-1.965.122-1.965s.71-.142 2.05.79c.728-.303 2.666-.328 3.584-.068.563-.36 1.593-.873 2.008-.73.113.176.355.688.147 1.813.14.247.874.772.877 2.258-.012.548-.07 1.01-.18 1.402.02 0-.14.485-.177.484C12.13 9.034 11.13 9.42 9.52 9.58c.522.32.672.72.672 1.802 0 1.083-.015 1.23-.012 1.478.006.408.623.604.6.736-.023.13-.517.11-.747.032-.654-.22-.588-.75-.588-.75l-.022-1.447s.044-.78-.253-.78v2.37c0 .516.372.672.372.863 0 .327-.68-.03-.888-.235-.32-.31-.283-.97-.275-1.49.006-.502-.006-1.603-.006-1.603l-.216.005s.088 2.403-.114 2.84c-.263.563-1.054.757-1.054.5 0-.172.194-.117.302-.503.093-.33.06-2.78.06-2.78s-.253.146-.253.605c0 .21-.007 1.41-.007 1.767 0 .45-.657.705-.973.705-.16 0-.36-.008-.36-.09 0-.208.602-.33.602-.762 0-.375-.008-1.34-.008-1.34s-.304.052-.736.052c-1.09 0-1.435-.675-1.6-1.053a1.859 1.859 0 00-.784-.908c-.18-.113-.222-.247-.013-.285.966-.175 1.212 1.063 1.857 1.26.46.14 1.052.08 1.346-.105.04-.378.32-.705.554-.877-1.64-.153-2.612-.705-3.116-1.593-.005 0-.236-.482-.217-.482z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+                    <span>Sign up with Github</span>
+                </a>
+                <a href="https://hackaday.io/auth/twitter" class="sign-in-with-twitter-button button j-dialog-auth-window">
+                    
+
+
+
+
+    <div class="icon icon-twitter--signin">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M10.725 2.04c1.2-.022 1.837.406 2.447.946.517-.044 1.19-.324 1.586-.52.128-.07.256-.138.385-.207-.226.595-.533 1.062-1.004 1.416-.106.08-.21.186-.34.237v.007c.67-.007 1.225-.304 1.75-.463v.007c-.276.428-.65.863-1.05 1.175l-.482.374c.008.692-.01 1.355-.144 1.94-.773 3.388-2.82 5.688-6.064 6.674-1.165.355-3.046.5-4.38.175-.662-.16-1.26-.34-1.82-.58a7.252 7.252 0 01-.877-.44l-.272-.162c.302.01.654.09.99.038.305-.048.604-.035.884-.094.7-.15 1.322-.35 1.858-.653.26-.15.654-.324.838-.537a2.706 2.706 0 01-.92-.16c-1.002-.346-1.585-.98-1.964-1.933.303.032 1.177.11 1.38-.058-.38-.02-.748-.236-1.01-.397C1.71 8.333 1.053 7.51 1.058 6.24c.106.048.21.1.317.147.202.083.408.127.65.177.102.02.305.078.423.037h-.015c-.156-.176-.41-.296-.567-.484-.517-.628-1-1.592-.695-2.74.08-.29.202-.55.334-.785l.015.007c.06.122.193.214.278.316.264.32.59.607.92.86 1.132.862 2.15 1.39 3.785 1.784.415.1.894.175 1.39.177-.14-.395-.095-1.035.015-1.42.275-.96.874-1.654 1.752-2.025a3.8 3.8 0 01.687-.208c.126-.013.252-.027.378-.043" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+                    <span>Sign up with Twitter</span>
+                </a>
+                <span class="or-separator">OR</span>
+            </div>
+                
+            <div class="signin-right">
+                <form id="onboarding-ga" action="https://hackaday.io/signupfast" method="POST">
+                <input type="text" class="input-field" placeholder="Enter your email address" required="" name="email">
+                <input type="password" class="input-field" placeholder="Pick a secure password" required="" name="password">
+                
+                <input id="captchaInput" type="text" class="input-field onboarding-modal-captcha" placeholder="Enter captcha" name="captcha" autocomplete="new-password" style="width: -webkit-calc(100% - 115px);">
+                <img src="./Pulse to Tone Converter _ Hackaday.io_files/captcha(1).jpg" id="captchaUrl" style="vertical-align: middle;" class="onboarding-modal-captcha">
+                <input type="hidden" name="okay_to_redirect" value="true">
+
+                <input type="hidden" name="source" value="/project : alternate modal">
+                <button class="gold-gold-button button-signin" type="submit">Sign up</button>
+                <input type="hidden" name="_csrf" value="4e5hXMyx-1ymB2l_JiUjEZJkWRrtg7ZjR6Jk">
+                <input type="hidden" class="input-field" placeholder="Invitation Code" required="" name="invitation_code" value="5Ad0ix2-b96J">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    var pageIndex = 0;
+
+
+</script>
+    </div>
+
+    
+
+</section>
+
+
+
+
+</div>
+
+    </div>
+
+    
+
+
+
+
+    <div class="container">
+        <section class="section-recommendations">
+            <h2 class="section-title">Similar Projects</h2>
+            <div class="hfr-card-list">
+                
+                    
+
+<div class="hfr-card-list-item">
+
+    <div class="hfr-card-item">
+
+        
+
+        <a href="https://hackaday.io/project/176057-musical-solid-state-tesla-coil-v2" title="Musical Solid-State Tesla Coil v2 by Sebastian">
+
+            <div class="hfr-card-img hfr-card-img-landscape ">
+                
+                    <picture>
+                        <source srcset="https://cdn.hackaday.io/images/resize/600x400/4502741606439889708.png" media="(-webkit-min-device-pixel-ratio: 1.5), (min--moz-device-pixel-ratio: 1.5), (-o-min-device-pixel-ratio: 3/2), (min-device-pixel-ratio: 1.5), (min-resolution: 1.5dppx)">
+                        <source srcset="https://cdn.hackaday.io/images/resize/300x200/4502741606439889708.png">
+                        <img src="./Pulse to Tone Converter _ Hackaday.io_files/4502741606439889708.png">
+                    </picture>
+                
+            </div>
+
+            <div class="hfr-card-meta ">
+                <div class="hfr-card-summary">This is my ongoing Tesla Coil project, with the main goal of producing quality music through plasma.</div>
+            </div>
+
+        </a>
+
+    </div>
+
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3 class="element-title">
+            <a href="https://hackaday.io/project/176057-musical-solid-state-tesla-coil-v2" title="Musical Solid-State Tesla Coil v2">Musical Solid-State Tesla Coil v2</a>
+        </h3>
+        <p><span class="identity-card" data-id="1152707"><a href="https://hackaday.io/SebastianA"><img src="./Pulse to Tone Converter _ Hackaday.io_files/3977511606277351103.jpg" alt="Sebastian">Sebastian</a></span></p>
+    </div>
+
+</div>
+
+
+                
+                    
+
+<div class="hfr-card-list-item">
+
+    <div class="hfr-card-item">
+
+        
+            <div class="hfr-card-flags">
+                
+                
+                    
+                
+            </div>
+        
+
+        <a href="https://hackaday.io/project/5481-digital-bench-power-supply" title="Digital Bench Power Supply by Radu Motisan">
+
+            <div class="hfr-card-img hfr-card-img-landscape ">
+                
+                    <picture>
+                        <source srcset="https://cdn.hackaday.io/images/resize/600x400/9880341430138616129.jpg" media="(-webkit-min-device-pixel-ratio: 1.5), (min--moz-device-pixel-ratio: 1.5), (-o-min-device-pixel-ratio: 3/2), (min-device-pixel-ratio: 1.5), (min-resolution: 1.5dppx)">
+                        <source srcset="https://cdn.hackaday.io/images/resize/300x200/9880341430138616129.jpg">
+                        <img src="./Pulse to Tone Converter _ Hackaday.io_files/9880341430138616129.jpg">
+                    </picture>
+                
+            </div>
+
+            <div class="hfr-card-meta ">
+                <div class="hfr-card-summary">A new design, made from scratch, for a digital bench power supply to offer regulated voltage and current, and prompt shortcircuit protection</div>
+            </div>
+
+        </a>
+
+    </div>
+
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3 class="element-title">
+            <a href="https://hackaday.io/project/5481-digital-bench-power-supply" title="Digital Bench Power Supply">Digital Bench Power Supply</a>
+        </h3>
+        <p><span class="identity-card" data-id="13270"><a href="https://hackaday.io/radhoo"><img src="./Pulse to Tone Converter _ Hackaday.io_files/4526941501629087106.png" alt="Radu Motisan">Radu Motisan</a></span></p>
+    </div>
+
+</div>
+
+
+                
+                    
+
+<div class="hfr-card-list-item">
+
+    <div class="hfr-card-item">
+
+        
+            <div class="hfr-card-flags">
+                
+                
+                    
+                        <div>
+                            <a href="https://hackaday.io/submissions/prize2015/list" class="hfr-card-flag tooltip card-tip">
+                                <img src="./Pulse to Tone Converter _ Hackaday.io_files/submission-icon-5.png">
+                                <span class="tooltiptext">
+                                    <strong>The 2015 Hackaday Prize</strong>
+                                </span>
+                            </a>
+                        </div>
+                    
+                
+            </div>
+        
+
+        <a href="https://hackaday.io/project/5697-open-source-bench-top-power-supply" title="Open Source Bench Top Power Supply by acp.calin">
+
+            <div class="hfr-card-img hfr-card-img-landscape ">
+                
+                    <picture>
+                        <source srcset="https://cdn.hackaday.io/images/resize/600x400/845501431113214930.jpg" media="(-webkit-min-device-pixel-ratio: 1.5), (min--moz-device-pixel-ratio: 1.5), (-o-min-device-pixel-ratio: 3/2), (min-device-pixel-ratio: 1.5), (min-resolution: 1.5dppx)">
+                        <source srcset="https://cdn.hackaday.io/images/resize/300x200/845501431113214930.jpg">
+                        <img src="./Pulse to Tone Converter _ Hackaday.io_files/845501431113214930.jpg">
+                    </picture>
+                
+            </div>
+
+            <div class="hfr-card-meta hfr-card-has-flag">
+                <div class="hfr-card-summary">We start simple: with an open-source variable voltage power supply, which, for now, will use a modified computer PSU.</div>
+            </div>
+
+        </a>
+
+    </div>
+
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3 class="element-title">
+            <a href="https://hackaday.io/project/5697-open-source-bench-top-power-supply" title="Open Source Bench Top Power Supply">Open Source Bench Top Power Supply</a>
+        </h3>
+        <p><span class="identity-card" data-id="21770"><a href="https://hackaday.io/Calin"><img src="./Pulse to Tone Converter _ Hackaday.io_files/default-avatar.png" alt="acp.calin">acp.calin</a></span></p>
+    </div>
+
+</div>
+
+
+                
+                    
+
+<div class="hfr-card-list-item">
+
+    <div class="hfr-card-item">
+
+        
+
+        <a href="https://hackaday.io/project/19134-ardugen" title="ArduGen by Evangelos Petrongonas">
+
+            <div class="hfr-card-img hfr-card-img-landscape ">
+                
+                    <picture>
+                        <source srcset="https://cdn.hackaday.io/images/resize/600x400/5382841482917446995.png" media="(-webkit-min-device-pixel-ratio: 1.5), (min--moz-device-pixel-ratio: 1.5), (-o-min-device-pixel-ratio: 3/2), (min-device-pixel-ratio: 1.5), (min-resolution: 1.5dppx)">
+                        <source srcset="https://cdn.hackaday.io/images/resize/300x200/5382841482917446995.png">
+                        <img src="./Pulse to Tone Converter _ Hackaday.io_files/5382841482917446995.png">
+                    </picture>
+                
+            </div>
+
+            <div class="hfr-card-meta ">
+                <div class="hfr-card-summary">Low Cost Arduino Uno Arbitrary Waveform Generator.
+</div>
+            </div>
+
+        </a>
+
+    </div>
+
+    <div class="project-item-headline">
+        <span class="project-owner hide">Project Owner</span>
+        <span class="project-owner hide">Contributor</span>
+        <h3 class="element-title">
+            <a href="https://hackaday.io/project/19134-ardugen" title="ArduGen">ArduGen</a>
+        </h3>
+        <p><span class="identity-card" data-id="189411"><a href="https://hackaday.io/vpetrog"><img src="./Pulse to Tone Converter _ Hackaday.io_files/7261241501715412795.jpeg" alt="Evangelos Petrongonas">Evangelos Petrongonas</a></span></p>
+    </div>
+
+</div>
+
+
+                
+            </div>
+        </section>
+
+    </div>
+
+    
+
+
+
+
+    <div class="page-basic-info-static page-basic-info-static-dark guest-message-signup guest-message-signup-inline">
+        <h1>Does this project spark your interest?</h1>
+        <p class="page-basic-info-text"><a href="javascript:void(0)">Become a member</a>  to follow this project and never miss any updates</p>
+        
+
+<div class="signup-holder">
+    <form id="onboarding-ga-footer" method="POST" action="https://hackaday.io/signup?returnUrl=/project/28557-pulse-to-tone-converter">
+        <input type="hidden" name="_csrf" value="4e5hXMyx-1ymB2l_JiUjEZJkWRrtg7ZjR6Jk">
+
+        
+        <input type="text" class="input-field input-email" placeholder="Your email address" name="email"><input type="password" class="input-field input-password" placeholder="Password" name="password">
+        <input type="text" class="input-field" placeholder="Enter captcha" name="captcha" autocomplete="new-password" style="width: 140px;">
+        <img src="./Pulse to Tone Converter _ Hackaday.io_files/captcha(2).jpg" style="vertical-align: middle;">
+        <a href="javascript:location.reload();" style="font-size: 1.25em;">
+
+
+
+
+    <div class="icon icon-reload">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M10.346 10.938l-.005-.006a3.7 3.7 0 01-2.21.728 3.746 3.746 0 01-3.74-3.75 3.745 3.745 0 013.74-3.75c2.022 0 3.67 1.61 3.733 3.625h-1.74l2.243 2.5 2.242-2.5H13.11C13.044 5.08 10.84 2.91 8.13 2.91a4.992 4.992 0 00-4.985 5c0 2.76 2.232 5 4.984 5a4.95 4.95 0 002.744-.826.625.625 0 00.298-.214l.027-.02-.008-.008a.632.632 0 00-.523-.993.61.61 0 00-.324.088z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+</a>
+        <input type="hidden" name="source" value="/project : footer modal"><button class="black-gold-button signup" type="submit">
+                Become a member
+        </button>
+        <input required="" class="input-field" placeholder="Invitation Code" name="invitation_code" value="5Ad0ix2-b96J" type="hidden">
+    </form>
+</div>
+
+    </div>
+
+
+    <div id="footer" class="footer ">
+    
+        <a href="https://hackaday.io/project/28557-pulse-to-tone-converter#header" class="back-to-top">
+            
+
+
+
+
+    <div class="icon icon-long-arrow-up">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8.023 2.03L4.78 5.26h2.688v1.11h1.11V5.26h2.688L8.023 2.03zm-.555 5.505V8.92h1.11V7.534H7.47zm0 2.56v1.383h1.11v-1.384H7.47zm0 2.55v1.384h1.11v-1.385H7.47z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+ Going up?
+        </a>
+    
+    <p>
+        <a href="https://hackaday.com/about/">About Us</a>
+        <a href="mailto:projects-contact@hackaday.com">Contact Hackaday.io</a>
+        <a href="https://hackaday.io/project/37">Give Feedback</a> <a href="https://hackaday.io/tos">Terms of Use</a>
+        <a href="https://supplyframe.com/company/privacy">Privacy Policy</a>
+        <a href="https://dev.hackaday.io/" target="_blank" rel="noopener noreferrer">Hackaday API</a>
+    </p>
+    <p><a id="footer--home" href="https://hackaday.io/">© 2020 Hackaday</a></p>
+
+    
+</div>
+
+
+<script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47229708-1', 'auto');
+
+    var dimensionValue = 'nonregistered';
+    ga('set', 'dimension1', dimensionValue);
+    ga('require', 'displayfeatures');
+
+    ga('send', 'pageview');
+</script>
+
+<script>
+    var csrftoken = '4e5hXMyx-1ymB2l_JiUjEZJkWRrtg7ZjR6Jk';
+</script>
+
+
+<img src="./Pulse to Tone Converter _ Hackaday.io_files/impression" alt="" class="sf-impression">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+<div class="j-modal-confirmation modal-background"></div>
+<div class="j-modal-confirmation modal-content-holder">
+    <div class="close"><a href="https://hackaday.io/project/28557-pulse-to-tone-converter" id="modal-cancel" title="Close"><span class="modal-close">
+        
+
+
+
+
+    <div class="icon icon-close">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8 6.99L4.767 3.76a.714.714 0 10-1.01 1.01L6.992 8 3.76 11.233a.714.714 0 101.01 1.01L8 9.008l3.233 3.232a.714.714 0 101.01-1.01L9.008 8l3.232-3.233a.714.714 0 10-1.01-1.01L8 6.992z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+    </span></a></div>
+    <p class="text-center" id="modal-message"></p>
+    <p class="text-center">
+        <a class="grey-grey-button" id="modal-yes" href="javascript:void(0);" data-projecttype="project" data-projectid="28557" data-pageid="" data-pagetype="">Yes, delete it</a>
+        <a class="gold-gold-button" id="modal-cancel" href="https://hackaday.io/project/28557-pulse-to-tone-converter">Cancel</a>
+    </p>
+</div>
+    <div id="submission-popup-back"></div>
+    <div id="submission-popup"></div>
+
+    <div id="modal-report-back" class="modal-background"></div>
+<div id="modal-report" class="modal-content-holder container">
+    <a href="javascript:void(0);" class="modal-close" title="Close">
+        
+
+
+
+
+    <div class="icon icon-close">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8 6.99L4.767 3.76a.714.714 0 10-1.01 1.01L6.992 8 3.76 11.233a.714.714 0 101.01 1.01L8 9.008l3.233 3.232a.714.714 0 101.01-1.01L9.008 8l3.232-3.233a.714.714 0 10-1.01-1.01L8 6.992z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+    </a>
+    <form action="https://hackaday.io/report/project" class="j-modal-form">
+        <h2>Report project as inappropriate</h2>
+
+        <p class="intro-text">
+            You are about to report the project "<b>Pulse to Tone Converter</b>", please tell us the reason.
+        </p>
+
+        <textarea name="comment" class="j-report-comment" placeholder="Why do you report the project as inappropriate"></textarea>
+
+        <input type="hidden" name="_csrf" value="4e5hXMyx-1ymB2l_JiUjEZJkWRrtg7ZjR6Jk">
+        
+            <input type="hidden" name="projectId" value="28557">
+        
+        <div class="modal-footer">
+            <input type="submit" value="Report" class="gold-gold-button submit-button">
+        </div>
+        <div class="j-modal-form-message"></div>
+    </form>
+    <div class="j-modal-message hide"></div>
+</div>
+
+    
+
+
+<div id="modal-contributor-apply-back" class="modal-background"></div>
+<div id="modal-contributor-apply" class="modal-content-holder container">
+    <a href="javascript:void(0);" class="modal-close">
+        
+
+
+
+
+    <div class="icon icon-close">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8 6.99L4.767 3.76a.714.714 0 10-1.01 1.01L6.992 8 3.76 11.233a.714.714 0 101.01 1.01L8 9.008l3.233 3.232a.714.714 0 101.01-1.01L9.008 8l3.232-3.233a.714.714 0 10-1.01-1.01L8 6.992z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+    </a>
+    <form id="contributor-apply-form">
+        <h2>Send message</h2>
+
+        <textarea name="message" class="j-report-comment">Hello,
+
+I really like your project and I think I have skills to help you.
+        </textarea>
+        <p class="application-success">Your application has been submitted.</p>
+        <input type="hidden" name="_csrf" value="4e5hXMyx-1ymB2l_JiUjEZJkWRrtg7ZjR6Jk">
+        <input type="hidden" name="projectId" value="28557">
+
+        <div class="modal-footer">
+            <div class="error-message hide" id="contributor-apply-error"><p></p></div>
+            <input type="submit" value="Send" class="gold-gold-button">
+        </div>
+    </form>
+</div>
+
+    
+
+<div id="modal-contributor-remove-back" class="modal-background"></div>
+<div id="modal-contributor-remove" class="modal-content-holder container">
+    <a href="javascript:void(0);" class="modal-close">
+        
+
+
+
+
+    <div class="icon icon-close">
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" viewBox="0 0 16 16"><path d="M8 6.99L4.767 3.76a.714.714 0 10-1.01 1.01L6.992 8 3.76 11.233a.714.714 0 101.01 1.01L8 9.008l3.233 3.232a.714.714 0 101.01-1.01L9.008 8l3.232-3.233a.714.714 0 10-1.01-1.01L8 6.992z" fill-rule="evenodd"></path></svg>
+        
+    </div>
+
+
+    </a>
+    <form id="contributor-remove-form">
+        <h2>Remove Member</h2>
+        <p>
+            Are you sure you want to remove yourself as
+            a member for this project?
+        </p>
+        <p>Project owner will be notified upon removal.</p>
+        <input type="hidden" name="_csrf" value="4e5hXMyx-1ymB2l_JiUjEZJkWRrtg7ZjR6Jk">
+        <input type="hidden" name="projectId" value="28557">
+        <input type="hidden" name="remove_contributor_id" id="remove_contributor_id">
+
+        <div class="modal-footer">
+            <input type="submit" value="Remove" class="grey-grey-button">
+            <input value="Nevermind" class="gold-gold-button">
+        </div>
+    </form>
+</div>
+
+
+    
+
+    
+
+
+    <script>
+        var usersFromComments = '[]';
+    </script>
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="./Pulse to Tone Converter _ Hackaday.io_files/OkhhCeSBz5ZL_BE4f7QZBTswUbzMyssop5H1caXZkXKImKPN7f_Cv0BjjjDWy+lHLlwzkG+AO+13Ufu_K5x47KlMR6xhx+AjXWd_fiD+qVRI00RZT+Q0pP5u+AWuViWA5YM.download"></script>
+
+
+</body></html>

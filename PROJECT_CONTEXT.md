@@ -55,6 +55,25 @@ and credit/license the upstream work correctly.
 8. **Session notes** (`CLAUDE.md`, this file) added, and the repo pushed to GitHub
    as `JoeFloyd-on-Github/Pulse-To-Tone-Converter` with full history.
 
+## Reference material in the repo
+
+- `BRD170127_Pulse_To_Tone_Converter.doc` — the owner's toolchain/programming
+  guide. Key points: program the ATtiny85 with an Arduino UNO as ISP (capacitor
+  from RESET to GND on the UNO so it doesn't reset; SOP8 socket/clip); install
+  ATTinyCore and Bounce2; select ATtiny85, programmer "Arduino as ISP"; **"Burn
+  Bootloader" first — that only sets the fuses, switching the chip to the
+  external 8 MHz crystal, so after that a crystal on pins 2–3 is required to
+  program it**; then upload the firmware. Also holds the BOM with LCSC and
+  Digi-Key numbers. Mostly screenshots; text is sparse.
+- `KIT_build.doc` — assembly guide for the **kit the owner sold**, based on the
+  original rev R2 board: an 18-step component build order (diodes, Q1, TLV431s,
+  resistors/caps, ATtiny85, MCP6022, crystal, RJ11s, C1 last).
+- `WEB_SAVES/` (added 2026-11-18, ~32 MB, 241 files) — local copies of the web
+  sources in case they go offline: the Hackaday.io project page and its full
+  log, the EasyEDA project, the ATTinyCore and Bounce2 GitHub pages, the Arduino
+  Project Hub "Programming ATtiny85 with Arduino Uno" article, and **ETSI ES 201
+  235-2** (the DTMF transmitter spec). These are third-party copyrighted pages.
+
 ## Key decisions (summary)
 
 - No series regulator in the MCU path (direct drive from the reservoir).
