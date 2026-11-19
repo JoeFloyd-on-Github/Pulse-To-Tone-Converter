@@ -130,8 +130,10 @@ and credit/license the upstream work correctly.
 - **Two corrections already happened** (series-LDO idea; "MCU loses power
   on-hook"). Double-check power-path reasoning against the sims before stating it
   as fact.
-- `ANALYSIS.md` was written before the firmware source was added and still says
-  the source isn't in the folder — its firmware section is structural only.
+- `ANALYSIS.md` was revised on 2026-11-18. It now uses the firmware source and
+  the upstream netlist as ground truth. The first version had guessed the
+  firmware from the .hex: an R-2R/multi-pin tone output (wrong; it is one PWM
+  pin, PB1) and a sense on VEE (wrong; it is VCC via R3/C5 into PB0).
 - **Licensing:** firmware and anything combined with it is GPL v3; the board
   derives from upstream — check upstream terms before redistributing hardware.
 
@@ -143,6 +145,11 @@ and credit/license the upstream work correctly.
   rotations in the fab's assembly preview; order boards.
 - Write the V3 firmware changes (PIN_BATT_EN = 2, fixed mode, on-hook disarm).
 - Firmware features from `ANALYSIS.md` §4–5 (redial, speed dial, timing config).
-- Refresh `ANALYSIS.md`'s firmware section now that the source is in `firmware/`.
+- Firmware fixes found in the source review (ANALYSIS.md §4):
+  - a hook-flash is decoded as digit "1";
+  - pulse width is never checked;
+  - 11+ pulses are dropped silently;
+  - `delay()` blocks dialing during playback;
+  - dials slower than about 6.7 pps split digits.
 - A reference clone of upstream sits at `/tmp/lb_pdtmf` (temporary — lost on
   reboot; re-clone from github.com/LieBtrau/pulse-dtmf-converter if needed).
