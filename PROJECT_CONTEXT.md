@@ -88,7 +88,9 @@ and credit/license the upstream work correctly.
       (photos in `hardware_r2/photos/`);
     - the firmware images moved to `firmware/images/`;
     - ATTinyCore and Bounce2 moved to `third_party/`;
-    - the byte-identical `Gerber_BRD170127_R2 (1).zip` was deleted.
+    - the duplicates `Gerber_BRD170127_R2 (1).zip` (byte-identical) and
+      `BOM_Pulse to DTMF Converter (1).xlsx` (same data, later export timestamp)
+      were deleted.
     `hardware_r2/` holds the original R2 board; `hardware_v2/` holds the
     redesign. The two are different things despite the similar names.
 

@@ -17,7 +17,6 @@ outline and RJ11 jack positions, so it drops in where an R2 board went.
 | `Gerber_BRD170127_R2.zip` | fabrication Gerbers and drill files, exported from EasyEDA in July 2019 |
 | `Schematic_pluse_to_tone.JPG` | the schematic (EasyEDA, "Drawn By: LieBtrau", rev 2.0) |
 | `BOM.JPG`, `BOM_Pulse to DTMF Converter.xlsx` | the bill of materials, as an image and as a spreadsheet |
-| `BOM_Pulse to DTMF Converter (1).xlsx` | the same BOM, exported again on 2020-12-29. The data is identical; only the export timestamp differs. |
 | `PADS_ONLY.svg/.png/.odg/.bmp`, `PADS_ONLY_BW.png`, `PCB_pads.JPG` | the pad layout, for hand assembly |
 | `BRD170127_Pulse_To_Tone_Converter.doc` | **toolchain and programming guide**: the BOM with LCSC and Digi-Key numbers, Arduino-as-ISP setup, ATTinyCore and Bounce2, **burning the bootloader to set the fuses** (external 8 MHz crystal), then flashing the firmware |
 | `KIT_build.doc` | **kit assembly guide**: an 18-step order, starting with the low-profile parts and ending with the RJ11 jacks and C1 |
