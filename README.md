@@ -1,67 +1,62 @@
 # Pulse-to-Tone Converter (ATtiny85)
 
-An internal **pulse-to-tone converter** — it sits inside a classic rotary
-telephone and converts the pulse (loop-disconnect) dialing of the rotary dial
-into **DTMF tones**, so the phone can be used on a modern tone-only line. Built
-around an **ATtiny85** on a small PCB (board **BRD170127**, rev R2).
+An internal **pulse-to-tone converter**. It sits inside a classic rotary
+telephone and turns the dial's pulses (loop interruptions) into **DTMF
+tones**, so the phone works on a modern tone-only line or VoIP adapter. It is
+built around an **ATtiny85** on a small PCB, **BRD170127**.
 
-> **Origin / credit.** This design originates from the open-source
+> **Origin and credit.** The design comes from the open-source
 > **[Pulse to Tone Converter](https://hackaday.io/project/28557-pulse-to-tone-converter)**
-> project by **LieBtrau** on Hackaday.io (the schematic is marked "Drawn By:
-> LieBtrau"). This repository is a build/working copy of that project, with an
-> added engineering analysis; the original hardware and firmware are the
-> original author's work and remain under their terms — see the upstream project
-> for its license.
+> by **LieBtrau** (Christoph Tack) on Hackaday.io and
+> [GitHub](https://github.com/LieBtrau/pulse-dtmf-converter). This repository
+> documents the kit built from it (rev R2), analyses it, and adds a
+> redesigned board (rev V3).
 
-## What's in this repo
+## Board revisions
 
-| Folder | Contents |
+Each revision has its own parts list, firmware and build instructions. Use
+the folder for the board you have.
+
+| | **Rev R2**: the original kit board | **Rev V3**: the redesign |
+|---|---|---|
+| Folder | [`hardware_r2/`](hardware_r2/README.md) | [`hardware_v3/`](hardware_v3/README.md) |
+| Board | LieBtrau's BRD170127/2 (EasyEDA): Gerbers, schematic, BOM, photos | KiCad 9, routed and DRC-clean, in the same outline with the jacks in the same places ([`hardware_v3/kicad`](hardware_v3/kicad/README.md)) |
+| What's different | — | runs on loop currents down to about 1.5 mA (R2 needs about 6.5 mA); a PNP helper on each shunt regulator; no op-amp; optional CR1632 backup |
+| Firmware source | upstream commit **`31ae4ba` (2019-07-06)**, Arduino IDE era ([`hardware_r2/firmware`](hardware_r2/firmware/README.md)) | upstream **`593e746` (2023)** plus V3 battery control ([`hardware_v3/firmware`](hardware_v3/firmware/README.md)) |
+| Firmware image | `hardware_r2/firmware/images/ATTINY85V@SOIC8.hex` (production) | `hardware_v3/firmware/images/pulse-dtmf-converter-v3.hex` |
+| Send delay after the last digit | 3 s | 1.2 s (configurable) |
+| PB2 (ATtiny pin 7) | "mode" input, never wired on the board | coin-cell enable (BATT_EN) |
+| Toolchain | Arduino IDE 1.8.13 + ATTinyCore 1.4.1 + Bounce2 2.55 | Arduino IDE 2 or arduino-cli + ATTinyCore 1.5.2 + Bounce2 2.71 |
+| Fuses | L 0xFF, H 0xD5 (BOD 2.7 V), E 0xFF | the same |
+| Programming | Arduino Uno as ISP, chip in a SOIC-8 ZIF adapter; or an XGecu programmer | the same Uno setup, in circuit with a SOIC-8 clip; or an XGecu programmer |
+| Build docs | the toolchain guide + `KIT_build.doc` | [`hardware_v3/firmware/README.md`](hardware_v3/firmware/README.md) §3–5 + the KiCad fab files |
+| Status | built and sold as a kit | designed and simulated; **not built yet** |
+
+### About the firmware versions
+
+Upstream's code changed after the R2 kits were made. The repo used to carry
+upstream's **2023** source as if it were the kit firmware. It is not: the R2
+production image was rebuilt from the **2019** source and matches it in size,
+constants and RAM layout. The 2023 update moved the project from the Arduino
+IDE to **PlatformIO**, shortened the send delay from 3 s to 1.2 s, and bounded
+the digit buffer. The details are in
+[`hardware_r2/firmware/README.md`](hardware_r2/firmware/README.md) §1 and §4.
+
+## Also in this repo
+
+| Path | Contents |
 |---|---|
-| [`hardware_r2/`](hardware_r2/README.md) | the **original kit board, rev R2** (silk-screened BRD170127/2): Gerbers, schematic, BOM, pad layout, the toolchain/programming guide, the kit assembly guide, and build photos |
-| [`hardware_v2/`](hardware_v2/README.md) | the low-loop-current redesign (write-up only; built on the V3 board without the coin cell) |
-| [`hardware_v3/`](hardware_v3/README.md) | V2 plus a CR1632 backup: the ngspice simulation (`spice/`) and the routed KiCad 9 board (`kicad/`) |
-| [`firmware/`](firmware/README.md) | the **original source** by Christoph Tack (LieBtrau), verbatim from the [upstream GitHub repo](https://github.com/LieBtrau/pulse-dtmf-converter) under **GPL v3**, plus our rev-V3 `battery_control.ino` notes. Compiled images are in `firmware/images/`. |
-| `third_party/` | **ATTinyCore** (the [Arduino core for the ATtiny85](https://github.com/SpenceKonde/ATTinyCore), by Spence Konde; see its `LICENSE.md`) and **Bounce2** (the [debounce library](https://github.com/thomasfredericks/Bounce2), by Thomas Fredericks, MIT). Bundled so the build is self-contained. |
-| `WEB_SAVES/` | local copies of the upstream web pages and the ETSI DTMF spec, in case the sites go offline |
-| [`ANALYSIS.md`](ANALYSIS.md) | the engineering analysis of the original board and firmware |
-
-## Rev V3: simulation and PCB
-
-- **[hardware_v3/spice](hardware_v3/spice/README.md)** is an ngspice comparison of
-  the original board and rev V3: loop-current budget, part spread, pulse dialing
-  on six line types, DTMF level and spectrum, hang-up and ringing.
-- **[hardware_v3/kicad](hardware_v3/kicad/README.md)** is the KiCad 9 project for
-  rev V3, routed and DRC-clean, in the R2 outline. Gerbers, BOM and
-  pick-and-place files are in `hardware_v3/kicad/fab/`.
-
-## Engineering analysis
-
-See **[ANALYSIS.md](ANALYSIS.md)** for a full review of the design: how the board
-is powered and why low-loop-current IP/VoIP phone systems starve it, why some
-TLV431 regulators fail while others from the same batch work, the ATtiny firmware
-behaviour and improvement ideas, and a feature comparison (speed dial, special
-tones, redial) with other converters.
-
-## Building
-
-Flash the ATtiny85 with one of the `.hex` images in `firmware/images/` (for
-example with an Arduino as ISP), or rebuild from source using the ATtiny85
-board definition from the bundled ATTinyCore (`third_party/`) and the Bounce2
-library. The steps, including the fuse setting, are in
-`hardware_r2/BRD170127_Pulse_To_Tone_Converter.doc`. Then populate the R2 PCB
-following its BOM and `hardware_r2/KIT_build.doc`.
+| [`ANALYSIS.md`](ANALYSIS.md) | engineering analysis of the original board and firmware: power, regulators, pulse decoding, DTMF generation, features |
+| [`hardware_v3/spice`](hardware_v3/spice/README.md) | ngspice comparison of R2 and V3 |
+| `third_party/` | **ATTinyCore** ([Spence Konde](https://github.com/SpenceKonde/ATTinyCore); a 1.4.2-dev snapshot; see its `LICENSE.md`) and **Bounce2** 2.55 ([Thomas Fredericks](https://github.com/thomasfredericks/Bounce2), MIT), as bundled with the R2 kit build |
+| `WEB_SAVES/` | local copies of the upstream web pages and the ETSI DTMF specification, in case the sites go offline |
 
 ## License
 
-The design originates from Christoph Tack's (LieBtrau)
-[Hackaday.io project 28557](https://hackaday.io/project/28557-pulse-to-tone-converter)
-/ [GitHub repo](https://github.com/LieBtrau/pulse-dtmf-converter).
-
-- **Firmware** in [`firmware/`](firmware) — and any build combined with it,
-  including our `battery_control.ino` addition — is **GPL v3** (© 2018 Christoph
-  Tack); see [`firmware/LICENSE`](firmware/LICENSE).
-- **Bundled libraries** (ATTinyCore, Bounce2) keep their own original licenses.
-- The **hardware-design notes** here (`ANALYSIS.md`, `hardware_v2/`,
-  `hardware_v3/`, and the R2 kit documentation in `hardware_r2/`) are this project's own documentation; the board itself derives
-  from the upstream design — check the upstream project before redistributing
-  hardware.
+- **Firmware:** both `hardware_r2/firmware` (upstream, verbatim) and
+  `hardware_v3/firmware` (upstream plus the V3 changes) are **GPL v3**,
+  © 2018 Christoph Tack. See the `LICENSE` file in each folder.
+- **Bundled libraries** (ATTinyCore, Bounce2) keep their own licenses.
+- The **documentation** (`ANALYSIS.md`, the READMEs, the SPICE and KiCad work)
+  is this project's own. The boards derive from the upstream design; check the
+  upstream project before redistributing hardware.

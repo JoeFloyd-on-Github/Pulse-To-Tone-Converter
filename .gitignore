@@ -18,3 +18,7 @@ hardware_v3/kicad/__pycache__/
 hardware_v3/kicad/route/freerouting.log
 hardware_v3/kicad/fab/drc.rpt
 hardware_v3/kicad/fab/erc.rpt
+
+# V3 firmware build output (build.sh)
+hardware_v3/firmware/build/
+*.ino.lst

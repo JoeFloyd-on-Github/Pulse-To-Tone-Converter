@@ -6,9 +6,15 @@ design is LieBtrau's (Christoph Tack's) open-source
 [Pulse to Tone Converter](https://hackaday.io/project/28557-pulse-to-tone-converter).
 
 How it works and where it falls short are in [`../ANALYSIS.md`](../ANALYSIS.md).
-The redesigns are [`../hardware_v2`](../hardware_v2/README.md) and
-[`../hardware_v3`](../hardware_v3/README.md). Rev V3 keeps R2's 49 × 34 mm
-outline and RJ11 jack positions, so it drops in where an R2 board went.
+The redesign is [`../hardware_v3`](../hardware_v3/README.md). It keeps R2's
+49 × 34 mm outline and RJ11 jack positions, so it drops in where an R2 board
+went.
+
+**Firmware for this board** is in [`firmware/`](firmware/README.md):
+- the 2019 upstream source that built the production image, and the images
+  themselves;
+- the Arduino IDE settings and fuses used, and both programming routes;
+- a detailed look at the unused PB2 mode jumper.
 
 ## Files
 
@@ -22,9 +28,18 @@ outline and RJ11 jack positions, so it drops in where an R2 board went.
 | `KIT_build.doc` | **kit assembly guide**: an 18-step order, starting with the low-profile parts and ending with the RJ11 jacks and C1 |
 | `photos/` | build photos (December 2020): assembly, the kit, annotated boards, and the off-hook **voltage measurement** quoted in `../ANALYSIS.md` §1 (`20201219_140931-voltages.jpg`) |
 
-The firmware source is in [`../firmware`](../firmware/README.md), and compiled
-images are in `../firmware/images/`. The libraries the build guide uses
-(ATTinyCore, Bounce2) are bundled in `../third_party/`.
+The libraries the build guide uses (ATTinyCore, Bounce2) are bundled in
+`../third_party/`.
+
+## Building an R2
+
+1. Order the PCB from `Gerber_BRD170127_R2.zip` and the parts from the BOM.
+2. Program the ATtiny85 **before** soldering it, as the kit did. Two routes,
+   both in `firmware/README.md` §5:
+   - an Arduino Uno as ISP with the chip in a SOIC-8 ZIF adapter;
+   - an XGecu programmer writing `firmware/images/ATTINY85V@SOIC8.hex` with
+     fuses L 0xFF, H 0xD5, E 0xFF.
+3. Assemble the board in the order given in `KIT_build.doc`.
 
 ## Board facts
 

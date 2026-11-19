@@ -13,7 +13,7 @@ current (~20 mA limited) and low line voltage — where the original drops digit
 or runs "in bursts or not at all". Secondary goals: document the design properly
 and credit/license the upstream work correctly.
 
-## What has been done (all on 2026-11-18)
+## What has been done (2026-11-18/19)
 
 1. **Initial commit** of the build files: Gerbers, schematic, BOM, build docs,
    photos, compiled `.hex`/`.BIN`, bundled ATTinyCore and Bounce2.
@@ -94,6 +94,31 @@ and credit/license the upstream work correctly.
     `hardware_r2/` holds the original R2 board; `hardware_v2/` holds the
     redesign. The two are different things despite the similar names.
 
+13. **Per-revision firmware and docs (2026-11-19):**
+    - **Firmware provenance.** The repo's old `firmware/` was upstream's
+      **2023** source (cloned from GitHub), not what built the kits; the share
+      `/mnt/RAID/1_OpenSourcePCBProjects/PULSE-TO-TONE` has only images.
+      Rebuilding upstream's history showed the production image
+      (`ATTINY85V@SOIC8.hex`, 2,418 B) is **`31ae4ba` (2019-07-06) built with
+      ATTinyCore 1.4.1**: same size, the 3 s delay, a 200-byte buffer, 85 % of
+      bytes identical (the rest is the build environment). `R0.hex` is an older
+      single-mode build.
+    - **R2 toolchain**, from the owner's guide screenshots: Arduino IDE 1.8.13,
+      8 MHz external, **BOD 2.7 V**, EEPROM retained, LTO on; fuses
+      L FF / H D5 / E FF (the XGecu screenshot agrees). Upstream's own build
+      file had BOD disabled.
+    - **Layout:**
+      - `hardware_r2/firmware/`: the 2019 source + images + README (provenance,
+        upstream history, toolchain, mode jumper);
+      - `hardware_v3/firmware/`: the V3 sketch (2023 upstream + battery control,
+        PB2 = BATT_EN released as high-impedance), `build.sh`, the ISP wiring
+        SVG, and a compiled hex (2,474 B, SHA-256 8a2ba28d…, reproducible);
+      - `hardware_v2/` was folded into `hardware_v3/README.md` §5;
+      - the top-level `firmware/` was removed.
+    - **Toolchain installed by the owner:** arduino-cli 1.2.2 (Ubuntu), with
+      ATTinyCore 1.5.2 + Bounce2 2.71 in `~/.arduino15`. ATTinyCore 1.4.1 was
+      installed temporarily for the rebuild test; 1.5.2 was put back.
+
 ## Reference material in the repo
 
 - `hardware_r2/BRD170127_Pulse_To_Tone_Converter.doc` — the owner's toolchain/programming
@@ -132,8 +157,8 @@ and credit/license the upstream work correctly.
   on-hook disarm on the first board.
 - The SPICE models don't cover TLV431 capacitive-load stability, temperature or
   absolute-max ratings (those were checked separately).
-- Firmware for V3 is not written yet: `battery_control.ino` is integration notes,
-  and the PB2 change (drop mode select) is not applied to the sketch.
+- V3 firmware compiles but has **never run on hardware**. On the first board,
+  check that the cell is released within ~250 ms of hanging up (TP4).
 - **Cell-drain risk:** if on-hook detection fails, the armed cell drains fast.
   Bench-verify that the loop sense really tracks the hook switch.
 - **Two corrections already happened** (series-LDO idea; "MCU loses power
@@ -152,7 +177,6 @@ and credit/license the upstream work correctly.
   dial, the on-hook disarm, cell current when idle.
 - Fill in LCSC numbers for 0805 passives, BCX53-16 and DMG2301L; check part
   rotations in the fab's assembly preview; order boards.
-- Write the V3 firmware changes (PIN_BATT_EN = 2, fixed mode, on-hook disarm).
 - Firmware features from `ANALYSIS.md` §4–5 (redial, speed dial, timing config).
 - Firmware fixes found in the source review (ANALYSIS.md §4):
   - a hook-flash is decoded as digit "1";
@@ -160,5 +184,7 @@ and credit/license the upstream work correctly.
   - 11+ pulses are dropped silently;
   - `delay()` blocks dialing during playback;
   - dials slower than about 6.7 pps split digits.
-- A reference clone of upstream sits at `/tmp/lb_pdtmf` (temporary — lost on
-  reboot; re-clone from github.com/LieBtrau/pulse-dtmf-converter if needed).
+- A full-history clone of upstream sits at `/tmp/lb_pdtmf` (temporary — lost on
+  reboot; re-clone github.com/LieBtrau/pulse-dtmf-converter without --depth).
+- V3 twist is about 0 dB against ETSI's 1–4 dB: raise the high-tone weighting in
+  `dtmfgenerator.cpp` or fit C8/C9 at 3.3 nF (needs a bench check).

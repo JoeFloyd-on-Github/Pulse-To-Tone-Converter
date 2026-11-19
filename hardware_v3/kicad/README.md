@@ -55,10 +55,10 @@ on both layers. Any standard 2-layer service can make it.
 | Test points | none | TP1 VCC, TP2 VDD, TP3 BATT+, TP4 BATT_EN, TP5 CELL, TP6 GND | for bench verification (see `../spice/README.md`) |
 | Passive parts | 1206 | 0805 | the extra parts have to fit the same area |
 
-**Firmware:** BATT_EN is on **PB2**. PB1 is the DTMF PWM output (OC1A), and
-the crystal uses PB3/PB4, so PB2 was the only free pin. The sketch's optional
-mode-select read on PB2 has to go, with the mode fixed in code. See
-`../../firmware/src/battery_control.ino`.
+**Firmware:** BATT_EN is on **PB2**, the only free pin: PB1 is the DTMF PWM
+output (OC1A), and the crystal uses PB3/PB4. The V3 firmware, its tools and
+fuses, and the in-circuit programming (Arduino as ISP with a SOIC-8 clip on U1)
+are in [`../firmware`](../firmware/README.md).
 
 ## Regenerating
 

@@ -13,7 +13,9 @@ The design comes from LieBtrau's (Christoph Tack's) open-source
 on Hackaday.io.
 
 **Sources, in order of authority:**
-1. The **firmware source** in [`firmware/`](firmware). It is the ground truth
+1. The **firmware source**: the 2019 upstream sketch that built the R2
+   production image ([`hardware_r2/firmware`](hardware_r2/firmware/README.md)),
+   and upstream's 2023 revision, which V3 builds on. It is the ground truth
    for everything the software does (§4).
 2. The **upstream PCB netlist**, extracted from LieBtrau's EasyEDA export
    (`BRD170127.pcbdoc` in the upstream repo's `Hardware/` folder).
@@ -204,13 +206,22 @@ matters. It mainly sets the small base current the op-amp has to supply.
 
 ## 4. Firmware: how the original works (from the source)
 
-The source is the upstream sketch by Christoph Tack, GPL v3, in
-[`firmware/src`](firmware/src). The last upstream change was on 2023-02-20: a
-`pulsesBuffer` overflow fix, a configurable send delay, and a move to
-PlatformIO. The repo's `firmware/images/pulse-dtmf-converter.ino_R0.hex` holds 2,482 bytes of
-code, so the build uses about 30 % of the ATtiny85's 8 KB of flash. That image
-is a build of an earlier revision, so it may not match the current source
-exactly.
+The source is the upstream sketch by Christoph Tack, GPL v3. **Two versions
+matter:**
+
+- **R2 boards run upstream `31ae4ba` (2019-07-06),** in
+  [`hardware_r2/firmware`](hardware_r2/firmware/README.md). It was confirmed by
+  rebuilding: same size, same constants, same RAM layout as the production
+  image `ATTINY85V@SOIC8.hex`, which is 2,418 bytes, about 30 % of the 8 KB of
+  flash.
+- **Upstream's 2023 revision (`593e746`)** is the base of the V3 firmware
+  ([`hardware_v3/firmware`](hardware_v3/firmware/README.md)).
+
+This section was first written from the 2023 source. Where the two differ,
+the R2 (2019) behaviour is given in *italics*. Only the sketch differs; the
+decoder, tone generator and timer files are identical. The other differences
+from 2023 are the move to PlatformIO and the `pins.h` file (see
+`hardware_r2/firmware/README.md` §4).
 
 ### Pin map
 
@@ -220,7 +231,7 @@ exactly.
 | 2, 3 | PB3, PB4 | 8 MHz crystal X1 (C8/C9 18 pF) |
 | 5 | PB0 | **loop/pulse sense input.** `pins.h` calls it `PIN_DTMF_OUT`, but it is passed to `RotaryDialer` as the *pulse* pin |
 | 6 | PB1 | **DTMF PWM output OC1A.** Hard-coded as `dtmfpin = 1` in `dtmfgenerator.cpp` |
-| 7 | PB2 | `PIN_MODE_SELECT`, read once at start-up with the internal pull-up. **Not connected on the board**, so the sketch always runs in mode 1 |
+| 7 | PB2 | mode select (`modePin`; `PIN_MODE_SELECT` in 2023), read once at start-up with the internal pull-up. **Not connected on the board**, so the sketch always runs in mode 1. See `hardware_r2/firmware/README.md` §3. |
 
 ### Start-up
 
@@ -235,10 +246,12 @@ the following:
   **10 ms debounce interval**.
 
 The code does not set the clock source or the brown-out detector. Those come
-from the fuses written by "Burn Bootloader" in the Arduino IDE flow. Note that
-`platformio.ini` targets the **`attiny45`** board, and upstream says the
-PlatformIO build was never tested on hardware. `pins.h` also refers to
-ATtiny45 pin numbers. The two parts share the same pinout.
+from the fuses written by "Burn Bootloader" in the Arduino IDE flow. The R2
+kits used L 0xFF, H 0xD5 (BOD 2.7 V) and E 0xFF; see
+`hardware_r2/firmware/README.md` §5. Upstream's 2023 `platformio.ini` targets
+the **`attiny45`** board and sets no fuses, and upstream says the PlatformIO
+build was never tested on hardware. Its `pins.h` refers to ATtiny45 pin
+numbers; the two parts share the same pinout.
 
 ### Main loop
 
@@ -282,14 +295,16 @@ What this means in practice:
 ### Sending modes (`pulse-dtmf-converter.ino`)
 
 - **Mode 1** (PB2 open; the board's only mode): digits are stored in a
-  15-entry buffer. Any further digits are dropped silently. **1,200 ms after the
+  15-entry buffer (*R2: 200 entries, no bounds check*). Any further digits are
+  dropped silently. **1,200 ms (*R2: 3,000 ms*) after the
   last digit** (`DTMF_DELAY_AFTER_LAST_DIALED_DIGIT_ms`), the whole number is
   sent as **80 ms tone + 80 ms pause** per digit.
 - **Mode 0** (PB2 grounded): each digit is sent as an 80 ms tone as soon as it
   completes, 150 ms after its last pulse.
 - **Both modes block.** `delay()` stops `rd.update()` from running. A digit
   dialed while a number is being sent is lost. In mode 1 a full 15-digit buffer
-  takes about 2.4 s to send.
+  takes about 2.4 s to send. Sending is unbounded on R2: each digit takes
+  160 ms.
 
 ### DTMF synthesis (`dtmfgenerator.cpp`, `timer.cpp`)
 
@@ -327,8 +342,8 @@ troughs, because U3 bottoms out
   brown-out handling is left entirely to the BOD fuse.
 - It does not validate pulse width, detect hook-flash, or report errors.
 - It has no programming mode. Timing values are compile-time constants:
-  10 ms debounce, 150 ms digit timeout, 1,200 ms send delay, 80/80 ms tone and
-  pause, 15-digit buffer.
+  10 ms debounce, 150 ms digit timeout, 1,200 ms send delay (*R2: 3,000 ms*),
+  80/80 ms tone and pause, 15-digit buffer (*R2: 200*).
 - Minor: `SingleTimer` compares `millis() < start + timeout`, which breaks when
   `millis()` wraps after about 49 days. That cannot happen here, because power
   is lost at every hang-up.
@@ -356,8 +371,8 @@ No extra hardware is needed for any of these.
    of flash and all 512 B of EEPROM are free.
 
 > **Rev V3 note:** the V3 board uses **PB2 for the coin-cell enable**, because
-> it is the only free pin. A V3 build must remove the `PIN_MODE_SELECT` read
-> and fix `mode` in code. See `firmware/src/battery_control.ino`.
+> it is the only free pin. The V3 firmware drops the mode-select read and fixes
+> the mode in code. See [`hardware_v3/firmware`](hardware_v3/firmware/README.md).
 
 ---
 
@@ -368,7 +383,7 @@ No extra hardware is needed for any of these.
 | A/B/C/D, \*, # tones | generator supports all 16 keys, but **dialing can only produce 0–9** | map special dial sequences to them, e.g. in a programming mode |
 | **Speed dial** | no | programming mode (for example a long first digit), store numbers in **EEPROM** (512 B holds many short numbers), recall by dialing one digit |
 | **Last-number redial** | no (nothing survives hang-up) | store the last number in EEPROM, trigger with a reserved sequence |
-| Pause / wait insertion | no; mode 1 sends the whole number 1.2 s after the last digit | timed gap on a reserved code (useful for PBX "9,…") |
+| Pause / wait insertion | no; mode 1 sends the whole number 3 s (R2) or 1.2 s (2023) after the last digit | timed gap on a reserved code (useful for PBX "9,…") |
 | **Hook-flash / Recall** | **decoded as digit "1"**, so a DTMF 1 is sent after every flash | detect long breaks (§4 improvement 1) and pass them through without a tone |
 | Programmable timing | compile-time constants only | §4 improvement 4 |
 | Pulse pass-through | **always**: loop breaks are never suppressed | option to also suppress them (needs hardware) |
